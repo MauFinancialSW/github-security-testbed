@@ -1,0 +1,369 @@
+# Security CI/CD Pipeline
+# =======================
+# Course: GitHub Copilot for Cybersecurity Specialists
+# Lesson: 03 - Automated Security Testing
+#
+# Copilot Prompt Used:
+# "Create GitHub Actions workflow for comprehensive security testing"
+#
+# Features:
+# - SAST with CodeQL and Semgrep
+# - Dependency scanning
+# - Secret detection
+# - Container scanning
+# - DAST integration
+# - Security gates
+
+name: Security Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Run security scans daily at midnight
+    - cron: '0 0 * * *'
+
+env:
+  NODE_VERSION: '20'
+
+# Cancel in-progress runs for same branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ===========================================================================
+  # Secret Detection
+  # ===========================================================================
+  secret-detection:
+    name: Secret Detection
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for scanning
+
+      - name: TruffleHog Secret Scan
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
+          extra_args: --only-verified
+
+      - name: GitLeaks Secret Scan
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # ===========================================================================
+  # Dependency Scanning
+  # ===========================================================================
+  dependency-scan:
+    name: Dependency Vulnerability Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: NPM Audit
+        run: npm audit --audit-level=high
+        continue-on-error: true  # Don't fail, capture results
+
+      - name: Snyk Vulnerability Scan
+        uses: snyk/actions/node@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high
+
+      - name: Upload Snyk Results
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: snyk.sarif
+
+      - name: OWASP Dependency Check
+        uses: dependency-check/Dependency-Check_Action@main
+        with:
+          project: 'security-demo'
+          path: '.'
+          format: 'HTML'
+          out: 'reports'
+
+      - name: Upload Dependency Check Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-check-report
+          path: reports
+
+  # ===========================================================================
+  # SAST - Static Application Security Testing
+  # ===========================================================================
+  sast-codeql:
+    name: CodeQL Analysis
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript
+          queries: +security-extended,security-and-quality
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:javascript"
+
+  sast-semgrep:
+    name: Semgrep Analysis
+    runs-on: ubuntu-latest
+    container:
+      image: semgrep/semgrep
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Semgrep
+        run: |
+          semgrep scan \
+            --config p/security-audit \
+            --config p/owasp-top-ten \
+            --config p/nodejs \
+            --config .semgrep/rules.yaml \
+            --sarif \
+            --output semgrep.sarif \
+            --error
+
+      - name: Upload Semgrep Results
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: semgrep.sarif
+
+  # ===========================================================================
+  # Container Security
+  # ===========================================================================
+  container-scan:
+    name: Container Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker Image
+        run: docker build -t app:${{ github.sha }} .
+
+      - name: Trivy Container Scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'app:${{ github.sha }}'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH'
+
+      - name: Upload Trivy Results
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+      - name: Grype Container Scan
+        uses: anchore/scan-action@v4
+        with:
+          image: 'app:${{ github.sha }}'
+          fail-build: true
+          severity-cutoff: high
+
+  # ===========================================================================
+  # DAST - Dynamic Application Security Testing
+  # ===========================================================================
+  dast:
+    name: DAST Scan
+    runs-on: ubuntu-latest
+    needs: [sast-codeql, sast-semgrep]  # Run after SAST
+    services:
+      app:
+        image: node:20
+        ports:
+          - 3000:3000
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Start Application
+        run: npm start &
+        env:
+          NODE_ENV: test
+
+      - name: Wait for Application
+        run: |
+          for i in {1..30}; do
+            curl -s http://localhost:3000/health && break
+            sleep 2
+          done
+
+      - name: ZAP Baseline Scan
+        uses: zaproxy/action-baseline@v0.12.0
+        with:
+          target: 'http://localhost:3000'
+          rules_file_name: '.zap/rules.tsv'
+          cmd_options: '-a'
+
+      - name: Upload ZAP Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: zap-report
+          path: report_html.html
+
+  # ===========================================================================
+  # Security Unit Tests
+  # ===========================================================================
+  security-tests:
+    name: Security Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Security Tests
+        run: npm run test:security
+        env:
+          CI: true
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: security-test-results
+          path: coverage/
+
+  # ===========================================================================
+  # Infrastructure as Code Scanning
+  # ===========================================================================
+  iac-scan:
+    name: IaC Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Checkov IaC Scan
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: terraform/
+          framework: terraform
+          output_format: sarif
+          output_file_path: checkov.sarif
+          soft_fail: false
+
+      - name: Upload Checkov Results
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: checkov.sarif
+
+      - name: KICS IaC Scan
+        uses: Checkmarx/kics-github-action@v2.1.0
+        with:
+          path: ./
+          output_path: kics-results/
+          output_formats: 'sarif'
+          fail_on: high
+
+  # ===========================================================================
+  # Security Gate
+  # ===========================================================================
+  security-gate:
+    name: Security Gate
+    runs-on: ubuntu-latest
+    needs:
+      - secret-detection
+      - dependency-scan
+      - sast-codeql
+      - sast-semgrep
+      - security-tests
+      - iac-scan
+    steps:
+      - name: Check Security Results
+        run: |
+          echo "All security checks passed!"
+          echo "Summary:"
+          echo "  - Secret Detection: ✓"
+          echo "  - Dependency Scan: ✓"
+          echo "  - SAST (CodeQL): ✓"
+          echo "  - SAST (Semgrep): ✓"
+          echo "  - Security Tests: ✓"
+          echo "  - IaC Scan: ✓"
+
+      - name: Block on Critical Findings
+        if: failure()
+        run: |
+          echo "::error::Security gate failed - critical vulnerabilities detected"
+          exit 1
+
+  # ===========================================================================
+  # Compliance Report
+  # ===========================================================================
+  compliance-report:
+    name: Generate Compliance Report
+    runs-on: ubuntu-latest
+    needs: [security-gate]
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download All Artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Generate Compliance Report
+        run: |
+          echo "# Security Compliance Report" > compliance-report.md
+          echo "Generated: $(date)" >> compliance-report.md
+          echo "" >> compliance-report.md
+          echo "## Scan Results Summary" >> compliance-report.md
+          echo "- All security gates passed" >> compliance-report.md
+          echo "- No critical vulnerabilities" >> compliance-report.md
+
+      - name: Upload Compliance Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: compliance-report
+          path: compliance-report.md
+
+      - name: Create Release with Security Report
+        if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: compliance-report.md

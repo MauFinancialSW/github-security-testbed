@@ -1,0 +1,21 @@
+{
+  "name": "security-scanners",
+  "version": "1.0.0",
+  "description": "Custom vulnerability scanners for IDOR and race conditions",
+  "main": "idor-scanner.js",
+  "scripts": {
+    "scan:idor": "node idor-scanner.js",
+    "scan:race": "node race-condition-scanner.js",
+    "report": "node ../reports/generate-report.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.2"
+  },
+  "keywords": [
+    "security",
+    "scanner",
+    "idor",
+    "race-condition"
+  ],
+  "license": "MIT"
+}

@@ -1,0 +1,287 @@
+# Semgrep Security Rules
+# ======================
+# Course: GitHub Copilot for Cybersecurity Specialists
+# Lesson: 03 - Automated Security Testing
+#
+# Copilot Prompt Used:
+# "Create Semgrep rules for detecting security vulnerabilities"
+
+rules:
+  # ==========================================================================
+  # SQL Injection Detection
+  # ==========================================================================
+  - id: sql-injection-string-concat
+    languages: [javascript, typescript]
+    severity: ERROR
+    message: >
+      SQL query built with string concatenation. This is vulnerable to SQL injection.
+      Use parameterized queries instead.
+    patterns:
+      - pattern-either:
+          - pattern: |
+              $QUERY = "..." + $INPUT + "..."
+              ...
+              $DB.query($QUERY)
+          - pattern: |
+              $DB.query("..." + $INPUT + "...")
+          - pattern: |
+              $DB.query(`...${$INPUT}...`)
+    metadata:
+      cwe: CWE-89
+      owasp: A03:2021
+      category: security
+      technology: [nodejs, express]
+
+  - id: sql-injection-template-literal
+    languages: [javascript, typescript]
+    severity: ERROR
+    message: >
+      SQL query uses template literal with user input. Use parameterized queries.
+    pattern: |
+      $DB.$METHOD(`...${$INPUT}...`)
+    metadata:
+      cwe: CWE-89
+      owasp: A03:2021
+
+  # ==========================================================================
+  # XSS Detection
+  # ==========================================================================
+  - id: react-dangerouslysetinnerhtml
+    languages: [javascript, typescript, jsx, tsx]
+    severity: WARNING
+    message: >
+      Using dangerouslySetInnerHTML can lead to XSS. Sanitize input with DOMPurify.
+    pattern: dangerouslySetInnerHTML={{__html: $INPUT}}
+    metadata:
+      cwe: CWE-79
+      owasp: A03:2021
+
+  - id: document-write
+    languages: [javascript, typescript]
+    severity: WARNING
+    message: >
+      document.write() can lead to XSS. Use safe DOM manipulation methods.
+    pattern: document.write($INPUT)
+    metadata:
+      cwe: CWE-79
+      owasp: A03:2021
+
+  - id: innerhtml-assignment
+    languages: [javascript, typescript]
+    severity: WARNING
+    message: >
+      Direct innerHTML assignment can lead to XSS. Use textContent or sanitize input.
+    pattern: $EL.innerHTML = $INPUT
+    metadata:
+      cwe: CWE-79
+      owasp: A03:2021
+
+  # ==========================================================================
+  # Command Injection
+  # ==========================================================================
+  - id: command-injection-exec
+    languages: [javascript, typescript]
+    severity: ERROR
+    message: >
+      Command execution with user input. Use child_process.spawn with arguments array.
+    patterns:
+      - pattern-either:
+          - pattern: exec($CMD, ...)
+          - pattern: execSync($CMD, ...)
+          - pattern: child_process.exec($CMD, ...)
+          - pattern: child_process.execSync($CMD, ...)
+    pattern-not: exec("...", ...)
+    metadata:
+      cwe: CWE-78
+      owasp: A03:2021
+
+  - id: command-injection-shell
+    languages: [javascript, typescript]
+    severity: ERROR
+    message: >
+      Using shell: true with spawn is dangerous. Avoid shell interpretation.
+    pattern: |
+      spawn($CMD, $ARGS, {..., shell: true, ...})
+    metadata:
+      cwe: CWE-78
+      owasp: A03:2021
+
+  # ==========================================================================
+  # Path Traversal
+  # ==========================================================================
+  - id: path-traversal
+    languages: [javascript, typescript]
+    severity: ERROR
+    message: >
+      File path includes user input without validation. Use path.resolve() and verify
+      the result is within allowed directory.
+    patterns:
+      - pattern-either:
+          - pattern: fs.readFile($PATH + $INPUT, ...)
+          - pattern: fs.readFileSync($PATH + $INPUT, ...)
+          - pattern: fs.readFile(`${$PATH}${$INPUT}`, ...)
+    metadata:
+      cwe: CWE-22
+      owasp: A01:2021
+
+  # ==========================================================================
+  # Insecure Cryptography
+  # ==========================================================================
+  - id: weak-crypto-md5
+    languages: [javascript, typescript]
+    severity: WARNING
+    message: >
+      MD5 is cryptographically broken. Use SHA-256 or SHA-3 for hashing.
+    pattern: crypto.createHash('md5')
+    metadata:
+      cwe: CWE-328
+      owasp: A02:2021
+
+  - id: weak-crypto-sha1
+    languages: [javascript, typescript]
+    severity: WARNING
+    message: >
+      SHA-1 is deprecated for cryptographic purposes. Use SHA-256 or SHA-3.
+    pattern: crypto.createHash('sha1')
+    metadata:
+      cwe: CWE-328
+      owasp: A02:2021
+
+  - id: weak-cipher-des
+    languages: [javascript, typescript]
+    severity: ERROR
+    message: >
+      DES is insecure. Use AES-256-GCM for encryption.
+    patterns:
+      - pattern-either:
+          - pattern: crypto.createCipheriv('des', ...)
+          - pattern: crypto.createCipheriv('des-ecb', ...)
+          - pattern: crypto.createCipheriv('des-cbc', ...)
+    metadata:
+      cwe: CWE-327
+      owasp: A02:2021
+
+  - id: ecb-mode-cipher
+    languages: [javascript, typescript]
+    severity: ERROR
+    message: >
+      ECB mode does not provide semantic security. Use GCM or CBC mode with HMAC.
+    pattern: crypto.createCipheriv('...-ecb', ...)
+    metadata:
+      cwe: CWE-327
+      owasp: A02:2021
+
+  # ==========================================================================
+  # Authentication/Authorization
+  # ==========================================================================
+  - id: jwt-none-algorithm
+    languages: [javascript, typescript]
+    severity: ERROR
+    message: >
+      JWT 'none' algorithm allows token forgery. Always specify a secure algorithm.
+    patterns:
+      - pattern-either:
+          - pattern: jwt.verify($TOKEN, $SECRET, {..., algorithms: ['none'], ...})
+          - pattern: jwt.sign($PAYLOAD, $SECRET, {..., algorithm: 'none', ...})
+    metadata:
+      cwe: CWE-347
+      owasp: A02:2021
+
+  - id: hardcoded-jwt-secret
+    languages: [javascript, typescript]
+    severity: ERROR
+    message: >
+      Hardcoded JWT secret. Use environment variables for secrets.
+    pattern: jwt.sign($PAYLOAD, "...")
+    metadata:
+      cwe: CWE-798
+      owasp: A02:2021
+
+  - id: missing-csrf-protection
+    languages: [javascript, typescript]
+    severity: WARNING
+    message: >
+      Form submission without CSRF token validation. Add CSRF middleware.
+    pattern: |
+      app.post($PATH, (req, res) => {
+        ...
+      })
+    pattern-not-inside: |
+      app.use(csrf(...))
+      ...
+    metadata:
+      cwe: CWE-352
+      owasp: A01:2021
+
+  # ==========================================================================
+  # Sensitive Data Exposure
+  # ==========================================================================
+  - id: console-log-sensitive
+    languages: [javascript, typescript]
+    severity: WARNING
+    message: >
+      Logging potentially sensitive data. Remove or mask before production.
+    patterns:
+      - pattern-either:
+          - pattern: console.log(..., $PASSWORD, ...)
+          - pattern: console.log(..., $TOKEN, ...)
+          - pattern: console.log(..., $SECRET, ...)
+          - pattern: console.log(..., $KEY, ...)
+    metadata:
+      cwe: CWE-532
+      owasp: A09:2021
+
+  - id: hardcoded-credentials
+    languages: [javascript, typescript]
+    severity: ERROR
+    message: >
+      Hardcoded credentials detected. Use environment variables.
+    patterns:
+      - pattern-either:
+          - pattern: |
+              password = "..."
+          - pattern: |
+              apiKey = "..."
+          - pattern: |
+              secretKey = "..."
+    metadata:
+      cwe: CWE-798
+      owasp: A07:2021
+
+  # ==========================================================================
+  # SSRF Prevention
+  # ==========================================================================
+  - id: ssrf-fetch
+    languages: [javascript, typescript]
+    severity: ERROR
+    message: >
+      HTTP request with user-controlled URL. Validate and whitelist allowed hosts.
+    patterns:
+      - pattern-either:
+          - pattern: fetch($USER_URL, ...)
+          - pattern: axios.get($USER_URL, ...)
+          - pattern: axios.post($USER_URL, ...)
+          - pattern: http.request($USER_URL, ...)
+    pattern-not: fetch("...", ...)
+    metadata:
+      cwe: CWE-918
+      owasp: A10:2021
+
+  # ==========================================================================
+  # Security Headers
+  # ==========================================================================
+  - id: missing-security-headers
+    languages: [javascript, typescript]
+    severity: WARNING
+    message: >
+      Express app without Helmet middleware. Add app.use(helmet()) for security headers.
+    pattern: |
+      const app = express()
+      ...
+    pattern-not-inside: |
+      ...
+      app.use(helmet(...))
+      ...
+    metadata:
+      cwe: CWE-693
+      owasp: A05:2021

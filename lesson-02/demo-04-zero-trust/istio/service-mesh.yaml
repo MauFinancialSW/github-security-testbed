@@ -1,0 +1,453 @@
+# =============================================================================
+# Istio Service Mesh - Zero Trust Configuration
+# =============================================================================
+# Course: GitHub Copilot for Cybersecurity Specialists
+# Lesson: 02 - Security Protocols with Copilot
+#
+# Copilot Prompt Used:
+# "Configure Istio service mesh for zero trust mTLS"
+#
+# Security Features:
+# - Strict mTLS between all services
+# - Authorization policies (deny by default)
+# - Request authentication with JWT
+# - Rate limiting and circuit breaking
+# =============================================================================
+
+---
+# =============================================================================
+# Namespace with Istio Injection
+# =============================================================================
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: secure-app
+  labels:
+    istio-injection: enabled
+    security.istio.io/tlsMode: strict
+
+---
+# =============================================================================
+# Peer Authentication - Strict mTLS
+# =============================================================================
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: default
+  namespace: secure-app
+spec:
+  # Require mTLS for all workloads in namespace
+  mtls:
+    mode: STRICT
+
+---
+# =============================================================================
+# Mesh-wide mTLS (optional - apply to istio-system)
+# =============================================================================
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: mesh-wide-mtls
+  namespace: istio-system
+spec:
+  mtls:
+    mode: STRICT
+
+---
+# =============================================================================
+# Default Deny Authorization Policy
+# =============================================================================
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: deny-all
+  namespace: secure-app
+spec:
+  # Empty spec = deny all
+  {}
+
+---
+# =============================================================================
+# API Gateway Authorization - Allow external traffic
+# =============================================================================
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-api-gateway
+  namespace: secure-app
+spec:
+  selector:
+    matchLabels:
+      app: api-gateway
+  action: ALLOW
+  rules:
+    - from:
+        - source:
+            # Allow from Istio ingress gateway
+            principals: ["cluster.local/ns/istio-system/sa/istio-ingressgateway-service-account"]
+      to:
+        - operation:
+            methods: ["GET", "POST", "PUT", "DELETE"]
+            paths: ["/api/*"]
+      when:
+        - key: request.headers[x-request-id]
+          notValues: [""]
+
+---
+# =============================================================================
+# User Service Authorization
+# =============================================================================
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: user-service-policy
+  namespace: secure-app
+spec:
+  selector:
+    matchLabels:
+      app: user-service
+  action: ALLOW
+  rules:
+    # Allow from API gateway only
+    - from:
+        - source:
+            principals: ["cluster.local/ns/secure-app/sa/api-gateway"]
+      to:
+        - operation:
+            methods: ["GET"]
+            paths: ["/users/*", "/users"]
+        - operation:
+            methods: ["POST"]
+            paths: ["/users"]
+        - operation:
+            methods: ["PUT", "DELETE"]
+            paths: ["/users/*"]
+
+---
+# =============================================================================
+# Order Service Authorization
+# =============================================================================
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: order-service-policy
+  namespace: secure-app
+spec:
+  selector:
+    matchLabels:
+      app: order-service
+  action: ALLOW
+  rules:
+    # Allow from API gateway
+    - from:
+        - source:
+            principals: ["cluster.local/ns/secure-app/sa/api-gateway"]
+      to:
+        - operation:
+            methods: ["GET", "POST"]
+            paths: ["/orders/*", "/orders"]
+    # Allow from payment service for order updates
+    - from:
+        - source:
+            principals: ["cluster.local/ns/secure-app/sa/payment-service"]
+      to:
+        - operation:
+            methods: ["PUT"]
+            paths: ["/orders/*/status"]
+
+---
+# =============================================================================
+# Payment Service Authorization
+# =============================================================================
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: payment-service-policy
+  namespace: secure-app
+spec:
+  selector:
+    matchLabels:
+      app: payment-service
+  action: ALLOW
+  rules:
+    # Allow only from order service
+    - from:
+        - source:
+            principals: ["cluster.local/ns/secure-app/sa/order-service"]
+      to:
+        - operation:
+            methods: ["POST"]
+            paths: ["/payments/process"]
+
+---
+# =============================================================================
+# Database Service Authorization (Internal Only)
+# =============================================================================
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: database-service-policy
+  namespace: secure-app
+spec:
+  selector:
+    matchLabels:
+      app: database
+  action: ALLOW
+  rules:
+    # Allow only from specific services
+    - from:
+        - source:
+            principals:
+              - "cluster.local/ns/secure-app/sa/user-service"
+              - "cluster.local/ns/secure-app/sa/order-service"
+              - "cluster.local/ns/secure-app/sa/payment-service"
+      to:
+        - operation:
+            ports: ["5432"]
+
+---
+# =============================================================================
+# JWT Request Authentication
+# =============================================================================
+apiVersion: security.istio.io/v1beta1
+kind: RequestAuthentication
+metadata:
+  name: jwt-auth
+  namespace: secure-app
+spec:
+  selector:
+    matchLabels:
+      app: api-gateway
+  jwtRules:
+    - issuer: "https://auth.example.com"
+      jwksUri: "https://auth.example.com/.well-known/jwks.json"
+      audiences:
+        - "https://api.example.com"
+      forwardOriginalToken: true
+      outputClaimToHeaders:
+        - header: "x-user-id"
+          claim: "sub"
+        - header: "x-user-roles"
+          claim: "roles"
+
+---
+# =============================================================================
+# Authorization Policy with JWT Claims
+# =============================================================================
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: require-jwt
+  namespace: secure-app
+spec:
+  selector:
+    matchLabels:
+      app: api-gateway
+  action: ALLOW
+  rules:
+    - from:
+        - source:
+            requestPrincipals: ["https://auth.example.com/*"]
+      when:
+        # Token must not be expired
+        - key: request.auth.claims[exp]
+          notValues: [""]
+
+---
+# =============================================================================
+# Admin-only Authorization
+# =============================================================================
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: admin-only
+  namespace: secure-app
+spec:
+  selector:
+    matchLabels:
+      app: admin-service
+  action: ALLOW
+  rules:
+    - from:
+        - source:
+            requestPrincipals: ["https://auth.example.com/*"]
+      when:
+        - key: request.auth.claims[roles]
+          values: ["admin"]
+
+---
+# =============================================================================
+# Rate Limiting - Envoy Filter
+# =============================================================================
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: rate-limit
+  namespace: secure-app
+spec:
+  workloadSelector:
+    labels:
+      app: api-gateway
+  configPatches:
+    - applyTo: HTTP_FILTER
+      match:
+        context: SIDECAR_INBOUND
+        listener:
+          filterChain:
+            filter:
+              name: "envoy.filters.network.http_connection_manager"
+      patch:
+        operation: INSERT_BEFORE
+        value:
+          name: envoy.filters.http.local_ratelimit
+          typed_config:
+            "@type": type.googleapis.com/udpa.type.v1.TypedStruct
+            type_url: type.googleapis.com/envoy.extensions.filters.http.local_ratelimit.v3.LocalRateLimit
+            value:
+              stat_prefix: http_local_rate_limiter
+              token_bucket:
+                max_tokens: 100
+                tokens_per_fill: 10
+                fill_interval: 1s
+              filter_enabled:
+                runtime_key: local_rate_limit_enabled
+                default_value:
+                  numerator: 100
+                  denominator: HUNDRED
+              filter_enforced:
+                runtime_key: local_rate_limit_enforced
+                default_value:
+                  numerator: 100
+                  denominator: HUNDRED
+              response_headers_to_add:
+                - append: false
+                  header:
+                    key: x-ratelimit-limit
+                    value: "100"
+                - append: false
+                  header:
+                    key: x-ratelimit-remaining
+                    value: "%DYNAMIC_METADATA(envoy.http.local_ratelimit:tokens_remaining)%"
+
+---
+# =============================================================================
+# Circuit Breaker - Destination Rule
+# =============================================================================
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: circuit-breaker
+  namespace: secure-app
+spec:
+  host: "*.secure-app.svc.cluster.local"
+  trafficPolicy:
+    connectionPool:
+      tcp:
+        maxConnections: 100
+      http:
+        h2UpgradePolicy: UPGRADE
+        http1MaxPendingRequests: 100
+        http2MaxRequests: 1000
+        maxRequestsPerConnection: 100
+    outlierDetection:
+      consecutive5xxErrors: 5
+      interval: 30s
+      baseEjectionTime: 30s
+      maxEjectionPercent: 50
+      minHealthPercent: 30
+
+---
+# =============================================================================
+# Service Entries - External Service Access Control
+# =============================================================================
+apiVersion: networking.istio.io/v1beta1
+kind: ServiceEntry
+metadata:
+  name: external-payment-processor
+  namespace: secure-app
+spec:
+  hosts:
+    - "api.stripe.com"
+  ports:
+    - number: 443
+      name: https
+      protocol: HTTPS
+  location: MESH_EXTERNAL
+  resolution: DNS
+
+---
+apiVersion: networking.istio.io/v1beta1
+kind: DestinationRule
+metadata:
+  name: external-payment-tls
+  namespace: secure-app
+spec:
+  host: "api.stripe.com"
+  trafficPolicy:
+    tls:
+      mode: SIMPLE
+      sni: api.stripe.com
+
+---
+# =============================================================================
+# Sidecar - Limit Egress
+# =============================================================================
+apiVersion: networking.istio.io/v1beta1
+kind: Sidecar
+metadata:
+  name: default
+  namespace: secure-app
+spec:
+  egress:
+    - hosts:
+        # Only allow communication within namespace and to specific external services
+        - "./*"
+        - "istio-system/*"
+        - "~/*.stripe.com"
+
+---
+# =============================================================================
+# Telemetry - Access Logging
+# =============================================================================
+apiVersion: telemetry.istio.io/v1alpha1
+kind: Telemetry
+metadata:
+  name: access-logging
+  namespace: secure-app
+spec:
+  accessLogging:
+    - providers:
+        - name: envoy
+      filter:
+        expression: response.code >= 400
+
+---
+# =============================================================================
+# Service Accounts for Identity
+# =============================================================================
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: api-gateway
+  namespace: secure-app
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: user-service
+  namespace: secure-app
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: order-service
+  namespace: secure-app
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: payment-service
+  namespace: secure-app

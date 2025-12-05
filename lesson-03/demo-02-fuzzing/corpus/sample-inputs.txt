@@ -1,0 +1,31 @@
+# Sample Fuzzing Corpus
+# =====================
+# These are seed inputs for the fuzzer to mutate
+
+# Basic strings
+hello
+world
+test123
+admin
+password
+
+# JSON payloads
+{"username":"test","password":"test123"}
+{"id":1,"name":"John"}
+{"data":{"nested":"value"}}
+
+# SQL-like
+SELECT * FROM users
+INSERT INTO logs VALUES
+UPDATE users SET
+
+# XML-like
+<user><name>test</name></user>
+<?xml version="1.0"?>
+
+# Special characters
+test'test
+test"test
+test<test>
+test&test
+test\test
