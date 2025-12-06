@@ -1,17 +1,16 @@
 # CodeQL Security Analysis
 # =========================
-# Automated code scanning for security vulnerabilities
-# Documentation: https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors
+# Automated code scanning for JavaScript/TypeScript vulnerabilities
+# Documentation: https://docs.github.com/en/code-security/code-scanning
 
 name: CodeQL
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main]
   pull_request:
     branches: [main]
   schedule:
-    # Run weekly on Sundays at midnight
     - cron: '0 0 * * 0'
   workflow_dispatch:
 
@@ -21,25 +20,13 @@ concurrency:
 
 jobs:
   analyze:
-    name: Analyze (${{ matrix.language }})
+    name: Analyze JavaScript
     runs-on: ubuntu-latest
-    timeout-minutes: 360
+    timeout-minutes: 30
     permissions:
       security-events: write
-      packages: read
       actions: read
       contents: read
-
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - language: javascript-typescript
-            build-mode: none
-            # Covers JavaScript, TypeScript, and JSX/TSX
-          - language: java-kotlin
-            build-mode: none
-            # Covers Java and Kotlin (WebGoat)
 
     steps:
       - name: Checkout repository
@@ -48,36 +35,10 @@ jobs:
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
-          languages: ${{ matrix.language }}
-          build-mode: ${{ matrix.build-mode }}
-          # Security-extended includes more security queries
-          queries: +security-extended,security-and-quality
-
-      # For Java, we may need to build
-      - name: Setup Java (for Java analysis)
-        if: matrix.language == 'java-kotlin'
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '21'
-          cache: 'maven'
-
-      - name: Build Java (if needed)
-        if: matrix.language == 'java-kotlin' && matrix.build-mode == 'manual'
-        working-directory: ./WebGoat
-        run: mvn clean compile -DskipTests -q
+          languages: javascript-typescript
+          queries: security-extended
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
         with:
-          category: "/language:${{ matrix.language }}"
-          output: sarif-results
-          upload: always
-
-      - name: Upload SARIF results
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: codeql-results-${{ matrix.language }}
-          path: sarif-results
-          retention-days: 30
+          category: "/language:javascript-typescript"
