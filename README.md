@@ -1,9 +1,14 @@
 # GitHub Copilot for Cybersecurity Specialists
 
+[![Security Pipeline](https://github.com/timothywarner-org/github-security-testbed/actions/workflows/security-pipeline.yml/badge.svg)](https://github.com/timothywarner-org/github-security-testbed/actions/workflows/security-pipeline.yml)
+[![CodeQL](https://github.com/timothywarner-org/github-security-testbed/actions/workflows/codeql.yml/badge.svg)](https://github.com/timothywarner-org/github-security-testbed/actions/workflows/codeql.yml)
+[![Dependency Review](https://github.com/timothywarner-org/github-security-testbed/actions/workflows/dependency-review.yml/badge.svg)](https://github.com/timothywarner-org/github-security-testbed/actions/workflows/dependency-review.yml)
+
 [![Course Duration](https://img.shields.io/badge/Duration-3.5%20Hours-blue)](README.md)
 [![Lessons](https://img.shields.io/badge/Lessons-5-green)](README.md)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![GitHub Copilot](https://img.shields.io/badge/GitHub%20Copilot-Enabled-8A2BE2)](https://github.com/features/copilot)
+[![Security Policy](https://img.shields.io/badge/Security-Policy-blueviolet)](SECURITY.md)
 
 > **Hands-on video training for security professionals leveraging GitHub Copilot to detect vulnerabilities, implement security protocols, automate testing, and ensure compliance.**
 

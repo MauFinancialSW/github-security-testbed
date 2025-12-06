@@ -145,6 +145,45 @@
   description: "Advanced level content"
 
 # =============================================================================
+# DEPENDABOT & DEPENDENCY LABELS
+# =============================================================================
+- name: "dependencies"
+  color: "0366d6"
+  description: "Dependency updates (Dependabot)"
+
+- name: "security-update"
+  color: "ee0701"
+  description: "Security-related dependency update"
+
+- name: "javascript"
+  color: "f1e05a"
+  description: "JavaScript/Node.js related"
+
+- name: "java"
+  color: "b07219"
+  description: "Java related"
+
+- name: "docker"
+  color: "2496ed"
+  description: "Docker/container related"
+
+- name: "maven"
+  color: "c71a36"
+  description: "Maven dependency management"
+
+- name: "nodegoat"
+  color: "68a063"
+  description: "NodeGoat vulnerable application"
+
+- name: "webgoat"
+  color: "orange"
+  description: "WebGoat vulnerable application"
+
+- name: "github-actions"
+  color: "2088ff"
+  description: "GitHub Actions CI/CD updates"
+
+# =============================================================================
 # GENERAL PURPOSE LABELS
 # =============================================================================
 - name: "good first issue"
@@ -170,3 +209,15 @@
 - name: "documentation"
   color: "0075ca"
   description: "Documentation improvements"
+
+- name: "wontfix"
+  color: "ffffff"
+  description: "This will not be worked on"
+
+- name: "duplicate"
+  color: "cfd3d7"
+  description: "This issue or PR already exists"
+
+- name: "invalid"
+  color: "e4e669"
+  description: "This doesn't seem right"

@@ -1,0 +1,292 @@
+# Dependabot Configuration
+# =========================
+# Comprehensive dependency management for security and version updates
+# Documentation: https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+
+registries:
+  # Add private registries here if needed
+  # npm-npmjs:
+  #   type: npm-registry
+  #   url: https://registry.npmjs.org
+  #   token: ${{ secrets.NPM_TOKEN }}
+
+updates:
+  # ==========================================================================
+  # GitHub Actions - Keep CI/CD workflows secure and up-to-date
+  # ==========================================================================
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "America/New_York"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "github-actions"
+      - "security/vulnerability"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+    reviewers:
+      - "timothywarner-org"
+    groups:
+      # Group all GitHub Actions updates together
+      github-actions:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # ==========================================================================
+  # Root NPM Dependencies - Main project JavaScript/Node.js packages
+  # ==========================================================================
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "06:00"
+      timezone: "America/New_York"
+    open-pull-requests-limit: 15
+    labels:
+      - "dependencies"
+      - "javascript"
+      - "security/vulnerability"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    reviewers:
+      - "timothywarner-org"
+    # Ignore intentionally vulnerable packages in demo apps
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    groups:
+      # Security-related packages - high priority
+      security-packages:
+        patterns:
+          - "helmet*"
+          - "express-rate-limit*"
+          - "bcrypt*"
+          - "jsonwebtoken*"
+          - "passport*"
+          - "cors"
+          - "csurf"
+          - "xss*"
+          - "sanitize*"
+          - "validator*"
+        update-types:
+          - "minor"
+          - "patch"
+      # Testing frameworks
+      testing:
+        patterns:
+          - "jest*"
+          - "mocha*"
+          - "chai*"
+          - "supertest*"
+          - "cypress*"
+          - "@testing-library/*"
+        update-types:
+          - "minor"
+          - "patch"
+      # Linting and code quality
+      linting:
+        patterns:
+          - "eslint*"
+          - "prettier*"
+          - "@typescript-eslint/*"
+          - "eslint-plugin-*"
+        update-types:
+          - "minor"
+          - "patch"
+      # Development dependencies
+      dev-dependencies:
+        patterns:
+          - "nodemon*"
+          - "typescript*"
+          - "ts-node*"
+          - "@types/*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # ==========================================================================
+  # NodeGoat - Intentionally Vulnerable Node.js Application
+  # ==========================================================================
+  - package-ecosystem: "npm"
+    directory: "/NodeGoat"
+    schedule:
+      interval: "weekly"
+      day: "wednesday"
+      time: "06:00"
+      timezone: "America/New_York"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "javascript"
+      - "nodegoat"
+      - "lesson-01"
+    commit-message:
+      prefix: "deps(nodegoat)"
+      include: "scope"
+    # Only update non-vulnerable demo dependencies
+    # Some vulnerabilities are intentional for training
+    allow:
+      - dependency-type: "development"
+      - dependency-type: "production"
+    ignore:
+      # Intentionally keeping some packages at vulnerable versions for demos
+      - dependency-name: "marked"
+        versions: ["< 4.0.0"]
+      - dependency-name: "mongoose"
+        versions: ["< 6.0.0"]
+
+  # ==========================================================================
+  # WebGoat - Intentionally Vulnerable Java Application
+  # ==========================================================================
+  - package-ecosystem: "maven"
+    directory: "/WebGoat"
+    schedule:
+      interval: "weekly"
+      day: "wednesday"
+      time: "06:00"
+      timezone: "America/New_York"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "java"
+      - "webgoat"
+      - "maven"
+    commit-message:
+      prefix: "deps(webgoat)"
+      include: "scope"
+    reviewers:
+      - "timothywarner-org"
+
+  # ==========================================================================
+  # Lesson 01 - Vulnerability Detection Demos
+  # ==========================================================================
+  - package-ecosystem: "npm"
+    directory: "/lesson-01/demo-03-xss/secure-react-app"
+    schedule:
+      interval: "weekly"
+      day: "thursday"
+      time: "06:00"
+      timezone: "America/New_York"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "javascript"
+      - "lesson-01"
+      - "security/xss"
+    commit-message:
+      prefix: "deps(lesson-01)"
+
+  - package-ecosystem: "npm"
+    directory: "/lesson-01/demo-04-custom-scanners/scanner"
+    schedule:
+      interval: "weekly"
+      day: "thursday"
+      time: "06:00"
+      timezone: "America/New_York"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "javascript"
+      - "lesson-01"
+      - "tool/sast"
+    commit-message:
+      prefix: "deps(lesson-01)"
+
+  - package-ecosystem: "npm"
+    directory: "/lesson-01/demo-04-custom-scanners/idor-app"
+    schedule:
+      interval: "weekly"
+      day: "thursday"
+      time: "06:00"
+      timezone: "America/New_York"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "javascript"
+      - "lesson-01"
+    commit-message:
+      prefix: "deps(lesson-01)"
+
+  # ==========================================================================
+  # Docker - Container image updates
+  # ==========================================================================
+  - package-ecosystem: "docker"
+    directory: "/NodeGoat"
+    schedule:
+      interval: "weekly"
+      day: "friday"
+      time: "06:00"
+      timezone: "America/New_York"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "docker"
+      - "security/vulnerability"
+    commit-message:
+      prefix: "docker"
+      include: "scope"
+
+  - package-ecosystem: "docker"
+    directory: "/WebGoat"
+    schedule:
+      interval: "weekly"
+      day: "friday"
+      time: "06:00"
+      timezone: "America/New_York"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "docker"
+      - "security/vulnerability"
+    commit-message:
+      prefix: "docker"
+      include: "scope"
+
+  # ==========================================================================
+  # Terraform - Infrastructure as Code updates
+  # ==========================================================================
+  - package-ecosystem: "terraform"
+    directory: "/lesson-02/demo-04-zero-trust/terraform"
+    schedule:
+      interval: "weekly"
+      day: "friday"
+      time: "06:00"
+      timezone: "America/New_York"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "terraform"
+      - "tool/terraform"
+      - "lesson-02"
+    commit-message:
+      prefix: "terraform"
+      include: "scope"
+
+  - package-ecosystem: "terraform"
+    directory: "/lesson-05/demo-01-iac-templates/hardened"
+    schedule:
+      interval: "weekly"
+      day: "friday"
+      time: "06:00"
+      timezone: "America/New_York"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "terraform"
+      - "tool/terraform"
+      - "lesson-05"
+      - "security/compliance"
+    commit-message:
+      prefix: "terraform"
+      include: "scope"
