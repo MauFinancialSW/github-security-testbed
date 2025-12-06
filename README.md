@@ -1,8 +1,7 @@
 # GitHub Copilot for Cybersecurity Specialists
 
-[![Security Pipeline](https://github.com/timothywarner-org/github-security-testbed/actions/workflows/security-pipeline.yml/badge.svg)](https://github.com/timothywarner-org/github-security-testbed/actions/workflows/security-pipeline.yml)
-[![CodeQL](https://github.com/timothywarner-org/github-security-testbed/actions/workflows/codeql.yml/badge.svg)](https://github.com/timothywarner-org/github-security-testbed/actions/workflows/codeql.yml)
-[![Dependency Review](https://github.com/timothywarner-org/github-security-testbed/actions/workflows/dependency-review.yml/badge.svg)](https://github.com/timothywarner-org/github-security-testbed/actions/workflows/dependency-review.yml)
+[![Security Pipeline](https://github.com/timothywarner-org/github-security-testbed/actions/workflows/security-pipeline.yml/badge.svg?branch=main)](https://github.com/timothywarner-org/github-security-testbed/actions/workflows/security-pipeline.yml)
+[![CodeQL](https://github.com/timothywarner-org/github-security-testbed/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/timothywarner-org/github-security-testbed/actions/workflows/codeql.yml)
 
 [![Course Duration](https://img.shields.io/badge/Duration-3.5%20Hours-blue)](README.md)
 [![Lessons](https://img.shields.io/badge/Lessons-5-green)](README.md)
