@@ -1,0 +1,90 @@
+# Dependency Review
+# ==================
+# Scans pull requests for dependency changes and alerts on known vulnerabilities
+# Documentation: https://docs.github.com/en/code-security/supply-chain-security/understanding-your-software-supply-chain/about-dependency-review
+
+name: Dependency Review
+
+on:
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  dependency-review:
+    name: Dependency Review
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Dependency Review
+        uses: actions/dependency-review-action@v4
+        with:
+          # Fail on high and critical vulnerabilities
+          fail-on-severity: high
+          # Deny specific licenses
+          deny-licenses: GPL-3.0, AGPL-3.0
+          # Allow specific licenses commonly used in security tools
+          allow-licenses: MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause, ISC, 0BSD, CC0-1.0, Unlicense
+          # Comment on PR with dependency changes
+          comment-summary-in-pr: always
+          # Show all vulnerabilities, not just new ones
+          warn-only: false
+          # Retry on transient failures
+          retry-on-snapshot-warnings: true
+
+  npm-audit:
+    name: NPM Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Audit Root Dependencies
+        run: |
+          if [ -f package-lock.json ]; then
+            npm audit --audit-level=high || true
+          fi
+        continue-on-error: true
+
+      - name: Audit NodeGoat Dependencies
+        working-directory: ./NodeGoat
+        run: |
+          if [ -f package-lock.json ]; then
+            echo "## NodeGoat Dependency Audit" >> $GITHUB_STEP_SUMMARY
+            echo "Note: NodeGoat contains intentionally vulnerable dependencies for training" >> $GITHUB_STEP_SUMMARY
+            npm audit --audit-level=critical 2>&1 | head -50 >> $GITHUB_STEP_SUMMARY || true
+          fi
+        continue-on-error: true
+
+  maven-dependency-check:
+    name: Maven Dependency Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'maven'
+
+      - name: Check WebGoat Dependencies
+        working-directory: ./WebGoat
+        run: |
+          echo "## WebGoat Dependency Analysis" >> $GITHUB_STEP_SUMMARY
+          echo "Note: WebGoat contains intentionally vulnerable dependencies for training" >> $GITHUB_STEP_SUMMARY
+          mvn dependency:tree -DoutputType=text 2>/dev/null | head -100 >> $GITHUB_STEP_SUMMARY || true
+        continue-on-error: true
