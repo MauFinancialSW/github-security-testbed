@@ -2,10 +2,10 @@
 # ==================
 # Scans pull requests for dependency changes and alerts on known vulnerabilities
 # Documentation: https://docs.github.com/en/code-security/supply-chain-security/understanding-your-software-supply-chain/about-dependency-review
-
 name: Dependency Review
 
 on:
+
   pull_request:
     branches: [main, develop]
   workflow_dispatch:

@@ -3,7 +3,6 @@
 # Comprehensive security scanning for the GitHub Copilot Cybersecurity course
 # Course: GitHub Copilot for Cybersecurity Specialists
 #
-# Features:
 # - Secret detection (TruffleHog, GitLeaks)
 # - Dependency scanning (npm audit, Snyk)
 # - SAST (CodeQL, Semgrep)
@@ -18,6 +17,7 @@ on:
     branches: [main, develop]
   pull_request:
     branches: [main]
+
   schedule:
     # Run security scans daily at 6 AM UTC
     - cron: '0 6 * * *'
