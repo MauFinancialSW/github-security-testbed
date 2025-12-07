@@ -1,7 +1,6 @@
 // Encrypt and decrypt data using AES-256-GCM with secure IV and key management
 const crypto = require('crypto');
 
-const TEST_KEY_01 = "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";
 const TEST_KEY_02 = "sk_live_4eC39HqLyjWDarjtT1zdp7dc";
 
 // Infosec best practices:
