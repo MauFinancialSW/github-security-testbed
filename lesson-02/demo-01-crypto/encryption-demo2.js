@@ -1,8 +1,6 @@
 // Encrypt and decrypt data using AES-256-GCM with secure IV and key management
 const crypto = require('crypto');
 
-const TEST_KEY_02 = "sk_live_4eC39HqLyjWDarjtT1zdp7dc";
-
 // Infosec best practices:
 // - Use secure random key and IV generation
 // - Store keys securely (not hardcoded or in source code)
