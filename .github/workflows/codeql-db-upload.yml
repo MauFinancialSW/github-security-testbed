@@ -1,0 +1,30 @@
+name: Build and Upload CodeQL Database
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-codeql-db:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout juice-shop codebase
+        uses: actions/checkout@v4
+        with:
+          path: juice-shop
+
+      - name: Set up CodeQL CLI
+        uses: github/codeql-action/init@v2
+        with:
+          languages: javascript
+          # Specify the source root
+          source-root: juice-shop
+
+      - name: Build database
+        run: |
+          codeql database create codeql-db --language=javascript --source-root=juice-shop
+
+      - name: Upload CodeQL database artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: codeql-db
+          path: codeql-db
