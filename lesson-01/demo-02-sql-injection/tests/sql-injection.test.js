@@ -273,6 +273,422 @@ describe('SQL Injection Prevention Tests', () => {
   });
 
   // =========================================================================
+  // Test Category 9: Encoding Bypasses & Case Sensitivity
+  // =========================================================================
+  describe('Encoding Bypasses & Case Sensitivity', () => {
+
+    test('should reject case-variation OR injection', async () => {
+      const response = await request(app)
+        .post('/login')
+        .send({
+          username: "' oR '1'='1",
+          password: "x"
+        });
+
+      expect(response.body.success).not.toBe(true);
+      expect([400, 401]).toContain(response.status);
+    });
+
+    test('should reject mixed case OR with different variations', async () => {
+      const variations = ["' Or '1'='1", "' OR '1'='1", "' Or '1'='1"];
+
+      for (const payload of variations) {
+        const response = await request(app)
+          .post('/login')
+          .send({ username: payload, password: "x" });
+        expect(response.body.success).not.toBe(true);
+      }
+    });
+
+    test('should reject URL-encoded SQL injection in path parameters', async () => {
+      // %27 = ', %20 = space, %4F%52 = OR
+      const response = await request(app)
+        .get('/user/1%27%20OR%201%3D1');
+
+      expect(response.status).toBe(400);
+    });
+
+    test('should reject double URL-encoded payloads', async () => {
+      // Double encoded: %2527 = %27 (encoded quote)
+      const response = await request(app)
+        .get('/user/1%2527%20OR%201%3D1');
+
+      expect([400, 404]).toContain(response.status);
+    });
+
+    test('should reject Unicode-encoded SQL injection', async () => {
+      // Using Unicode escape sequences
+      const response = await request(app)
+        .post('/login')
+        .send({
+          username: "' \u004f\u0052 '1'='1",  // OR in Unicode
+          password: "x"
+        });
+
+      expect(response.body.success).not.toBe(true);
+    });
+
+    test('should reject hex-encoded SQL keywords', async () => {
+      // 0x4f52 = OR in hex
+      const response = await request(app)
+        .get('/search')
+        .query({ q: "' 0x4f52 1=1--" });
+
+      expect(response.status).toBe(400);
+    });
+
+  });
+
+  // =========================================================================
+  // Test Category 10: MySQL Comment Syntax Variations
+  // =========================================================================
+  describe('MySQL Comment Syntax Variations', () => {
+
+    test('should reject MySQL version-specific comments', async () => {
+      // /*!50000 */ syntax is MySQL-specific version comment
+      const response = await request(app)
+        .post('/login')
+        .send({
+          username: "' /*!50000 OR */ '1'='1",
+          password: "x"
+        });
+
+      expect(response.body.success).not.toBe(true);
+    });
+
+    test('should reject C-style block comments', async () => {
+      const response = await request(app)
+        .get('/search')
+        .query({ q: "' OR 1=1 /*! malicious */" });
+
+      expect(response.status).toBe(400);
+    });
+
+    test('should reject nested comment bypass', async () => {
+      const response = await request(app)
+        .get('/search')
+        .query({ q: "' OR '1'='1' /**/" });
+
+      expect(response.status).toBe(400);
+    });
+
+    test('should reject semicolon with null byte terminator', async () => {
+      const response = await request(app)
+        .get('/user/1; DROP TABLE users%00');
+
+      expect(response.status).toBe(400);
+    });
+
+  });
+
+  // =========================================================================
+  // Test Category 11: Type Juggling & Numeric Parameter Bypass
+  // =========================================================================
+  describe('Type Juggling & Numeric Parameter Bypass', () => {
+
+    test('should reject string injection in numeric parameter', async () => {
+      const response = await request(app)
+        .get('/user/1\' OR \'a\'=\'a');
+
+      expect(response.status).toBe(400);
+    });
+
+    test('should reject float notation in numeric field', async () => {
+      const response = await request(app)
+        .get('/user/1.0 OR 1=1');
+
+      expect(response.status).toBe(400);
+    });
+
+    test('should reject scientific notation with injection', async () => {
+      const response = await request(app)
+        .get('/user/1e0 OR 1=1');
+
+      expect(response.status).toBe(400);
+    });
+
+    test('should reject negative number with OR clause', async () => {
+      const response = await request(app)
+        .get('/user/-1 OR 1=1');
+
+      expect(response.status).toBe(400);
+    });
+
+  });
+
+  // =========================================================================
+  // Test Category 12: LIKE Clause Specific Injection
+  // =========================================================================
+  describe('LIKE Clause Specific Injection', () => {
+
+    test('should reject LIKE-based injection with % wildcard', async () => {
+      const response = await request(app)
+        .get('/search')
+        .query({ q: "%' UNION SELECT * FROM users--" });
+
+      expect(response.status).toBe(400);
+    });
+
+    test('should reject LIKE-based injection with _ wildcard', async () => {
+      const response = await request(app)
+        .get('/search')
+        .query({ q: "_' OR 1=1--" });
+
+      expect(response.status).toBe(400);
+    });
+
+    test('should reject LIKE injection with time-based blind SQL', async () => {
+      const startTime = Date.now();
+
+      const response = await request(app)
+        .get('/search')
+        .query({ q: "' AND SLEEP(2)--" });
+
+      const duration = Date.now() - startTime;
+
+      // Should fail quickly, not wait for SLEEP
+      expect(duration).toBeLessThan(1500);
+    });
+
+  });
+
+  // =========================================================================
+  // Test Category 13: Multiple Parameter Interaction
+  // =========================================================================
+  describe('Multiple Parameter Interaction', () => {
+
+    test('should reject injection in secondary parameter', async () => {
+      const response = await request(app)
+        .get('/search')
+        .query({ q: "normal", category: "' OR 1=1--" });
+
+      expect(response.status).toBe(400);
+    });
+
+    test('should reject injection in primary parameter', async () => {
+      const response = await request(app)
+        .get('/search')
+        .query({ q: "' OR 1=1--", category: "normal" });
+
+      expect(response.status).toBe(400);
+    });
+
+    test('should reject simultaneous injection in both parameters', async () => {
+      const response = await request(app)
+        .get('/search')
+        .query({
+          q: "' OR 1=1--",
+          category: "' OR 1=1--"
+        });
+
+      expect(response.status).toBe(400);
+    });
+
+    test('should reject cross-parameter injection attempts', async () => {
+      // Attempt to break out via first param and continue in second
+      const response = await request(app)
+        .get('/search')
+        .query({
+          q: "test' UNION SELECT",
+          category: "* FROM users--"
+        });
+
+      expect(response.status).toBe(400);
+    });
+
+  });
+
+  // =========================================================================
+  // Test Category 14: Nested Quote & Escape Variations
+  // =========================================================================
+  describe('Nested Quote & Escape Variations', () => {
+
+    test('should reject backslash-escaped quote bypass', async () => {
+      const response = await request(app)
+        .post('/login')
+        .send({
+          username: "\\' OR '1'='1",
+          password: "x"
+        });
+
+      expect(response.body.success).not.toBe(true);
+    });
+
+    test('should reject triple-quote confusion attack', async () => {
+      const response = await request(app)
+        .post('/login')
+        .send({
+          username: "''' OR '1'='",
+          password: "x"
+        });
+
+      expect(response.body.success).not.toBe(true);
+    });
+
+    test('should reject mixed single/double quote injection', async () => {
+      const response = await request(app)
+        .post('/login')
+        .send({
+          username: '" OR "1"="1',
+          password: "x"
+        });
+
+      // Response depends on parameterization, but shouldn't authenticate
+      expect(response.body.success).not.toBe(true);
+    });
+
+    test('should reject parenthesis manipulation with quotes', async () => {
+      const response = await request(app)
+        .post('/login')
+        .send({
+          username: "' OR (1=1 AND '1'='1",
+          password: "x"
+        });
+
+      expect(response.body.success).not.toBe(true);
+    });
+
+  });
+
+  // =========================================================================
+  // Test Category 15: UPDATE/DELETE/INSERT Field-Specific Injection
+  // =========================================================================
+  describe('UPDATE/DELETE/INSERT Field-Specific Injection', () => {
+
+    test('should reject UPDATE injection in email field', async () => {
+      const response = await request(app)
+        .put('/user/1')
+        .send({
+          email: "' OR 1=1; DROP TABLE users--",
+          displayName: "Normal Name"
+        });
+
+      expect(response.status).toBe(400);
+    });
+
+    test('should reject UPDATE injection in displayName field', async () => {
+      const response = await request(app)
+        .put('/user/1')
+        .send({
+          email: "test@test.com",
+          displayName: "admin', role='admin"
+        });
+
+      expect(response.status).toBe(400);
+    });
+
+    test('should reject UPDATE injection in URL path parameter', async () => {
+      const response = await request(app)
+        .put('/user/1\' OR \'1\'=\'1')
+        .send({
+          email: "test@test.com",
+          displayName: "Name"
+        });
+
+      expect(response.status).toBe(400);
+    });
+
+    test('should reject DELETE with OR condition in path', async () => {
+      const response = await request(app)
+        .delete('/product/1 OR 1=1');
+
+      expect(response.status).toBe(400);
+    });
+
+    test('should reject INSERT with column-count mismatch injection', async () => {
+      const response = await request(app)
+        .post('/register')
+        .send({
+          username: "hacker",
+          email: "h@h.com', 999, 'admin'); DELETE FROM users WHERE 'x'='x",
+          password: "pass123"
+        });
+
+      expect(response.status).toBe(400);
+    });
+
+  });
+
+  // =========================================================================
+  // Test Category 16: ORDER BY Numeric & Boundary Cases
+  // =========================================================================
+  describe('ORDER BY Numeric & Boundary Cases', () => {
+
+    test('should reject ORDER BY with negative number injection', async () => {
+      const response = await request(app)
+        .get('/products')
+        .query({
+          sort: "-1 UNION SELECT * FROM users--",
+          order: "ASC"
+        });
+
+      expect(response.status).toBe(400);
+    });
+
+    test('should reject ORDER BY with out-of-range column index', async () => {
+      const response = await request(app)
+        .get('/products')
+        .query({
+          sort: "999999",
+          order: "ASC"
+        });
+
+      expect(response.status).toBe(400);
+    });
+
+    test('should reject ORDER BY with invalid sort direction case', async () => {
+      const response = await request(app)
+        .get('/products')
+        .query({
+          sort: "price",
+          order: "desc; DROP--"  // lowercase + injection
+        });
+
+      expect(response.status).toBe(400);
+    });
+
+    test('should reject ORDER BY with expression injection', async () => {
+      const response = await request(app)
+        .get('/products')
+        .query({
+          sort: "CASE WHEN 1=1 THEN id ELSE name END",
+          order: "ASC"
+        });
+
+      expect(response.status).toBe(400);
+    });
+
+  });
+
+  // =========================================================================
+  // Test Category 17: Comment Escape Sequences
+  // =========================================================================
+  describe('Comment Escape Sequences', () => {
+
+    test('should reject hash comment with injection', async () => {
+      const response = await request(app)
+        .post('/login')
+        .send({
+          username: "admin'#",
+          password: "anything"
+        });
+
+      expect(response.body.success).not.toBe(true);
+    });
+
+    test('should reject inline comment with conditional logic', async () => {
+      const response = await request(app)
+        .get('/search')
+        .query({
+          q: "' OR EXISTS(SELECT 1 FROM users WHERE username='admin')--"
+        });
+
+      expect(response.status).toBe(400);
+    });
+
+  });
+
+  // =========================================================================
   // Test Category 8: Input Validation
   // =========================================================================
   describe('Input Validation', () => {
@@ -324,6 +740,8 @@ const COMMON_PAYLOADS = {
     "' OR 1=1#",
     "') OR ('1'='1",
     "' OR 1=1/*",
+    "' oR '1'='1",  // Case variation
+    "' Or '1'='1",  // Case variation
   ],
   union_based: [
     "' UNION SELECT NULL--",
@@ -349,6 +767,38 @@ const COMMON_PAYLOADS = {
     "'; DROP TABLE users--",
     "'; INSERT INTO users VALUES('hacker','hacker')--",
     "'; UPDATE users SET password='hacked' WHERE username='admin'--",
+  ],
+  encoding_bypasses: [
+    "' %4f%52 '1'='1",                    // URL-encoded OR
+    "%27%20OR%201%3D1",                   // URL-encoded ' OR 1=1
+    "' /*!50000 OR */ '1'='1",            // MySQL version comment
+    "' UNION /*! SELECT */ * FROM users", // MySQL version comment UNION
+    "' OR 0x31=0x31",                     // Hex-encoded 1=1
+  ],
+  like_clause_specific: [
+    "%' UNION SELECT * FROM users--",
+    "_' OR 1=1--",
+    "' OR 1=1 LIKE '",
+    "%' AND SLEEP(5)--",
+  ],
+  comment_variations: [
+    "' OR 1=1 /**/",
+    "' OR 1=1 #",
+    "' OR 1=1 -- -",
+    "'; WAITFOR DELAY '0:0:5'--",
+    "' /*!50000 OR */ '1'='1",  // MySQL version-specific comment
+  ],
+  type_juggling: [
+    "1' OR '1'='1",        // String in numeric context
+    "1.0 OR 1=1",          // Float notation
+    "1e0 OR 1=1",          // Scientific notation
+    "-1 OR 1=1",           // Negative number
+  ],
+  escape_bypass: [
+    "\\' OR '1'='1",       // Backslash escape
+    "''' OR '1'='",        // Triple quotes
+    '\" OR \"1\"=\"1',     // Double quotes
+    "' OR (1=1 AND '1'='1", // Parenthesis confusion
   ]
 };
 
