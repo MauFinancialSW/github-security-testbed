@@ -1,0 +1,33 @@
+{
+  "name": "lesson-02-security-protocols",
+  "version": "1.0.0",
+  "description": "Security protocol implementation demos for GitHub Copilot for Cybersecurity course",
+  "main": "encryption-demo.js",
+  "scripts": {
+    "test": "node encryption-demo.js && node oauth-server.js && node keyvault-client.js"
+  },
+  "keywords": [
+    "security",
+    "encryption",
+    "oauth",
+    "azure",
+    "key-vault",
+    "copilot",
+    "education"
+  ],
+  "author": "Tim Warner",
+  "license": "MIT",
+  "dependencies": {
+    "@azure/identity": "^4.0.0",
+    "@azure/keyvault-keys": "^4.8.0",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "crypto": "^1.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

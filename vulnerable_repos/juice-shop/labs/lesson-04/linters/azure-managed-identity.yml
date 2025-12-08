@@ -1,0 +1,142 @@
+rules:
+  - id: azure-storage-missing-managed-identity
+    patterns:
+      # Detect BlobServiceClient.fromConnectionString usage
+      - pattern-either:
+          - pattern: $BLOB.fromConnectionString(...)
+          - pattern: new $CLIENT(..., $KEY, ...)
+      - metavariable-regex:
+          metavariable: $BLOB
+          regex: '(BlobServiceClient|QueueServiceClient|TableServiceClient|ShareServiceClient)'
+    message: |
+      Azure Storage client created without DefaultAzureCredential (potential security issue).
+
+      ISSUE:
+      This code appears to use connection string authentication or shared key credentials
+      instead of Azure AD authentication with managed identity.
+
+      WHY THIS MATTERS:
+      - Connection strings and shared keys are static credentials that don't rotate
+      - If leaked, attackers have full access to your storage account
+      - Doesn't support granular permissions (all-or-nothing access)
+      - No audit trail of which identity accessed what
+
+      RECOMMENDED APPROACH:
+      Use DefaultAzureCredential with managed identity for passwordless authentication:
+
+      ```javascript
+      const { DefaultAzureCredential } = require("@azure/identity");
+      const { BlobServiceClient } = require("@azure/storage-blob");
+
+      const credential = new DefaultAzureCredential();
+      const blobServiceClient = new BlobServiceClient(
+        `https://${accountName}.blob.core.windows.net`,
+        credential
+      );
+      ```
+
+      AZURE SETUP:
+      1. Enable managed identity on your Azure resource
+      2. Assign appropriate RBAC role (e.g., Storage Blob Data Contributor)
+      3. Remove connection strings from code and configuration
+
+      References:
+      - https://docs.microsoft.com/azure/storage/common/storage-auth-aad
+      - https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
+    severity: WARNING
+    languages:
+      - javascript
+      - typescript
+    metadata:
+      cwe: CWE-287
+      owasp: A07:2021 - Identification and Authentication Failures
+      category: security
+      technology:
+        - azure
+        - cloud
+      confidence: MEDIUM
+      likelihood: MEDIUM
+      impact: HIGH
+      subcategory:
+        - audit
+      references:
+        - https://docs.microsoft.com/azure/storage/common/storage-auth-aad
+
+  - id: azure-cosmosdb-missing-managed-identity
+    patterns:
+      - pattern-either:
+          - pattern: new CosmosClient({..., key: $KEY, ...})
+          - pattern: new CosmosClient({..., connectionString: $CONN, ...})
+    message: |
+      Cosmos DB client using key-based authentication instead of DefaultAzureCredential.
+
+      RECOMMENDATION:
+      Use Azure AD authentication with managed identity:
+
+      ```javascript
+      const { DefaultAzureCredential } = require("@azure/identity");
+      const { CosmosClient } = require("@azure/cosmos");
+
+      const credential = new DefaultAzureCredential();
+      const client = new CosmosClient({
+        endpoint: process.env.COSMOS_ENDPOINT,
+        aadCredentials: credential
+      });
+      ```
+
+      Benefits:
+      - No secrets in code
+      - Automatic credential rotation
+      - Granular RBAC permissions
+      - Full audit trail
+    severity: WARNING
+    languages:
+      - javascript
+      - typescript
+    metadata:
+      cwe: CWE-798
+      category: security
+      technology:
+        - azure
+        - cosmosdb
+      references:
+        - https://docs.microsoft.com/azure/cosmos-db/how-to-setup-rbac
+
+  - id: azure-servicebus-missing-managed-identity
+    patterns:
+      - pattern-either:
+          - pattern: new ServiceBusClient($CONN_STRING)
+          - pattern: ServiceBusClient.createFromConnectionString(...)
+    message: |
+      Service Bus client using connection string instead of DefaultAzureCredential.
+
+      RECOMMENDATION:
+      Use DefaultAzureCredential for passwordless authentication:
+
+      ```javascript
+      const { DefaultAzureCredential } = require("@azure/identity");
+      const { ServiceBusClient } = require("@azure/service-bus");
+
+      const credential = new DefaultAzureCredential();
+      const client = new ServiceBusClient(
+        process.env.SERVICE_BUS_FQDN,  // e.g., "myns.servicebus.windows.net"
+        credential
+      );
+      ```
+
+      Azure RBAC roles:
+      - Azure Service Bus Data Receiver (read)
+      - Azure Service Bus Data Sender (send)
+      - Azure Service Bus Data Owner (full access)
+    severity: WARNING
+    languages:
+      - javascript
+      - typescript
+    metadata:
+      cwe: CWE-798
+      category: security
+      technology:
+        - azure
+        - messaging
+      references:
+        - https://docs.microsoft.com/azure/service-bus-messaging/service-bus-managed-service-identity

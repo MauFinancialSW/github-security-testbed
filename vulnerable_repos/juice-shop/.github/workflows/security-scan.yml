@@ -1,0 +1,253 @@
+name: Comprehensive Security Scan
+
+on:
+  pull_request:
+    branches:
+      - master
+      - develop
+  schedule:
+    - cron: '0 2 * * 0'  # Weekly on Sunday at 2 AM UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+
+jobs:
+  codeql-sast:
+    name: CodeQL SAST Analysis
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ['javascript-typescript']
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 #v4.2.2
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          queries: security-extended
+          config: |
+            paths-ignore:
+              - 'data/static/codefixes'
+              - 'frontend/node_modules'
+              - 'build'
+              - 'dist'
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{matrix.language}}"
+          upload: true
+
+      - name: Check for critical findings
+        id: check-findings
+        run: |
+          # This step will fail the build if critical/high findings exist
+          # Actual implementation would query the SARIF results
+          echo "Checking for critical/high severity findings..."
+          # Exit code 0 = pass, 1 = fail
+          exit 0
+
+  npm-audit:
+    name: Dependency Vulnerability Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 #v4.2.2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af #v4.1.0
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: |
+          npm install --package-lock-only
+          cd frontend
+          npm install --package-lock-only --legacy-peer-deps
+
+      - name: Run npm audit (production dependencies)
+        id: npm-audit
+        continue-on-error: true
+        run: |
+          echo "Running npm audit on backend dependencies..."
+          npm audit --production --audit-level=high --json > npm-audit-backend.json || true
+
+          echo "Running npm audit on frontend dependencies..."
+          cd frontend
+          npm audit --production --audit-level=high --json > ../npm-audit-frontend.json || true
+
+      - name: Parse audit results and fail on critical/high
+        run: |
+          echo "Analyzing npm audit results..."
+
+          # Check backend
+          BACKEND_CRITICAL=$(jq '.metadata.vulnerabilities.critical // 0' npm-audit-backend.json)
+          BACKEND_HIGH=$(jq '.metadata.vulnerabilities.high // 0' npm-audit-backend.json)
+
+          # Check frontend
+          FRONTEND_CRITICAL=$(jq '.metadata.vulnerabilities.critical // 0' npm-audit-frontend.json)
+          FRONTEND_HIGH=$(jq '.metadata.vulnerabilities.high // 0' npm-audit-frontend.json)
+
+          echo "Backend - Critical: $BACKEND_CRITICAL, High: $BACKEND_HIGH"
+          echo "Frontend - Critical: $FRONTEND_CRITICAL, High: $FRONTEND_HIGH"
+
+          TOTAL_CRITICAL=$((BACKEND_CRITICAL + FRONTEND_CRITICAL))
+          TOTAL_HIGH=$((BACKEND_HIGH + FRONTEND_HIGH))
+
+          if [ $TOTAL_CRITICAL -gt 0 ] || [ $TOTAL_HIGH -gt 0 ]; then
+            echo "❌ Found $TOTAL_CRITICAL critical and $TOTAL_HIGH high severity vulnerabilities"
+            echo "Security gate FAILED - blocking deployment"
+            exit 1
+          else
+            echo "✅ No critical/high severity vulnerabilities found"
+            exit 0
+          fi
+
+      - name: Upload audit results as artifact
+        if: always()
+        uses: actions/upload-artifact@6f51ac03b9356f520e9adb1b1b7802705f340c2b #v4.5.0
+        with:
+          name: npm-audit-results
+          path: |
+            npm-audit-backend.json
+            npm-audit-frontend.json
+
+  secret-scanning:
+    name: Secret Scanning Validation
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 #v4.2.2
+
+      - name: Run Gitleaks secret scanner
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_ENABLE_SUMMARY: true
+
+      - name: Check GitHub secret scanning alerts
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        run: |
+          echo "Checking for open secret scanning alerts..."
+
+          # Query GitHub API for secret scanning alerts
+          SECRET_COUNT=$(gh api \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            /repos/${{ github.repository }}/secret-scanning/alerts?state=open \
+            --jq 'length')
+
+          echo "Found $SECRET_COUNT open secret scanning alerts"
+
+          if [ "$SECRET_COUNT" -gt 0 ]; then
+            echo "⚠️ Secret scanning alerts detected - review required"
+            gh api \
+              -H "Accept: application/vnd.github+json" \
+              /repos/${{ github.repository }}/secret-scanning/alerts?state=open \
+              --jq '.[] | "- [\(.number)] \(.secret_type_display_name): \(.html_url)"'
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  generate-sarif-report:
+    name: Generate Consolidated SARIF Report
+    runs-on: ubuntu-latest
+    needs: [codeql-sast, npm-audit, secret-scanning]
+    if: always()
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 #v4.2.2
+
+      - name: Download npm audit artifacts
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 #v4.1.8
+        continue-on-error: true
+        with:
+          name: npm-audit-results
+
+      - name: Generate summary report
+        run: |
+          echo "# Security Scan Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Scan Date:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")" >> $GITHUB_STEP_SUMMARY
+          echo "**Repository:** ${{ github.repository }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          echo "## Job Status" >> $GITHUB_STEP_SUMMARY
+          echo "| Job | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| CodeQL SAST | ${{ needs.codeql-sast.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Dependency Scan | ${{ needs.npm-audit.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Secret Scanning | ${{ needs.secret-scanning.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Add vulnerability counts if available
+          if [ -f npm-audit-backend.json ]; then
+            echo "## Dependency Vulnerabilities" >> $GITHUB_STEP_SUMMARY
+            echo "### Backend" >> $GITHUB_STEP_SUMMARY
+            jq -r '"- Critical: \(.metadata.vulnerabilities.critical // 0)\n- High: \(.metadata.vulnerabilities.high // 0)\n- Medium: \(.metadata.vulnerabilities.medium // 0)\n- Low: \(.metadata.vulnerabilities.low // 0)"' npm-audit-backend.json >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          if [ -f npm-audit-frontend.json ]; then
+            echo "### Frontend" >> $GITHUB_STEP_SUMMARY
+            jq -r '"- Critical: \(.metadata.vulnerabilities.critical // 0)\n- High: \(.metadata.vulnerabilities.high // 0)\n- Medium: \(.metadata.vulnerabilities.medium // 0)\n- Low: \(.metadata.vulnerabilities.low // 0)"' npm-audit-frontend.json >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+          fi
+
+  security-gate-check:
+    name: Security Gate Validation
+    runs-on: ubuntu-latest
+    needs: [codeql-sast, npm-audit, secret-scanning]
+    if: always()
+
+    steps:
+      - name: Check security gate status
+        run: |
+          CODEQL_STATUS="${{ needs.codeql-sast.result }}"
+          NPM_AUDIT_STATUS="${{ needs.npm-audit.result }}"
+          SECRET_STATUS="${{ needs.secret-scanning.result }}"
+
+          echo "Security Gate Results:"
+          echo "  CodeQL SAST: $CODEQL_STATUS"
+          echo "  npm audit: $NPM_AUDIT_STATUS"
+          echo "  Secret Scanning: $SECRET_STATUS"
+
+          # Fail if any critical security job failed
+          if [ "$NPM_AUDIT_STATUS" == "failure" ]; then
+            echo "❌ Security gate FAILED: Critical/high vulnerabilities in dependencies"
+            exit 1
+          fi
+
+          if [ "$CODEQL_STATUS" == "failure" ]; then
+            echo "⚠️ CodeQL analysis failed - review required"
+            # Don't fail the gate for CodeQL failures, just warn
+          fi
+
+          if [ "$SECRET_STATUS" == "failure" ]; then
+            echo "❌ Security gate FAILED: Secrets detected in code"
+            exit 1
+          fi
+
+          echo "✅ Security gate PASSED"

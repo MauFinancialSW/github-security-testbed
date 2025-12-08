@@ -1,0 +1,348 @@
+name: Weekly Compliance Digest
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'  # Every Monday at 9 AM UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: read
+  issues: write
+
+env:
+  GITHUB_OWNER: ${{ github.repository_owner }}
+  GITHUB_REPO: ${{ github.event.repository.name }}
+
+jobs:
+  fetch-ghas-alerts:
+    name: Fetch GHAS Security Alerts
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 #v4.2.2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af #v4.1.0
+        with:
+          node-version: '22'
+
+      - name: Install dependencies for scripts
+        run: |
+          if [ -d "scripts" ]; then
+            cd scripts
+            npm install --no-save || echo "No package.json in scripts directory"
+          fi
+
+      - name: Fetch GHAS alerts using existing script
+        id: fetch-alerts
+        run: |
+          # Use the existing fetch-ghas-alerts.js script
+          if [ -f "scripts/fetch-ghas-alerts.js" ]; then
+            node scripts/fetch-ghas-alerts.js --output json > ghas-alerts.json
+            echo "script-exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "script-exists=false" >> $GITHUB_OUTPUT
+            echo "⚠️ Script not found, using GitHub API directly"
+
+            # Fallback: Fetch directly with GitHub CLI
+            gh api repos/${{ github.repository }}/code-scanning/alerts?state=open --jq '.' > codeql-alerts.json || echo '[]' > codeql-alerts.json
+            gh api repos/${{ github.repository }}/dependabot/alerts?state=open --jq '.' > dependabot-alerts.json || echo '[]' > dependabot-alerts.json
+            gh api repos/${{ github.repository }}/secret-scanning/alerts?state=open --jq '.' > secret-alerts.json || echo '[]' > secret-alerts.json
+
+            # Combine into single file
+            jq -s '{codeql: .[0], dependabot: .[1], secrets: .[2]}' \
+              codeql-alerts.json dependabot-alerts.json secret-alerts.json > ghas-alerts.json
+          fi
+
+          # Count total findings
+          if command -v jq &> /dev/null; then
+            TOTAL_FINDINGS=$(jq '[.alerts // [], .codeql // [], .dependabot // [], .secrets // []] | add | length' ghas-alerts.json)
+            echo "total-findings=$TOTAL_FINDINGS" >> $GITHUB_OUTPUT
+          else
+            echo "total-findings=0" >> $GITHUB_OUTPUT
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload GHAS alerts as artifact
+        uses: actions/upload-artifact@6f51ac03b9356f520e9adb1b1b7802705f340c2b #v4.5.0
+        with:
+          name: ghas-alerts
+          path: ghas-alerts.json
+
+      - name: Set findings flag
+        id: check-findings
+        run: |
+          TOTAL="${{ steps.fetch-alerts.outputs.total-findings }}"
+          if [ "$TOTAL" -gt 0 ]; then
+            echo "has-findings=true" >> $GITHUB_OUTPUT
+          else
+            echo "has-findings=false" >> $GITHUB_OUTPUT
+          fi
+
+    outputs:
+      has-findings: ${{ steps.check-findings.outputs.has-findings }}
+      total-findings: ${{ steps.fetch-alerts.outputs.total-findings }}
+
+  generate-compliance-report:
+    name: Generate Compliance Report
+    runs-on: ubuntu-latest
+    needs: fetch-ghas-alerts
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 #v4.2.2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af #v4.1.0
+        with:
+          node-version: '22'
+
+      - name: Download GHAS alerts
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 #v4.1.8
+        with:
+          name: ghas-alerts
+
+      - name: Generate compliance report
+        id: generate-report
+        run: |
+          cat > compliance-report.md << 'EOFMARKER'
+          # Weekly Security Compliance Report
+
+          **Report Date:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          **Repository:** ${{ github.repository }}
+          **Period:** Weekly automated scan
+
+          ---
+
+          ## Executive Summary
+
+          EOFMARKER
+
+          # Parse GHAS alerts and generate summary
+          if [ -f ghas-alerts.json ]; then
+            # Count by severity
+            CRITICAL=$(jq '[.alerts // [], .codeql // [], .dependabot // [], .secrets // []] | add | map(select(.severity? == "critical" or .rule?.security_severity_level? == "critical" or .security_advisory?.severity? == "critical")) | length' ghas-alerts.json)
+            HIGH=$(jq '[.alerts // [], .codeql // [], .dependabot // [], .secrets // []] | add | map(select(.severity? == "high" or .rule?.security_severity_level? == "high" or .security_advisory?.severity? == "high")) | length' ghas-alerts.json)
+            MEDIUM=$(jq '[.alerts // [], .codeql // [], .dependabot // [], .secrets // []] | add | map(select(.severity? == "medium" or .rule?.security_severity_level? == "medium" or .security_advisory?.severity? == "medium")) | length' ghas-alerts.json)
+            LOW=$(jq '[.alerts // [], .codeql // [], .dependabot // [], .secrets // []] | add | map(select(.severity? == "low" or .rule?.security_severity_level? == "low" or .security_advisory?.severity? == "low")) | length' ghas-alerts.json)
+
+            cat >> compliance-report.md << EOF
+
+          ### Vulnerability Counts by Severity
+
+          | Severity | Count |
+          |----------|-------|
+          | 🔴 Critical | $CRITICAL |
+          | 🟠 High | $HIGH |
+          | 🟡 Medium | $MEDIUM |
+          | 🟢 Low | $LOW |
+
+          **Total Open Findings:** ${{ needs.fetch-ghas-alerts.outputs.total-findings }}
+
+          EOF
+
+            # Count by type
+            CODEQL_COUNT=$(jq '.codeql // [] | length' ghas-alerts.json)
+            DEPENDABOT_COUNT=$(jq '.dependabot // [] | length' ghas-alerts.json)
+            SECRETS_COUNT=$(jq '.secrets // [] | length' ghas-alerts.json)
+
+            cat >> compliance-report.md << EOF
+
+          ### Findings by Type
+
+          | Type | Count |
+          |------|-------|
+          | CodeQL SAST | $CODEQL_COUNT |
+          | Dependabot (Dependencies) | $DEPENDABOT_COUNT |
+          | Secret Scanning | $SECRETS_COUNT |
+
+          ---
+
+          ## Detailed Findings
+
+          EOF
+
+            # List critical findings
+            if [ "$CRITICAL" -gt 0 ]; then
+              cat >> compliance-report.md << 'EOF'
+
+          ### 🔴 Critical Severity Findings
+
+          EOF
+              jq -r '
+                [.alerts // [], .codeql // [], .dependabot // [], .secrets // []] | add |
+                map(select(.severity? == "critical" or .rule?.security_severity_level? == "critical" or .security_advisory?.severity? == "critical")) |
+                .[] |
+                "- **\(.rule?.id // .security_advisory?.package?.name // .secret_type_display_name // "Unknown")**\n  - \(.rule?.description // .security_advisory?.summary // "Secret detected")\n  - Location: `\(.most_recent_instance?.location?.path // .dependency?.package?.name // "N/A")`\n  - [View Alert](\(.html_url))\n"
+              ' ghas-alerts.json >> compliance-report.md
+            fi
+
+            # List high findings (limit to 10)
+            if [ "$HIGH" -gt 0 ]; then
+              cat >> compliance-report.md << 'EOF'
+
+          ### 🟠 High Severity Findings (Top 10)
+
+          EOF
+              jq -r '
+                [.alerts // [], .codeql // [], .dependabot // [], .secrets // []] | add |
+                map(select(.severity? == "high" or .rule?.security_severity_level? == "high" or .security_advisory?.severity? == "high")) |
+                .[0:10] |
+                .[] |
+                "- **\(.rule?.id // .security_advisory?.package?.name // "Unknown")**\n  - \(.rule?.description // .security_advisory?.summary // "Vulnerability")\n  - Location: `\(.most_recent_instance?.location?.path // .dependency?.package?.name // "N/A")`\n  - [View Alert](\(.html_url))\n"
+              ' ghas-alerts.json >> compliance-report.md
+
+              if [ "$HIGH" -gt 10 ]; then
+                echo "" >> compliance-report.md
+                echo "*... and $((HIGH - 10)) more high severity findings*" >> compliance-report.md
+              fi
+            fi
+          fi
+
+          cat >> compliance-report.md << 'EOF'
+
+          ---
+
+          ## OWASP Top 10 Mapping
+
+          This section maps findings to OWASP Top 10 2021 categories:
+
+          ### A03:2021 - Injection
+          - SQL Injection vulnerabilities
+          - Cross-Site Scripting (XSS) vulnerabilities
+          - Command Injection vulnerabilities
+
+          ### A06:2021 - Vulnerable and Outdated Components
+          - Dependabot dependency vulnerabilities
+
+          ### A07:2021 - Identification and Authentication Failures
+          - Hardcoded credentials
+          - Exposed secrets
+
+          *(Detailed mapping available in SARIF results)*
+
+          ---
+
+          ## Recommended Actions
+
+          ### Immediate (Critical/High)
+          1. Review and remediate all critical severity findings
+          2. Triage high severity findings for exploitability
+          3. Update vulnerable dependencies with available patches
+
+          ### This Week (Medium)
+          1. Review medium severity findings
+          2. Plan remediation for architectural security issues
+          3. Update security policies and training materials
+
+          ### This Month (Low)
+          1. Address low severity findings during regular maintenance
+          2. Review and update security baselines
+          3. Conduct security awareness training
+
+          ---
+
+          ## Compliance Status
+
+          **Overall Risk Level:** $([ "$CRITICAL" -gt 0 ] && echo "🔴 CRITICAL" || [ "$HIGH" -gt 0 ] && echo "🟠 HIGH" || [ "$MEDIUM" -gt 0 ] && echo "🟡 MEDIUM" || echo "🟢 LOW")
+
+          **Compliance Notes:**
+          - This report covers GHAS findings only
+          - Manual security reviews may identify additional issues
+          - Consult security team for risk acceptance decisions
+
+          ---
+
+          ## Resources
+
+          - [OWASP Juice Shop Security](https://pwning.owasp-juice.shop)
+          - [GitHub Security Features](https://docs.github.com/en/code-security)
+          - [OWASP Top 10 2021](https://owasp.org/Top10/)
+
+          ---
+
+          *Generated by [Claude Code](https://claude.com/claude-code)*
+          *Next report: $(date -u -d '+7 days' +"%Y-%m-%d")*
+
+          EOF
+
+          echo "✅ Compliance report generated"
+
+      - name: Upload compliance report
+        uses: actions/upload-artifact@6f51ac03b9356f520e9adb1b1b7802705f340c2b #v4.5.0
+        with:
+          name: compliance-report
+          path: compliance-report.md
+
+  create-compliance-issue:
+    name: Create GitHub Issue with Report
+    runs-on: ubuntu-latest
+    needs: [fetch-ghas-alerts, generate-compliance-report]
+    if: needs.fetch-ghas-alerts.outputs.has-findings == 'true'
+    permissions:
+      issues: write
+
+    steps:
+      - name: Download compliance report
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 #v4.1.8
+        with:
+          name: compliance-report
+
+      - name: Create issue with compliance report
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+
+            // Read the generated compliance report
+            let reportBody = '## Weekly Security Compliance Report\n\n';
+            reportBody += `**Report Date:** ${new Date().toISOString().split('T')[0]}\n\n`;
+
+            if (fs.existsSync('compliance-report.md')) {
+              const report = fs.readFileSync('compliance-report.md', 'utf8');
+              reportBody += report;
+            } else {
+              reportBody += '*Report generation failed - check workflow logs*\n';
+            }
+
+            reportBody += '\n\n---\n';
+            reportBody += `**Findings:** ${{ needs.fetch-ghas-alerts.outputs.total-findings }} open security alerts\n`;
+            reportBody += `**Workflow:** [View Details](${context.payload.repository.html_url}/actions/runs/${context.runId})\n`;
+
+            // Create the issue
+            const issue = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Weekly Security Compliance Report - ${new Date().toISOString().split('T')[0]}`,
+              body: reportBody,
+              labels: ['security', 'compliance', 'weekly-digest']
+            });
+
+            console.log(`Created issue #${issue.data.number}`);
+
+  notify-on-no-findings:
+    name: Post Success Summary
+    runs-on: ubuntu-latest
+    needs: fetch-ghas-alerts
+    if: needs.fetch-ghas-alerts.outputs.has-findings == 'false'
+
+    steps:
+      - name: Post success summary
+        run: |
+          echo "# ✅ Weekly Compliance Digest - All Clear" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Report Date:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")" >> $GITHUB_STEP_SUMMARY
+          echo "**Repository:** ${{ github.repository }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "No open security findings detected across:" >> $GITHUB_STEP_SUMMARY
+          echo "- CodeQL SAST analysis" >> $GITHUB_STEP_SUMMARY
+          echo "- Dependabot dependency scanning" >> $GITHUB_STEP_SUMMARY
+          echo "- Secret scanning" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "🎉 Security posture is clean!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "*Next report: $(date -u -d '+7 days' +"%Y-%m-%d")*" >> $GITHUB_STEP_SUMMARY

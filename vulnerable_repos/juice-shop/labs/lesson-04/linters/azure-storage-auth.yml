@@ -1,0 +1,101 @@
+rules:
+  - id: azure-hardcoded-storage-connection-string
+    patterns:
+      - pattern-either:
+          # Match double-quoted strings
+          - pattern: |
+              "$STRING"
+          # Match single-quoted strings
+          - pattern: |
+              '$STRING'
+      # Match Azure Storage connection string format
+      - metavariable-regex:
+          metavariable: $STRING
+          regex: '.*AccountName=.*AccountKey=.*'
+    message: |
+      Hardcoded Azure Storage connection string detected (CWE-798).
+
+      SECURITY RISK:
+      Connection strings contain sensitive credentials (AccountKey) that provide full access
+      to your Azure Storage account. Hardcoding these in source code creates multiple risks:
+
+      1. Credentials are exposed in version control history (forever)
+      2. Anyone with repository access can access production storage
+      3. Credential rotation requires code changes and redeployment
+      4. Violates principle of least privilege (connection strings grant full access)
+
+      ATTACK SCENARIO:
+      An attacker who gains access to your source code (via insider threat, compromised
+      developer account, or public repository exposure) can use the connection string to:
+      - Read sensitive data from blob storage
+      - Modify or delete production data
+      - Upload malicious files
+      - Generate massive storage bills
+
+      SECURE ALTERNATIVE - Use DefaultAzureCredential with Managed Identity:
+
+      ```javascript
+      // Install required packages:
+      // npm install @azure/identity @azure/storage-blob
+
+      const { DefaultAzureCredential } = require("@azure/identity");
+      const { BlobServiceClient } = require("@azure/storage-blob");
+
+      // DefaultAzureCredential automatically uses:
+      // 1. Managed Identity (in Azure)
+      // 2. Azure CLI credentials (local development)
+      // 3. Environment variables (CI/CD)
+      // 4. Interactive browser login (fallback)
+
+      const accountName = process.env.AZURE_STORAGE_ACCOUNT_NAME;
+      const credential = new DefaultAzureCredential();
+      const blobServiceClient = new BlobServiceClient(
+        `https://${accountName}.blob.core.windows.net`,
+        credential
+      );
+      ```
+
+      AZURE CONFIGURATION:
+      1. Enable Managed Identity on your App Service/VM/Container
+      2. Grant Storage Blob Data Contributor role to the managed identity:
+         ```bash
+         az role assignment create \
+           --role "Storage Blob Data Contributor" \
+           --assignee <managed-identity-id> \
+           --scope /subscriptions/<sub-id>/resourceGroups/<rg>/providers/Microsoft.Storage/storageAccounts/<storage-account>
+         ```
+      3. Remove the connection string from your code
+      4. Store only the storage account name in environment variables
+
+      BENEFITS:
+      - No secrets in code or configuration
+      - Automatic credential rotation (managed by Azure)
+      - Granular permissions via Azure RBAC
+      - Audit trail in Azure Activity Log
+      - Works seamlessly across environments (dev/staging/prod)
+
+      References:
+      - https://docs.microsoft.com/azure/storage/common/storage-auth-aad
+      - https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
+      - https://cwe.mitre.org/data/definitions/798.html
+    severity: ERROR
+    languages:
+      - javascript
+      - typescript
+    metadata:
+      cwe: CWE-798
+      owasp: A07:2021 - Identification and Authentication Failures
+      category: security
+      technology:
+        - azure
+        - cloud
+      confidence: HIGH
+      likelihood: HIGH
+      impact: HIGH
+      subcategory:
+        - vuln
+      references:
+        - https://docs.microsoft.com/azure/storage/common/storage-auth-aad
+        - https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
+        - https://cwe.mitre.org/data/definitions/798.html
+        - https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html

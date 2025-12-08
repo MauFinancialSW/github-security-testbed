@@ -1,0 +1,167 @@
+{
+  "folders": [
+    {
+      "name": "Juice Shop (Root)",
+      "path": "."
+    },
+    {
+      "name": "Labs",
+      "path": "labs"
+    },
+    {
+      "name": "Demos",
+      "path": "demos"
+    },
+    {
+      "name": "IaC - Insecure",
+      "path": "iac/juice-shop-insecure"
+    },
+    {
+      "name": "IaC - Hardened",
+      "path": "iac/juice-shop-hardened"
+    },
+    {
+      "name": "Routes (Vulnerabilities)",
+      "path": "routes"
+    },
+    {
+      "name": "Frontend",
+      "path": "frontend/src/app"
+    }
+  ],
+  "settings": {
+    "github.copilot.enable": {
+      "*": true,
+      "yaml": true,
+      "markdown": true,
+      "json": true,
+      "terraform": true,
+      "hcl": true
+    },
+    "editor.formatOnSave": true,
+    "editor.suggest.preview": true,
+    "editor.inlineSuggest.enabled": true,
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/dist": true,
+      "**/build": true,
+      "**/.git": true
+    },
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/frontend/dist": true,
+      "**/build": true
+    },
+    "[terraform]": {
+      "editor.defaultFormatter": "hashicorp.terraform",
+      "editor.formatOnSave": true
+    },
+    "[typescript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
+  },
+  "extensions": {
+    "recommendations": [
+      "github.copilot",
+      "github.copilot-chat",
+      "github.vscode-github-actions",
+      "github.vscode-pull-request-github",
+      "hashicorp.terraform",
+      "ms-azuretools.vscode-azureterraform",
+      "bridgecrew.checkov",
+      "semgrep.semgrep",
+      "ms-vscode.vscode-node-azure-pack",
+      "esbenp.prettier-vscode",
+      "dbaeumer.vscode-eslint",
+      "angular.ng-template"
+    ]
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Launch Juice Shop",
+        "type": "node",
+        "request": "launch",
+        "runtimeExecutable": "npm",
+        "runtimeArgs": ["run", "serve"],
+        "cwd": "${workspaceFolder:Juice Shop (Root)}",
+        "console": "integratedTerminal"
+      },
+      {
+        "name": "Debug Server Tests",
+        "type": "node",
+        "request": "launch",
+        "runtimeExecutable": "npm",
+        "runtimeArgs": ["run", "test:server"],
+        "cwd": "${workspaceFolder:Juice Shop (Root)}",
+        "console": "integratedTerminal"
+      }
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Install Dependencies",
+        "type": "shell",
+        "command": "npm install",
+        "options": {
+          "cwd": "${workspaceFolder:Juice Shop (Root)}"
+        },
+        "group": "build"
+      },
+      {
+        "label": "Start Dev Server",
+        "type": "shell",
+        "command": "npm run serve:dev",
+        "options": {
+          "cwd": "${workspaceFolder:Juice Shop (Root)}"
+        },
+        "group": "build",
+        "isBackground": true
+      },
+      {
+        "label": "Run Linting",
+        "type": "shell",
+        "command": "npm run lint",
+        "options": {
+          "cwd": "${workspaceFolder:Juice Shop (Root)}"
+        },
+        "group": "test"
+      },
+      {
+        "label": "Terraform Init (Insecure)",
+        "type": "shell",
+        "command": "terraform init",
+        "options": {
+          "cwd": "${workspaceFolder:IaC - Insecure}"
+        }
+      },
+      {
+        "label": "Terraform Plan (Insecure)",
+        "type": "shell",
+        "command": "terraform plan",
+        "options": {
+          "cwd": "${workspaceFolder:IaC - Insecure}"
+        }
+      },
+      {
+        "label": "Checkov Scan (Insecure)",
+        "type": "shell",
+        "command": "checkov -f main.tf --framework terraform",
+        "options": {
+          "cwd": "${workspaceFolder:IaC - Insecure}"
+        }
+      },
+      {
+        "label": "Checkov Scan (Hardened)",
+        "type": "shell",
+        "command": "checkov -f main.tf --framework terraform",
+        "options": {
+          "cwd": "${workspaceFolder:IaC - Hardened}"
+        }
+      }
+    ]
+  }
+}

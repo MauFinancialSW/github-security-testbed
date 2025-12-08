@@ -1,0 +1,82 @@
+{
+  "scan_date": "2025-11-30T14:30:00Z",
+  "subscription_id": "12345678-1234-1234-1234-123456789012",
+  "subscription_name": "Production",
+  "total_servers": 15,
+  "total_databases": 47,
+  "summary": {
+    "total_controls": 8,
+    "passed": 6,
+    "failed": 2,
+    "warnings": 0,
+    "compliance_percentage": 75.0
+  },
+  "findings": [
+    {
+      "control_id": "CIS-4.11",
+      "control_name": "Firewall Rule 0.0.0.0/0 Not Allowed",
+      "status": "FAIL",
+      "severity": "CRITICAL",
+      "resource_type": "SQL Server Firewall Rule",
+      "resource_name": "sql-prod-01/AllowAllWindowsAzureIps",
+      "finding": "Firewall rule allows unrestricted access (0.0.0.0/0)",
+      "remediation": "Remove-AzSqlServerFirewallRule -ServerName 'sql-prod-01' -ResourceGroupName 'prod-rg' -FirewallRuleName 'AllowAllWindowsAzureIps'"
+    },
+    {
+      "control_id": "CIS-4.8",
+      "control_name": "Transparent Data Encryption (TDE) Enabled",
+      "status": "FAIL",
+      "severity": "HIGH",
+      "resource_type": "SQL Database",
+      "resource_name": "sql-dev-02/customer-db",
+      "finding": "Transparent Data Encryption is not enabled",
+      "remediation": "Set-AzSqlDatabaseTransparentDataEncryption -ServerName 'sql-dev-02' -ResourceGroupName 'dev-rg' -DatabaseName 'customer-db' -State 'Enabled'"
+    }
+  ],
+  "compliance_details": {
+    "CIS-4.1": {
+      "description": "Server parameter 'log_checkpoints' is set to 'ON' for PostgreSQL Database Server",
+      "total_checks": 5,
+      "passed": 5,
+      "failed": 0
+    },
+    "CIS-4.8": {
+      "description": "Azure SQL Database transparent data encryption is enabled",
+      "total_checks": 47,
+      "passed": 46,
+      "failed": 1
+    },
+    "CIS-4.9": {
+      "description": "Azure SQL Database has Azure Active Directory authentication configured",
+      "total_checks": 15,
+      "passed": 15,
+      "failed": 0
+    },
+    "CIS-4.11": {
+      "description": "Azure SQL Server firewall rules do not allow 0.0.0.0/0 (ALLOW ALL)",
+      "total_checks": 15,
+      "passed": 14,
+      "failed": 1
+    },
+    "CIS-4.12": {
+      "description": "Azure SQL Server audit logging is enabled",
+      "total_checks": 15,
+      "passed": 15,
+      "failed": 0
+    }
+  },
+  "recommendations": [
+    "Remediate CRITICAL findings immediately (CIS-4.11)",
+    "Schedule remediation for HIGH severity findings within 7 days",
+    "Enable automated compliance scanning weekly",
+    "Integrate findings with ticketing system (Jira, ServiceNow)",
+    "Review firewall rules quarterly for least privilege access"
+  ],
+  "next_scan_date": "2025-12-07T14:30:00Z",
+  "audit_evidence": {
+    "auditor": "Automated CIS Compliance Scanner v1.0",
+    "scan_duration_seconds": 127,
+    "azure_subscriptions_scanned": 1,
+    "resources_scanned": 62
+  }
+}

@@ -1,549 +1,597 @@
 # =============================================================================
-# Zero Trust Network Segmentation with Terraform
+# Azure Zero Trust Network Segmentation with Terraform
 # =============================================================================
 # Course: GitHub Copilot for Cybersecurity Specialists
 # Lesson: 02 - Security Protocols with Copilot
 #
-# Copilot Prompt Used:
-# "Create Terraform config for zero trust network segmentation"
-#
 # Security Features:
-# - VPC with private subnets only (no public internet access)
-# - Network ACLs with explicit deny rules
-# - Security groups following least privilege
-# - VPC endpoints for AWS service access
-# - Flow logs for traffic analysis
+# - VNet with segmented subnets (web, app, data)
+# - Network Security Groups with explicit allow rules
+# - Default deny for all other traffic
+# - NSG Flow Logs enabled for audit and compliance
+# - Least privilege network access controls
+# - Defense in depth with subnet isolation
 # =============================================================================
 
 terraform {
-  required_version = ">= 1.0.0"
+  required_version = ">= 1.5.0"
 
   required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 3.80"
     }
   }
 }
 
-provider "aws" {
-  region = var.aws_region
-
-  default_tags {
-    tags = {
-      Environment = var.environment
-      Project     = "zero-trust-demo"
-      ManagedBy   = "terraform"
-    }
-  }
+provider "azurerm" {
+  features {}
 }
 
 # =============================================================================
 # Variables
 # =============================================================================
 
-variable "aws_region" {
-  description = "AWS region"
+variable "location" {
+  description = "Azure region for resources"
   type        = string
-  default     = "us-east-1"
+  default     = "eastus"
 }
 
 variable "environment" {
   description = "Environment name"
   type        = string
-  default     = "production"
+  default     = "dev"
 }
 
-variable "vpc_cidr" {
-  description = "VPC CIDR block"
+variable "project_name" {
+  description = "Project name for resource naming"
   type        = string
-  default     = "10.0.0.0/16"
+  default     = "zerotrust"
+}
+
+variable "vnet_address_space" {
+  description = "VNet address space"
+  type        = list(string)
+  default     = ["10.0.0.0/16"]
+}
+
+variable "web_subnet_prefix" {
+  description = "Web tier subnet address prefix"
+  type        = string
+  default     = "10.0.1.0/24"
+}
+
+variable "app_subnet_prefix" {
+  description = "App tier subnet address prefix"
+  type        = string
+  default     = "10.0.2.0/24"
+}
+
+variable "data_subnet_prefix" {
+  description = "Data tier subnet address prefix"
+  type        = string
+  default     = "10.0.3.0/24"
+}
+
+variable "log_analytics_retention_days" {
+  description = "Number of days to retain NSG flow logs"
+  type        = number
+  default     = 30
 }
 
 # =============================================================================
-# VPC - Zero Trust Network Foundation
+# Resource Group
 # =============================================================================
 
-resource "aws_vpc" "main" {
-  cidr_block           = var.vpc_cidr
-  enable_dns_hostnames = true
-  enable_dns_support   = true
+resource "azurerm_resource_group" "main" {
+  name     = "${var.project_name}-${var.environment}-rg"
+  location = var.location
 
   tags = {
-    Name = "zero-trust-vpc"
-  }
-}
-
-# =============================================================================
-# Private Subnets Only (No Public Subnets)
-# =============================================================================
-
-resource "aws_subnet" "private_app" {
-  count             = 3
-  vpc_id            = aws_vpc.main.id
-  cidr_block        = cidrsubnet(var.vpc_cidr, 8, count.index)
-  availability_zone = data.aws_availability_zones.available.names[count.index]
-
-  # Zero Trust: No public IPs
-  map_public_ip_on_launch = false
-
-  tags = {
-    Name = "private-app-${count.index + 1}"
-    Tier = "application"
-  }
-}
-
-resource "aws_subnet" "private_db" {
-  count             = 3
-  vpc_id            = aws_vpc.main.id
-  cidr_block        = cidrsubnet(var.vpc_cidr, 8, count.index + 10)
-  availability_zone = data.aws_availability_zones.available.names[count.index]
-
-  map_public_ip_on_launch = false
-
-  tags = {
-    Name = "private-db-${count.index + 1}"
-    Tier = "database"
-  }
-}
-
-data "aws_availability_zones" "available" {
-  state = "available"
-}
-
-# =============================================================================
-# Network ACLs - Defense in Depth
-# =============================================================================
-
-resource "aws_network_acl" "app_tier" {
-  vpc_id     = aws_vpc.main.id
-  subnet_ids = aws_subnet.private_app[*].id
-
-  # Inbound: Allow only from approved sources
-  ingress {
-    protocol   = "tcp"
-    rule_no    = 100
-    action     = "allow"
-    cidr_block = var.vpc_cidr
-    from_port  = 443
-    to_port    = 443
-  }
-
-  ingress {
-    protocol   = "tcp"
-    rule_no    = 110
-    action     = "allow"
-    cidr_block = var.vpc_cidr
-    from_port  = 8080
-    to_port    = 8080
-  }
-
-  # Allow ephemeral ports for responses
-  ingress {
-    protocol   = "tcp"
-    rule_no    = 200
-    action     = "allow"
-    cidr_block = "0.0.0.0/0"
-    from_port  = 1024
-    to_port    = 65535
-  }
-
-  # Explicit deny all other inbound
-  ingress {
-    protocol   = -1
-    rule_no    = 32766
-    action     = "deny"
-    cidr_block = "0.0.0.0/0"
-    from_port  = 0
-    to_port    = 0
-  }
-
-  # Outbound: Allow only to specific destinations
-  egress {
-    protocol   = "tcp"
-    rule_no    = 100
-    action     = "allow"
-    cidr_block = cidrsubnet(var.vpc_cidr, 8, 10)  # DB subnet 1
-    from_port  = 5432
-    to_port    = 5432
-  }
-
-  egress {
-    protocol   = "tcp"
-    rule_no    = 110
-    action     = "allow"
-    cidr_block = cidrsubnet(var.vpc_cidr, 8, 11)  # DB subnet 2
-    from_port  = 5432
-    to_port    = 5432
-  }
-
-  egress {
-    protocol   = "tcp"
-    rule_no    = 120
-    action     = "allow"
-    cidr_block = cidrsubnet(var.vpc_cidr, 8, 12)  # DB subnet 3
-    from_port  = 5432
-    to_port    = 5432
-  }
-
-  # Allow HTTPS outbound for AWS services via endpoints
-  egress {
-    protocol   = "tcp"
-    rule_no    = 200
-    action     = "allow"
-    cidr_block = "0.0.0.0/0"
-    from_port  = 443
-    to_port    = 443
-  }
-
-  # Explicit deny all other outbound
-  egress {
-    protocol   = -1
-    rule_no    = 32766
-    action     = "deny"
-    cidr_block = "0.0.0.0/0"
-    from_port  = 0
-    to_port    = 0
-  }
-
-  tags = {
-    Name = "app-tier-nacl"
-  }
-}
-
-resource "aws_network_acl" "db_tier" {
-  vpc_id     = aws_vpc.main.id
-  subnet_ids = aws_subnet.private_db[*].id
-
-  # Inbound: Only from app tier on PostgreSQL port
-  ingress {
-    protocol   = "tcp"
-    rule_no    = 100
-    action     = "allow"
-    cidr_block = cidrsubnet(var.vpc_cidr, 8, 0)  # App subnet 1
-    from_port  = 5432
-    to_port    = 5432
-  }
-
-  ingress {
-    protocol   = "tcp"
-    rule_no    = 110
-    action     = "allow"
-    cidr_block = cidrsubnet(var.vpc_cidr, 8, 1)  # App subnet 2
-    from_port  = 5432
-    to_port    = 5432
-  }
-
-  ingress {
-    protocol   = "tcp"
-    rule_no    = 120
-    action     = "allow"
-    cidr_block = cidrsubnet(var.vpc_cidr, 8, 2)  # App subnet 3
-    from_port  = 5432
-    to_port    = 5432
-  }
-
-  # Explicit deny all other inbound
-  ingress {
-    protocol   = -1
-    rule_no    = 32766
-    action     = "deny"
-    cidr_block = "0.0.0.0/0"
-    from_port  = 0
-    to_port    = 0
-  }
-
-  # Outbound: Only responses to app tier
-  egress {
-    protocol   = "tcp"
-    rule_no    = 100
-    action     = "allow"
-    cidr_block = cidrsubnet(var.vpc_cidr, 8, 0)
-    from_port  = 1024
-    to_port    = 65535
-  }
-
-  egress {
-    protocol   = "tcp"
-    rule_no    = 110
-    action     = "allow"
-    cidr_block = cidrsubnet(var.vpc_cidr, 8, 1)
-    from_port  = 1024
-    to_port    = 65535
-  }
-
-  egress {
-    protocol   = "tcp"
-    rule_no    = 120
-    action     = "allow"
-    cidr_block = cidrsubnet(var.vpc_cidr, 8, 2)
-    from_port  = 1024
-    to_port    = 65535
-  }
-
-  # Explicit deny all other outbound
-  egress {
-    protocol   = -1
-    rule_no    = 32766
-    action     = "deny"
-    cidr_block = "0.0.0.0/0"
-    from_port  = 0
-    to_port    = 0
-  }
-
-  tags = {
-    Name = "db-tier-nacl"
+    Environment = var.environment
+    Project     = var.project_name
+    ManagedBy   = "terraform"
+    Purpose     = "zero-trust-network-segmentation"
   }
 }
 
 # =============================================================================
-# Security Groups - Micro-segmentation
+# Log Analytics Workspace for NSG Flow Logs
 # =============================================================================
 
-resource "aws_security_group" "app" {
-  name        = "app-tier-sg"
-  description = "Security group for application tier"
-  vpc_id      = aws_vpc.main.id
-
-  # No ingress rules - will be added by specific service security groups
-  # This follows zero trust: deny by default
-
-  egress {
-    description     = "Allow PostgreSQL to database tier"
-    from_port       = 5432
-    to_port         = 5432
-    protocol        = "tcp"
-    security_groups = [aws_security_group.db.id]
-  }
-
-  egress {
-    description = "Allow HTTPS to VPC endpoints"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]  # VPC endpoints
-  }
+resource "azurerm_log_analytics_workspace" "main" {
+  name                = "${var.project_name}-${var.environment}-law"
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
+  sku                 = "PerGB2018"
+  retention_in_days   = var.log_analytics_retention_days
 
   tags = {
-    Name = "app-tier-sg"
-  }
-}
-
-resource "aws_security_group" "db" {
-  name        = "db-tier-sg"
-  description = "Security group for database tier"
-  vpc_id      = aws_vpc.main.id
-
-  ingress {
-    description     = "Allow PostgreSQL from app tier"
-    from_port       = 5432
-    to_port         = 5432
-    protocol        = "tcp"
-    security_groups = [aws_security_group.app.id]
-  }
-
-  # No egress - databases don't initiate connections
-  # Exception: If needed for replication, add specific rules
-
-  tags = {
-    Name = "db-tier-sg"
+    Environment = var.environment
+    Purpose     = "nsg-flow-logs-audit"
   }
 }
 
 # =============================================================================
-# VPC Endpoints - Private Access to AWS Services
+# Storage Account for NSG Flow Logs
 # =============================================================================
 
-resource "aws_vpc_endpoint" "s3" {
-  vpc_id            = aws_vpc.main.id
-  service_name      = "com.amazonaws.${var.aws_region}.s3"
-  vpc_endpoint_type = "Gateway"
-  route_table_ids   = [aws_route_table.private.id]
+resource "azurerm_storage_account" "flow_logs" {
+  name                     = "${var.project_name}${var.environment}flowlogs"
+  resource_group_name      = azurerm_resource_group.main.name
+  location                 = azurerm_resource_group.main.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+  min_tls_version          = "TLS1_2"
 
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Sid       = "AllowS3Access"
-        Effect    = "Allow"
-        Principal = "*"
-        Action    = ["s3:GetObject", "s3:PutObject", "s3:ListBucket"]
-        Resource  = "*"
-        Condition = {
-          StringEquals = {
-            "aws:sourceVpc" = aws_vpc.main.id
-          }
-        }
-      }
-    ]
-  })
+  # Security: Enable blob encryption
+  enable_https_traffic_only = true
 
   tags = {
-    Name = "s3-endpoint"
-  }
-}
-
-resource "aws_vpc_endpoint" "secrets_manager" {
-  vpc_id              = aws_vpc.main.id
-  service_name        = "com.amazonaws.${var.aws_region}.secretsmanager"
-  vpc_endpoint_type   = "Interface"
-  subnet_ids          = aws_subnet.private_app[*].id
-  security_group_ids  = [aws_security_group.vpc_endpoints.id]
-  private_dns_enabled = true
-
-  tags = {
-    Name = "secrets-manager-endpoint"
-  }
-}
-
-resource "aws_vpc_endpoint" "kms" {
-  vpc_id              = aws_vpc.main.id
-  service_name        = "com.amazonaws.${var.aws_region}.kms"
-  vpc_endpoint_type   = "Interface"
-  subnet_ids          = aws_subnet.private_app[*].id
-  security_group_ids  = [aws_security_group.vpc_endpoints.id]
-  private_dns_enabled = true
-
-  tags = {
-    Name = "kms-endpoint"
-  }
-}
-
-resource "aws_security_group" "vpc_endpoints" {
-  name        = "vpc-endpoints-sg"
-  description = "Security group for VPC endpoints"
-  vpc_id      = aws_vpc.main.id
-
-  ingress {
-    description = "HTTPS from VPC"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = [var.vpc_cidr]
-  }
-
-  tags = {
-    Name = "vpc-endpoints-sg"
+    Environment = var.environment
+    Purpose     = "nsg-flow-logs-storage"
   }
 }
 
 # =============================================================================
-# Route Table - No Internet Gateway
+# Network Watcher (required for NSG flow logs)
 # =============================================================================
 
-resource "aws_route_table" "private" {
-  vpc_id = aws_vpc.main.id
-
-  # No route to internet gateway (zero trust)
-  # Only routes to VPC endpoints and local
+resource "azurerm_network_watcher" "main" {
+  name                = "${var.project_name}-${var.environment}-nw"
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
 
   tags = {
-    Name = "private-rt"
+    Environment = var.environment
   }
 }
 
-resource "aws_route_table_association" "app" {
-  count          = 3
-  subnet_id      = aws_subnet.private_app[count.index].id
-  route_table_id = aws_route_table.private.id
-}
-
-resource "aws_route_table_association" "db" {
-  count          = 3
-  subnet_id      = aws_subnet.private_db[count.index].id
-  route_table_id = aws_route_table.private.id
-}
-
 # =============================================================================
-# VPC Flow Logs - Traffic Monitoring
+# Virtual Network - Zero Trust Foundation
 # =============================================================================
 
-resource "aws_flow_log" "main" {
-  vpc_id                   = aws_vpc.main.id
-  traffic_type             = "ALL"
-  log_destination_type     = "cloud-watch-logs"
-  log_destination          = aws_cloudwatch_log_group.flow_logs.arn
-  iam_role_arn             = aws_iam_role.flow_logs.arn
-  max_aggregation_interval = 60
+resource "azurerm_virtual_network" "main" {
+  name                = "${var.project_name}-${var.environment}-vnet"
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
+  address_space       = var.vnet_address_space
 
   tags = {
-    Name = "vpc-flow-logs"
+    Environment = var.environment
+    Purpose     = "zero-trust-segmentation"
   }
 }
 
-resource "aws_cloudwatch_log_group" "flow_logs" {
-  name              = "/aws/vpc/flow-logs/${aws_vpc.main.id}"
-  retention_in_days = 90
+# =============================================================================
+# Subnets - Three-Tier Architecture
+# =============================================================================
+
+resource "azurerm_subnet" "web" {
+  name                 = "web-subnet"
+  resource_group_name  = azurerm_resource_group.main.name
+  virtual_network_name = azurerm_virtual_network.main.name
+  address_prefixes     = [var.web_subnet_prefix]
+}
+
+resource "azurerm_subnet" "app" {
+  name                 = "app-subnet"
+  resource_group_name  = azurerm_resource_group.main.name
+  virtual_network_name = azurerm_virtual_network.main.name
+  address_prefixes     = [var.app_subnet_prefix]
+}
+
+resource "azurerm_subnet" "data" {
+  name                 = "data-subnet"
+  resource_group_name  = azurerm_resource_group.main.name
+  virtual_network_name = azurerm_virtual_network.main.name
+  address_prefixes     = [var.data_subnet_prefix]
+}
+
+# =============================================================================
+# Network Security Group - Web Tier
+# =============================================================================
+
+resource "azurerm_network_security_group" "web" {
+  name                = "web-nsg"
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
 
   tags = {
-    Name = "vpc-flow-logs"
+    Environment = var.environment
+    Tier        = "web"
   }
 }
 
-resource "aws_iam_role" "flow_logs" {
-  name = "vpc-flow-logs-role"
-
-  assume_role_policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = "sts:AssumeRole"
-        Effect = "Allow"
-        Principal = {
-          Service = "vpc-flow-logs.amazonaws.com"
-        }
-      }
-    ]
-  })
+# Web NSG Rules - Allow HTTPS from Internet
+resource "azurerm_network_security_rule" "web_inbound_https" {
+  name                        = "Allow-HTTPS-Inbound"
+  priority                    = 100
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "443"
+  source_address_prefix       = "Internet"
+  destination_address_prefix  = var.web_subnet_prefix
+  resource_group_name         = azurerm_resource_group.main.name
+  network_security_group_name = azurerm_network_security_group.web.name
+  description                 = "Allow HTTPS traffic from internet to web tier"
 }
 
-resource "aws_iam_role_policy" "flow_logs" {
-  name = "vpc-flow-logs-policy"
-  role = aws_iam_role.flow_logs.id
+# Web NSG Rules - Allow outbound to App tier on port 8080
+resource "azurerm_network_security_rule" "web_outbound_app" {
+  name                        = "Allow-App-Outbound"
+  priority                    = 100
+  direction                   = "Outbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "8080"
+  source_address_prefix       = var.web_subnet_prefix
+  destination_address_prefix  = var.app_subnet_prefix
+  resource_group_name         = azurerm_resource_group.main.name
+  network_security_group_name = azurerm_network_security_group.web.name
+  description                 = "Allow web tier to communicate with app tier"
+}
 
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Action = [
-          "logs:CreateLogGroup",
-          "logs:CreateLogStream",
-          "logs:PutLogEvents",
-          "logs:DescribeLogGroups",
-          "logs:DescribeLogStreams"
-        ]
-        Effect   = "Allow"
-        Resource = "*"
-      }
-    ]
-  })
+# Web NSG Rules - Deny all other inbound traffic
+resource "azurerm_network_security_rule" "web_deny_all_inbound" {
+  name                        = "Deny-All-Inbound"
+  priority                    = 4096
+  direction                   = "Inbound"
+  access                      = "Deny"
+  protocol                    = "*"
+  source_port_range           = "*"
+  destination_port_range      = "*"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = azurerm_resource_group.main.name
+  network_security_group_name = azurerm_network_security_group.web.name
+  description                 = "Explicit deny all other inbound traffic"
+}
+
+# Web NSG Rules - Deny all other outbound traffic
+resource "azurerm_network_security_rule" "web_deny_all_outbound" {
+  name                        = "Deny-All-Outbound"
+  priority                    = 4096
+  direction                   = "Outbound"
+  access                      = "Deny"
+  protocol                    = "*"
+  source_port_range           = "*"
+  destination_port_range      = "*"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = azurerm_resource_group.main.name
+  network_security_group_name = azurerm_network_security_group.web.name
+  description                 = "Explicit deny all other outbound traffic"
+}
+
+# =============================================================================
+# Network Security Group - App Tier
+# =============================================================================
+
+resource "azurerm_network_security_group" "app" {
+  name                = "app-nsg"
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
+
+  tags = {
+    Environment = var.environment
+    Tier        = "app"
+  }
+}
+
+# App NSG Rules - Allow inbound from Web tier on port 8080
+resource "azurerm_network_security_rule" "app_inbound_web" {
+  name                        = "Allow-Web-Inbound"
+  priority                    = 100
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "8080"
+  source_address_prefix       = var.web_subnet_prefix
+  destination_address_prefix  = var.app_subnet_prefix
+  resource_group_name         = azurerm_resource_group.main.name
+  network_security_group_name = azurerm_network_security_group.app.name
+  description                 = "Allow traffic from web tier"
+}
+
+# App NSG Rules - Allow outbound to Data tier on port 5432
+resource "azurerm_network_security_rule" "app_outbound_data" {
+  name                        = "Allow-Data-Outbound"
+  priority                    = 100
+  direction                   = "Outbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "5432"
+  source_address_prefix       = var.app_subnet_prefix
+  destination_address_prefix  = var.data_subnet_prefix
+  resource_group_name         = azurerm_resource_group.main.name
+  network_security_group_name = azurerm_network_security_group.app.name
+  description                 = "Allow app tier to communicate with data tier"
+}
+
+# App NSG Rules - Deny all other inbound traffic
+resource "azurerm_network_security_rule" "app_deny_all_inbound" {
+  name                        = "Deny-All-Inbound"
+  priority                    = 4096
+  direction                   = "Inbound"
+  access                      = "Deny"
+  protocol                    = "*"
+  source_port_range           = "*"
+  destination_port_range      = "*"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = azurerm_resource_group.main.name
+  network_security_group_name = azurerm_network_security_group.app.name
+  description                 = "Explicit deny all other inbound traffic"
+}
+
+# App NSG Rules - Deny all other outbound traffic
+resource "azurerm_network_security_rule" "app_deny_all_outbound" {
+  name                        = "Deny-All-Outbound"
+  priority                    = 4096
+  direction                   = "Outbound"
+  access                      = "Deny"
+  protocol                    = "*"
+  source_port_range           = "*"
+  destination_port_range      = "*"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = azurerm_resource_group.main.name
+  network_security_group_name = azurerm_network_security_group.app.name
+  description                 = "Explicit deny all other outbound traffic"
+}
+
+# =============================================================================
+# Network Security Group - Data Tier
+# =============================================================================
+
+resource "azurerm_network_security_group" "data" {
+  name                = "data-nsg"
+  location            = azurerm_resource_group.main.location
+  resource_group_name = azurerm_resource_group.main.name
+
+  tags = {
+    Environment = var.environment
+    Tier        = "data"
+  }
+}
+
+# Data NSG Rules - Allow inbound from App tier on port 5432
+resource "azurerm_network_security_rule" "data_inbound_app" {
+  name                        = "Allow-App-Inbound"
+  priority                    = 100
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "5432"
+  source_address_prefix       = var.app_subnet_prefix
+  destination_address_prefix  = var.data_subnet_prefix
+  resource_group_name         = azurerm_resource_group.main.name
+  network_security_group_name = azurerm_network_security_group.data.name
+  description                 = "Allow PostgreSQL traffic from app tier only"
+}
+
+# Data NSG Rules - Deny all other inbound traffic
+resource "azurerm_network_security_rule" "data_deny_all_inbound" {
+  name                        = "Deny-All-Inbound"
+  priority                    = 4096
+  direction                   = "Inbound"
+  access                      = "Deny"
+  protocol                    = "*"
+  source_port_range           = "*"
+  destination_port_range      = "*"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = azurerm_resource_group.main.name
+  network_security_group_name = azurerm_network_security_group.data.name
+  description                 = "Explicit deny all other inbound traffic"
+}
+
+# Data NSG Rules - Deny all outbound traffic (data tier doesn't initiate connections)
+resource "azurerm_network_security_rule" "data_deny_all_outbound" {
+  name                        = "Deny-All-Outbound"
+  priority                    = 4096
+  direction                   = "Outbound"
+  access                      = "Deny"
+  protocol                    = "*"
+  source_port_range           = "*"
+  destination_port_range      = "*"
+  source_address_prefix       = "*"
+  destination_address_prefix  = "*"
+  resource_group_name         = azurerm_resource_group.main.name
+  network_security_group_name = azurerm_network_security_group.data.name
+  description                 = "Data tier should not initiate outbound connections"
+}
+
+# =============================================================================
+# Associate NSGs with Subnets
+# =============================================================================
+
+resource "azurerm_subnet_network_security_group_association" "web" {
+  subnet_id                 = azurerm_subnet.web.id
+  network_security_group_id = azurerm_network_security_group.web.id
+}
+
+resource "azurerm_subnet_network_security_group_association" "app" {
+  subnet_id                 = azurerm_subnet.app.id
+  network_security_group_id = azurerm_network_security_group.app.id
+}
+
+resource "azurerm_subnet_network_security_group_association" "data" {
+  subnet_id                 = azurerm_subnet.data.id
+  network_security_group_id = azurerm_network_security_group.data.id
+}
+
+# =============================================================================
+# NSG Flow Logs - Web Tier
+# =============================================================================
+
+resource "azurerm_network_watcher_flow_log" "web" {
+  name                 = "web-nsg-flow-log"
+  network_watcher_name = azurerm_network_watcher.main.name
+  resource_group_name  = azurerm_resource_group.main.name
+
+  network_security_group_id = azurerm_network_security_group.web.id
+  storage_account_id        = azurerm_storage_account.flow_logs.id
+  enabled                   = true
+  version                   = 2
+
+  retention_policy {
+    enabled = true
+    days    = var.log_analytics_retention_days
+  }
+
+  traffic_analytics {
+    enabled               = true
+    workspace_id          = azurerm_log_analytics_workspace.main.workspace_id
+    workspace_region      = azurerm_log_analytics_workspace.main.location
+    workspace_resource_id = azurerm_log_analytics_workspace.main.id
+    interval_in_minutes   = 10
+  }
+
+  tags = {
+    Environment = var.environment
+    Tier        = "web"
+    Purpose     = "security-audit"
+  }
+}
+
+# =============================================================================
+# NSG Flow Logs - App Tier
+# =============================================================================
+
+resource "azurerm_network_watcher_flow_log" "app" {
+  name                 = "app-nsg-flow-log"
+  network_watcher_name = azurerm_network_watcher.main.name
+  resource_group_name  = azurerm_resource_group.main.name
+
+  network_security_group_id = azurerm_network_security_group.app.id
+  storage_account_id        = azurerm_storage_account.flow_logs.id
+  enabled                   = true
+  version                   = 2
+
+  retention_policy {
+    enabled = true
+    days    = var.log_analytics_retention_days
+  }
+
+  traffic_analytics {
+    enabled               = true
+    workspace_id          = azurerm_log_analytics_workspace.main.workspace_id
+    workspace_region      = azurerm_log_analytics_workspace.main.location
+    workspace_resource_id = azurerm_log_analytics_workspace.main.id
+    interval_in_minutes   = 10
+  }
+
+  tags = {
+    Environment = var.environment
+    Tier        = "app"
+    Purpose     = "security-audit"
+  }
+}
+
+# =============================================================================
+# NSG Flow Logs - Data Tier
+# =============================================================================
+
+resource "azurerm_network_watcher_flow_log" "data" {
+  name                 = "data-nsg-flow-log"
+  network_watcher_name = azurerm_network_watcher.main.name
+  resource_group_name  = azurerm_resource_group.main.name
+
+  network_security_group_id = azurerm_network_security_group.data.id
+  storage_account_id        = azurerm_storage_account.flow_logs.id
+  enabled                   = true
+  version                   = 2
+
+  retention_policy {
+    enabled = true
+    days    = var.log_analytics_retention_days
+  }
+
+  traffic_analytics {
+    enabled               = true
+    workspace_id          = azurerm_log_analytics_workspace.main.workspace_id
+    workspace_region      = azurerm_log_analytics_workspace.main.location
+    workspace_resource_id = azurerm_log_analytics_workspace.main.id
+    interval_in_minutes   = 10
+  }
+
+  tags = {
+    Environment = var.environment
+    Tier        = "data"
+    Purpose     = "security-audit"
+  }
 }
 
 # =============================================================================
 # Outputs
 # =============================================================================
 
-output "vpc_id" {
-  description = "VPC ID"
-  value       = aws_vpc.main.id
+output "resource_group_name" {
+  description = "Name of the resource group"
+  value       = azurerm_resource_group.main.name
 }
 
-output "private_app_subnet_ids" {
-  description = "Application tier subnet IDs"
-  value       = aws_subnet.private_app[*].id
+output "vnet_id" {
+  description = "Virtual Network ID"
+  value       = azurerm_virtual_network.main.id
 }
 
-output "private_db_subnet_ids" {
-  description = "Database tier subnet IDs"
-  value       = aws_subnet.private_db[*].id
+output "vnet_name" {
+  description = "Virtual Network name"
+  value       = azurerm_virtual_network.main.name
 }
 
-output "app_security_group_id" {
-  description = "Application tier security group ID"
-  value       = aws_security_group.app.id
+output "web_subnet_id" {
+  description = "Web tier subnet ID"
+  value       = azurerm_subnet.web.id
 }
 
-output "db_security_group_id" {
-  description = "Database tier security group ID"
-  value       = aws_security_group.db.id
+output "app_subnet_id" {
+  description = "App tier subnet ID"
+  value       = azurerm_subnet.app.id
 }
+
+output "data_subnet_id" {
+  description = "Data tier subnet ID"
+  value       = azurerm_subnet.data.id
+}
+
+output "web_nsg_id" {
+  description = "Web tier Network Security Group ID"
+  value       = azurerm_network_security_group.web.id
+}
+
+output "app_nsg_id" {
+  description = "App tier Network Security Group ID"
+  value       = azurerm_network_security_group.app.id
+}
+
+output "data_nsg_id" {
+  description = "Data tier Network Security Group ID"
+  value       = azurerm_network_security_group.data.id
+}
+
+output "log_analytics_workspace_id" {
+  description = "Log Analytics Workspace ID for NSG flow logs"
+  value       = azurerm_log_analytics_workspace.main.id
+}
+
+output "flow_logs_storage_account_id" {
+  description = "Storage Account ID for NSG flow logs"
+  value       = azurerm_storage_account.flow_logs.id
+}
+
+output "network_watcher_id" {
+  description = "Network Watcher ID"
+  value       = azurerm_network_watcher.main.id
+}
+

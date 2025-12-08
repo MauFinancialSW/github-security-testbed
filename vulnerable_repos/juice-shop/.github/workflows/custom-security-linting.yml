@@ -1,0 +1,358 @@
+name: Custom Security Linting with Semgrep
+
+on:
+  pull_request:
+    branches:
+      - master
+      - develop
+  push:
+    branches:
+      - master
+      - develop
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  semgrep-custom-rules:
+    name: Run Custom Security Rules
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 #v4.2.2
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install Semgrep
+        run: |
+          pip install semgrep
+
+      - name: Check for custom rules directory
+        id: check-rules
+        run: |
+          # Check if custom rules exist (from lesson-04 labs)
+          if [ -d "labs/lesson-04/linters" ]; then
+            echo "rules-exist=true" >> $GITHUB_OUTPUT
+            echo "✅ Found custom Semgrep rules in labs/lesson-04/linters/"
+          else
+            echo "rules-exist=false" >> $GITHUB_OUTPUT
+            echo "⚠️ No custom rules directory found - using built-in rules only"
+          fi
+
+      - name: Create custom Semgrep rules for OWASP Juice Shop
+        run: |
+          # Create custom rules directory if it doesn't exist
+          mkdir -p .semgrep
+
+          # Rule 1: Detect SQL injection vulnerabilities
+          cat > .semgrep/sql-injection.yml << 'EOF'
+          rules:
+            - id: juice-shop-sql-injection
+              patterns:
+                - pattern-either:
+                    - pattern: models.sequelize.query($SQL, ...)
+                    - pattern: |
+                        $QUERY = "..." + $INPUT + "..."
+                        models.sequelize.query($QUERY, ...)
+                - pattern-not: models.sequelize.query($SQL, { replacements: [...], ... })
+              message: |
+                Potential SQL injection vulnerability detected.
+
+                This code uses raw SQL queries without parameterization, which can lead to SQL injection attacks.
+
+                SECURE ALTERNATIVE:
+                Use parameterized queries with replacements:
+
+                models.sequelize.query('SELECT * FROM users WHERE id = :id', {
+                  replacements: { id: userId },
+                  type: QueryTypes.SELECT
+                })
+              severity: ERROR
+              languages:
+                - javascript
+                - typescript
+              metadata:
+                cwe: CWE-89
+                owasp: A03:2021 - Injection
+                references:
+                  - https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html
+          EOF
+
+          # Rule 2: Detect hardcoded secrets
+          cat > .semgrep/hardcoded-secrets.yml << 'EOF'
+          rules:
+            - id: juice-shop-hardcoded-jwt-secret
+              patterns:
+                - pattern-either:
+                    - pattern: |
+                        jwt.sign(..., "$SECRET", ...)
+                    - pattern: |
+                        jwt.verify(..., "$SECRET", ...)
+                - metavariable-pattern:
+                    metavariable: $SECRET
+                    patterns:
+                      - pattern-not: process.env.$VAR
+                      - pattern-not: config.get(...)
+              message: |
+                Hardcoded JWT secret detected (CWE-798).
+
+                JWT secrets should never be hardcoded in source code.
+
+                SECURE ALTERNATIVE:
+                Store secrets in environment variables or secure configuration:
+
+                const secret = process.env.JWT_SECRET || config.get('application.jwt.secret');
+                jwt.sign(payload, secret, options);
+              severity: ERROR
+              languages:
+                - javascript
+                - typescript
+              metadata:
+                cwe: CWE-798
+                owasp: A07:2021 - Identification and Authentication Failures
+                references:
+                  - https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_for_Java_Cheat_Sheet.html
+          EOF
+
+          # Rule 3: Detect XSS vulnerabilities in EJS templates
+          cat > .semgrep/xss-detection.yml << 'EOF'
+          rules:
+            - id: juice-shop-xss-unescaped-output
+              patterns:
+                - pattern: |
+                    <%- $VAR %>
+                - pattern-not: |
+                    <%- include(...) %>
+              message: |
+                Potential XSS vulnerability: Unescaped output in EJS template.
+
+                Using <%- %> outputs raw HTML without escaping, which can lead to XSS attacks.
+
+                SECURE ALTERNATIVE:
+                Use <%= %> for automatic HTML escaping:
+
+                <%= userInput %>  // Automatically escapes HTML
+              severity: WARNING
+              languages:
+                - generic
+              paths:
+                include:
+                  - "*.ejs"
+                  - "views/**/*.ejs"
+              metadata:
+                cwe: CWE-79
+                owasp: A03:2021 - Injection
+                references:
+                  - https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html
+          EOF
+
+          # Rule 4: Detect insecure password hashing
+          cat > .semgrep/weak-crypto.yml << 'EOF'
+          rules:
+            - id: juice-shop-weak-password-hashing
+              patterns:
+                - pattern-either:
+                    - pattern: crypto.createHash('md5')
+                    - pattern: crypto.createHash('sha1')
+                - pattern-not-inside: |
+                    // vuln-code-snippet ...
+              message: |
+                Weak password hashing algorithm detected (MD5/SHA1).
+
+                MD5 and SHA1 are cryptographically broken and should not be used for password hashing.
+
+                SECURE ALTERNATIVE:
+                Use bcrypt or argon2:
+
+                const bcrypt = require('bcrypt');
+                const hash = await bcrypt.hash(password, 10);
+              severity: ERROR
+              languages:
+                - javascript
+                - typescript
+              metadata:
+                cwe: CWE-916
+                owasp: A02:2021 - Cryptographic Failures
+                references:
+                  - https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
+          EOF
+
+          # Rule 5: Detect path traversal vulnerabilities
+          cat > .semgrep/path-traversal.yml << 'EOF'
+          rules:
+            - id: juice-shop-path-traversal
+              patterns:
+                - pattern-either:
+                    - pattern: |
+                        fs.readFile($PATH, ...)
+                    - pattern: |
+                        fs.readFileSync($PATH, ...)
+                - pattern-inside: |
+                    function $FUNC(..., $REQ, ...) {
+                      ...
+                    }
+                - metavariable-pattern:
+                    metavariable: $PATH
+                    patterns:
+                      - pattern-either:
+                          - pattern: $REQ.params.$PARAM
+                          - pattern: $REQ.query.$PARAM
+                      - pattern-not: path.resolve(...)
+                      - pattern-not: path.join(__dirname, ...)
+              message: |
+                Potential path traversal vulnerability detected.
+
+                User-controlled file paths can lead to directory traversal attacks.
+
+                SECURE ALTERNATIVE:
+                Validate and sanitize file paths:
+
+                const safePath = path.resolve(publicDir, path.normalize(userInput).replace(/^(\.\.(\/|\\|$))+/, ''));
+                fs.readFile(safePath, ...);
+              severity: ERROR
+              languages:
+                - javascript
+                - typescript
+              metadata:
+                cwe: CWE-22
+                owasp: A01:2021 - Broken Access Control
+                references:
+                  - https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html
+          EOF
+
+          echo "✅ Created custom Semgrep rules for Juice Shop security patterns"
+
+      - name: Run Semgrep with custom rules
+        id: semgrep
+        continue-on-error: true
+        run: |
+          echo "Running Semgrep with custom security rules..."
+
+          semgrep scan \
+            --config .semgrep/ \
+            --error \
+            --verbose \
+            --sarif \
+            --output semgrep-results.sarif \
+            --metrics off \
+            .
+
+          # Capture exit code
+          SEMGREP_EXIT=$?
+          echo "exit-code=$SEMGREP_EXIT" >> $GITHUB_OUTPUT
+
+          if [ $SEMGREP_EXIT -eq 0 ]; then
+            echo "✅ Semgrep scan passed - no ERROR severity findings"
+          elif [ $SEMGREP_EXIT -eq 1 ]; then
+            echo "❌ Semgrep scan failed - ERROR severity findings detected"
+          else
+            echo "⚠️ Semgrep scan encountered issues"
+          fi
+
+      - name: Upload SARIF results to GitHub Security
+        if: always()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: semgrep-results.sarif
+          category: semgrep-custom-rules
+
+      - name: Parse and display findings
+        if: always()
+        run: |
+          if [ -f semgrep-results.sarif ]; then
+            echo "# Semgrep Custom Security Rules - Results" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+
+            # Count findings by severity
+            ERROR_COUNT=$(jq '[.runs[].results[] | select(.level == "error")] | length' semgrep-results.sarif)
+            WARNING_COUNT=$(jq '[.runs[].results[] | select(.level == "warning")] | length' semgrep-results.sarif)
+            NOTE_COUNT=$(jq '[.runs[].results[] | select(.level == "note")] | length' semgrep-results.sarif)
+
+            echo "## Summary" >> $GITHUB_STEP_SUMMARY
+            echo "- **ERROR**: $ERROR_COUNT findings (blocks build)" >> $GITHUB_STEP_SUMMARY
+            echo "- **WARNING**: $WARNING_COUNT findings (review recommended)" >> $GITHUB_STEP_SUMMARY
+            echo "- **NOTE**: $NOTE_COUNT findings (informational)" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+
+            if [ "$ERROR_COUNT" -gt 0 ]; then
+              echo "## ERROR Severity Findings" >> $GITHUB_STEP_SUMMARY
+              jq -r '.runs[].results[] | select(.level == "error") | "- **\(.ruleId)**: \(.message.text)\n  - File: `\(.locations[0].physicalLocation.artifactLocation.uri)`:\(.locations[0].physicalLocation.region.startLine)"' semgrep-results.sarif >> $GITHUB_STEP_SUMMARY
+            fi
+
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "📊 Full results available in the Security tab: Code scanning alerts" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Fail build on ERROR findings
+        if: steps.semgrep.outputs.exit-code == '1'
+        run: |
+          echo "❌ Build failed due to ERROR severity security findings"
+          echo "Fix the security issues or suppress false positives with nosemgrep comments"
+          exit 1
+
+      - name: Post PR comment with findings
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+
+            if (!fs.existsSync('semgrep-results.sarif')) {
+              console.log('No SARIF results found');
+              return;
+            }
+
+            const sarif = JSON.parse(fs.readFileSync('semgrep-results.sarif', 'utf8'));
+            const results = sarif.runs[0]?.results || [];
+
+            const errorFindings = results.filter(r => r.level === 'error');
+            const warningFindings = results.filter(r => r.level === 'warning');
+
+            let comment = '## 🔒 Custom Security Linting Results\n\n';
+            comment += `**Scan Status:** ${errorFindings.length > 0 ? '❌ Failed' : '✅ Passed'}\n\n`;
+            comment += `### Summary\n`;
+            comment += `- Errors: ${errorFindings.length}\n`;
+            comment += `- Warnings: ${warningFindings.length}\n\n`;
+
+            if (errorFindings.length > 0) {
+              comment += `### ❌ Errors (must fix before merge)\n\n`;
+              errorFindings.slice(0, 5).forEach(finding => {
+                const location = finding.locations[0]?.physicalLocation;
+                const file = location?.artifactLocation?.uri;
+                const line = location?.region?.startLine;
+                comment += `- **${finding.ruleId}**: ${finding.message.text}\n`;
+                comment += `  - \`${file}:${line}\`\n\n`;
+              });
+
+              if (errorFindings.length > 5) {
+                comment += `\n_... and ${errorFindings.length - 5} more errors_\n\n`;
+              }
+            }
+
+            if (warningFindings.length > 0) {
+              comment += `### ⚠️ Warnings (review recommended)\n\n`;
+              warningFindings.slice(0, 3).forEach(finding => {
+                const location = finding.locations[0]?.physicalLocation;
+                const file = location?.artifactLocation?.uri;
+                const line = location?.region?.startLine;
+                comment += `- **${finding.ruleId}**: ${finding.message.text}\n`;
+                comment += `  - \`${file}:${line}\`\n\n`;
+              });
+            }
+
+            comment += '\n---\n';
+            comment += '💡 **Tip**: View detailed findings in the [Security tab](/${{ github.repository }}/security/code-scanning)\n';
+            comment += '\n*Generated with [Claude Code](https://claude.com/claude-code)*';
+
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: comment
+            });
