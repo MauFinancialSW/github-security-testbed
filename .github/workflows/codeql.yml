@@ -7,12 +7,13 @@ name: CodeQL
 
 on:
 
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-  schedule:
-    - cron: '0 0 * * 0'
+  # push:
+  #   branches: [main]
+  # pull_request:
+  #   branches: [main]
+  # schedule:
+  #   # Mon-Fri at 2 AM Central (7 AM UTC during CST, 8 AM UTC during CDT)
+  #   - cron: '0 7 * * 1-5'
   workflow_dispatch:
 
 

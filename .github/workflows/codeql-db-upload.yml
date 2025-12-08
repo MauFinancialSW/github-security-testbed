@@ -12,16 +12,21 @@ jobs:
         with:
           path: juice-shop
 
-      - name: Set up CodeQL CLI
-        uses: github/codeql-action/init@v2
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
         with:
-          languages: javascript
-          # Specify the source root
+          languages: javascript-typescript
           source-root: juice-shop
 
-      - name: Build database
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:javascript-typescript"
+
+      - name: Export CodeQL database
         run: |
-          codeql database create codeql-db --language=javascript --source-root=juice-shop
+          # The database is created by the init/analyze actions at $RUNNER_TEMP/codeql_databases/javascript
+          cp -r $RUNNER_TEMP/codeql_databases/javascript codeql-db
 
       - name: Upload CodeQL database artifact
         uses: actions/upload-artifact@v4

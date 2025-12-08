@@ -13,14 +13,14 @@
 name: Security Pipeline
 
 on:
-  push:
-    branches: [main, develop]
-  pull_request:
-    branches: [main]
+  # push:
+  #   branches: [main, develop]
+  # pull_request:
+  #   branches: [main]
 
-  schedule:
-    # Run security scans daily at 6 AM UTC
-    - cron: '0 6 * * *'
+  # schedule:
+  #   # Run security scans daily at 6 AM UTC
+  #   - cron: '0 6 * * *'
   workflow_dispatch:
     inputs:
       full_scan:
