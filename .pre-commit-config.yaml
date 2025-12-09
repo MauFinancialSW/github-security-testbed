@@ -1,0 +1,69 @@
+# Pre-commit Hook Configuration
+# ==============================
+# Automated security scanning before commits
+# Install: pre-commit install
+# Run manually: pre-commit run --all-files
+
+repos:
+  # Semgrep - SAST for secrets and vulnerabilities
+  - repo: https://github.com/returntocorp/semgrep
+    rev: v1.52.0
+    hooks:
+      - id: semgrep
+        name: Semgrep Security Scan
+        entry: semgrep
+        language: python
+        types: [text]
+        args:
+          - --config=p/secrets
+          - --config=p/security-audit
+          - --config=p/owasp-top-ten
+          - --error
+          - --strict
+          - --verbose
+        exclude: |
+          (?x)^(
+            .*\.min\.js|
+            .*\.map|
+            node_modules/|
+            vendor/|
+            \.git/|
+            \.venv/|
+            venv/|
+            __pycache__/|
+            \.pytest_cache/|
+            \.mypy_cache/|
+            dist/|
+            build/|
+            \.lock$|
+            package-lock\.json|
+            yarn\.lock
+          )
+
+  # Standard pre-commit hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: \.md$
+      - id: end-of-file-fixer
+      - id: check-yaml
+        args: [--unsafe]
+      - id: check-json
+      - id: check-added-large-files
+        args: [--maxkb=1024]
+      - id: detect-private-key
+      - id: detect-aws-credentials
+        args: [--allow-missing-credentials]
+
+  # YAML linting
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.33.0
+    hooks:
+      - id: yamllint
+        args: [-d, '{extends: relaxed, rules: {line-length: {max: 120}}}']
+        exclude: |
+          (?x)^(
+            \.github/workflows/|
+            vulnerable_repos/
+          )

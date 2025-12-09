@@ -1,0 +1,25 @@
+# Name of this CodeQL config — helps if you have multiple configs
+name: "NodeGoat-only CodeQL config"
+
+disable-default-queries: true   # we will explicitly pick what to run
+
+packs:
+  # Use the standard JavaScript security-extended query suite
+  - codeql/javascript-queries:codeql-suites/javascript-security-extended.qls
+
+# Only scan paths under vulnerable_repos/NodeGoat
+paths:
+  - 'vulnerable_repos/NodeGoat/**'
+
+# Optionally, ignore paths under NodeGoat that you don't care about
+paths-ignore:
+  - 'vulnerable_repos/NodeGoat/node_modules/**'
+  - 'vulnerable_repos/NodeGoat/**/*.test.js'
+  - 'vulnerable_repos/NodeGoat/**/*.spec.js'
+
+# Optional: filter out low-severity warnings/recommendations to reduce noise
+query-filters:
+  - exclude:
+      problems.severity:
+        - warning
+        - recommendation
