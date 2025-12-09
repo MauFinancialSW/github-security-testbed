@@ -1,0 +1,3502 @@
+[
+  {
+    "alert_number": 1735,
+    "rule_id": "generic.html-templates.security.unquoted-attribute-var.unquoted-attribute-var",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection",
+      "OWASP-A07:2017 - Cross-Site Scripting (XSS)"
+    ],
+    "file_path": "vulnerable_repos/juice-shop/views/dataErasureForm.hbs"
+  },
+  {
+    "alert_number": 1734,
+    "rule_id": "javascript.express.security.audit.express-check-directory-listing.express-check-directory-listing",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control",
+      "OWASP-A06:2017 - Security Misconfiguration"
+    ],
+    "file_path": "vulnerable_repos/juice-shop/server.ts"
+  },
+  {
+    "alert_number": 1733,
+    "rule_id": "javascript.express.security.audit.express-check-directory-listing.express-check-directory-listing",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control",
+      "OWASP-A06:2017 - Security Misconfiguration"
+    ],
+    "file_path": "vulnerable_repos/juice-shop/server.ts"
+  },
+  {
+    "alert_number": 1732,
+    "rule_id": "javascript.express.security.audit.express-check-directory-listing.express-check-directory-listing",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control",
+      "OWASP-A06:2017 - Security Misconfiguration"
+    ],
+    "file_path": "vulnerable_repos/juice-shop/server.ts"
+  },
+  {
+    "alert_number": 1731,
+    "rule_id": "javascript.express.security.audit.express-check-directory-listing.express-check-directory-listing",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control",
+      "OWASP-A06:2017 - Security Misconfiguration"
+    ],
+    "file_path": "vulnerable_repos/juice-shop/server.ts"
+  },
+  {
+    "alert_number": 1730,
+    "rule_id": "javascript.lang.security.audit.unknown-value-with-script-tag.unknown-value-with-script-tag",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection",
+      "OWASP-A07:2017 - Cross-Site Scripting (XSS)"
+    ],
+    "file_path": "vulnerable_repos/juice-shop/routes/videoHandler.ts"
+  },
+  {
+    "alert_number": 1729,
+    "rule_id": "javascript.lang.security.audit.unknown-value-with-script-tag.unknown-value-with-script-tag",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection",
+      "OWASP-A07:2017 - Cross-Site Scripting (XSS)"
+    ],
+    "file_path": "vulnerable_repos/juice-shop/routes/videoHandler.ts"
+  },
+  {
+    "alert_number": 1728,
+    "rule_id": "javascript.lang.security.audit.code-string-concat.code-string-concat",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "vulnerable_repos/juice-shop/routes/userProfile.ts"
+  },
+  {
+    "alert_number": 1727,
+    "rule_id": "javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "vulnerable_repos/juice-shop/routes/search.ts"
+  },
+  {
+    "alert_number": 1726,
+    "rule_id": "javascript.express.security.audit.express-open-redirect.express-open-redirect",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/juice-shop/routes/redirect.ts"
+  },
+  {
+    "alert_number": 1725,
+    "rule_id": "javascript.express.security.audit.possible-user-input-redirect.unknown-value-in-redirect",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/juice-shop/routes/redirect.ts"
+  },
+  {
+    "alert_number": 1724,
+    "rule_id": "javascript.express.security.audit.express-res-sendfile.express-res-sendfile",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A04:2021 - Insecure Design"
+    ],
+    "file_path": "vulnerable_repos/juice-shop/routes/quarantineServer.ts"
+  },
+  {
+    "alert_number": 1723,
+    "rule_id": "javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "vulnerable_repos/juice-shop/routes/login.ts"
+  },
+  {
+    "alert_number": 1722,
+    "rule_id": "javascript.express.security.audit.express-res-sendfile.express-res-sendfile",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A04:2021 - Insecure Design"
+    ],
+    "file_path": "vulnerable_repos/juice-shop/routes/logfileServer.ts"
+  },
+  {
+    "alert_number": 1721,
+    "rule_id": "javascript.express.security.audit.express-res-sendfile.express-res-sendfile",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A04:2021 - Insecure Design"
+    ],
+    "file_path": "vulnerable_repos/juice-shop/routes/keyServer.ts"
+  },
+  {
+    "alert_number": 1720,
+    "rule_id": "javascript.express.security.audit.express-res-sendfile.express-res-sendfile",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A04:2021 - Insecure Design"
+    ],
+    "file_path": "vulnerable_repos/juice-shop/routes/fileServer.ts"
+  },
+  {
+    "alert_number": 1719,
+    "rule_id": "javascript.express.security.injection.raw-html-format.raw-html-format",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection",
+      "OWASP-A07:2017 - Cross-Site Scripting (XSS)"
+    ],
+    "file_path": "vulnerable_repos/juice-shop/routes/chatbot.ts"
+  },
+  {
+    "alert_number": 1718,
+    "rule_id": "javascript.jsonwebtoken.security.jwt-hardcode.hardcoded-jwt-secret",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A07:2021 - Identification and Authentication Failures"
+    ],
+    "file_path": "vulnerable_repos/juice-shop/lib/insecurity.ts"
+  },
+  {
+    "alert_number": 1717,
+    "rule_id": "javascript.jsonwebtoken.security.jwt-hardcode.hardcoded-jwt-secret",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A07:2021 - Identification and Authentication Failures"
+    ],
+    "file_path": "vulnerable_repos/juice-shop/labs/lesson-04/test-cases/vulnerable.js"
+  },
+  {
+    "alert_number": 1716,
+    "rule_id": "javascript.jsonwebtoken.security.jwt-hardcode.hardcoded-jwt-secret",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A07:2021 - Identification and Authentication Failures"
+    ],
+    "file_path": "vulnerable_repos/juice-shop/labs/lesson-04/test-cases/vulnerable.js"
+  },
+  {
+    "alert_number": 1715,
+    "rule_id": "javascript.jsonwebtoken.security.jwt-hardcode.hardcoded-jwt-secret",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A07:2021 - Identification and Authentication Failures"
+    ],
+    "file_path": "vulnerable_repos/juice-shop/labs/lesson-04/test-cases/vulnerable.js"
+  },
+  {
+    "alert_number": 1714,
+    "rule_id": "javascript.jsonwebtoken.security.jwt-hardcode.hardcoded-jwt-secret",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A07:2021 - Identification and Authentication Failures"
+    ],
+    "file_path": "vulnerable_repos/juice-shop/labs/lesson-04/auth-api/server.js"
+  },
+  {
+    "alert_number": 1713,
+    "rule_id": "javascript.jsonwebtoken.security.jwt-hardcode.hardcoded-jwt-secret",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A07:2021 - Identification and Authentication Failures"
+    ],
+    "file_path": "vulnerable_repos/juice-shop/labs/lesson-04/auth-api/middleware/auth.js"
+  },
+  {
+    "alert_number": 1708,
+    "rule_id": "javascript.node-crypto.security.gcm-no-tag-length.gcm-no-tag-length",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures"
+    ],
+    "file_path": "vulnerable_repos/juice-shop/labs/lesson-02/encryption-demo.js"
+  },
+  {
+    "alert_number": 1707,
+    "rule_id": "terraform.azure.security.storage.storage-use-secure-tls-policy.storage-use-secure-tls-policy",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures",
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "vulnerable_repos/juice-shop/iac/juice-shop-insecure/main.tf"
+  },
+  {
+    "alert_number": 1706,
+    "rule_id": "terraform.azure.security.storage.storage-enforce-https.storage-enforce-https",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures",
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "vulnerable_repos/juice-shop/iac/juice-shop-insecure/main.tf"
+  },
+  {
+    "alert_number": 1705,
+    "rule_id": "terraform.azure.security.azure-mssql-service-mintls-version.azure-mssql-service-mintls-version",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures",
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "vulnerable_repos/juice-shop/iac/juice-shop-insecure/main.tf"
+  },
+  {
+    "alert_number": 1704,
+    "rule_id": "terraform.azure.security.azure-key-no-expiration-date.azure-key-no-expiration-date",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "vulnerable_repos/juice-shop/iac/juice-shop-hardened/main.tf"
+  },
+  {
+    "alert_number": 1703,
+    "rule_id": "generic.html-templates.security.unquoted-attribute-var.unquoted-attribute-var",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection",
+      "OWASP-A07:2017 - Cross-Site Scripting (XSS)"
+    ],
+    "file_path": "vulnerable_repos/juice-shop/frontend/src/app/search-result/search-result.component.html"
+  },
+  {
+    "alert_number": 1702,
+    "rule_id": "generic.html-templates.security.unquoted-attribute-var.unquoted-attribute-var",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection",
+      "OWASP-A07:2017 - Cross-Site Scripting (XSS)"
+    ],
+    "file_path": "vulnerable_repos/juice-shop/frontend/src/app/purchase-basket/purchase-basket.component.html"
+  },
+  {
+    "alert_number": 1701,
+    "rule_id": "generic.html-templates.security.unquoted-attribute-var.unquoted-attribute-var",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection",
+      "OWASP-A07:2017 - Cross-Site Scripting (XSS)"
+    ],
+    "file_path": "vulnerable_repos/juice-shop/frontend/src/app/navbar/navbar.component.html"
+  },
+  {
+    "alert_number": 1700,
+    "rule_id": "javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "vulnerable_repos/juice-shop/data/static/codefixes/unionSqlInjectionChallenge_3.ts"
+  },
+  {
+    "alert_number": 1699,
+    "rule_id": "javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "vulnerable_repos/juice-shop/data/static/codefixes/unionSqlInjectionChallenge_1.ts"
+  },
+  {
+    "alert_number": 1698,
+    "rule_id": "javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "vulnerable_repos/juice-shop/data/static/codefixes/dbSchemaChallenge_3.ts"
+  },
+  {
+    "alert_number": 1697,
+    "rule_id": "javascript.sequelize.security.audit.sequelize-injection-express.express-sequelize-injection",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "vulnerable_repos/juice-shop/data/static/codefixes/dbSchemaChallenge_1.ts"
+  },
+  {
+    "alert_number": 1696,
+    "rule_id": "html.security.plaintext-http-link.plaintext-http-link",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures",
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/resources/lessons/clientsidefiltering/html/ClientSideFiltering.html"
+  },
+  {
+    "alert_number": 1695,
+    "rule_id": "java.spring.security.audit.spring-actuator-non-health-enabled.spring-actuator-dangerous-endpoints-enabled",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/resources/application-webgoat.properties"
+  },
+  {
+    "alert_number": 1694,
+    "rule_id": "java.spring.security.injection.tainted-file-path.tainted-file-path",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/webwolf/FileServer.java"
+  },
+  {
+    "alert_number": 1693,
+    "rule_id": "java.spring.security.unrestricted-request-mapping.unrestricted-request-mapping",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/webwolf/FileServer.java"
+  },
+  {
+    "alert_number": 1692,
+    "rule_id": "java.spring.security.unrestricted-request-mapping.unrestricted-request-mapping",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/xxe/SimpleXXE.java"
+  },
+  {
+    "alert_number": 1691,
+    "rule_id": "java.spring.security.injection.tainted-sql-string.tainted-sql-string",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/sqlinjection/mitigation/Servers.java"
+  },
+  {
+    "alert_number": 1690,
+    "rule_id": "java.lang.security.audit.formatted-sql-string.formatted-sql-string",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/sqlinjection/introduction/SqlInjectionLesson9.java"
+  },
+  {
+    "alert_number": 1689,
+    "rule_id": "java.lang.security.audit.formatted-sql-string.formatted-sql-string",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/sqlinjection/introduction/SqlInjectionLesson8.java"
+  },
+  {
+    "alert_number": 1688,
+    "rule_id": "java.lang.security.audit.formatted-sql-string.formatted-sql-string",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/sqlinjection/introduction/SqlInjectionLesson8.java"
+  },
+  {
+    "alert_number": 1687,
+    "rule_id": "java.lang.security.audit.formatted-sql-string.formatted-sql-string",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/sqlinjection/introduction/SqlInjectionLesson5b.java"
+  },
+  {
+    "alert_number": 1686,
+    "rule_id": "java.lang.security.audit.formatted-sql-string.formatted-sql-string",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/sqlinjection/introduction/SqlInjectionLesson5a.java"
+  },
+  {
+    "alert_number": 1685,
+    "rule_id": "java.lang.security.audit.formatted-sql-string.formatted-sql-string",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/sqlinjection/introduction/SqlInjectionLesson10.java"
+  },
+  {
+    "alert_number": 1684,
+    "rule_id": "java.lang.security.audit.formatted-sql-string.formatted-sql-string",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/sqlinjection/advanced/SqlInjectionChallenge.java"
+  },
+  {
+    "alert_number": 1683,
+    "rule_id": "java.spring.security.injection.tainted-sql-string.tainted-sql-string",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/sqlinjection/advanced/SqlInjectionChallenge.java"
+  },
+  {
+    "alert_number": 1682,
+    "rule_id": "java.lang.security.audit.cookie-missing-httponly.cookie-missing-httponly",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/spoofcookie/SpoofCookieAssignment.java"
+  },
+  {
+    "alert_number": 1681,
+    "rule_id": "java.lang.security.audit.cookie-missing-secure-flag.cookie-missing-secure-flag",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/spoofcookie/SpoofCookieAssignment.java"
+  },
+  {
+    "alert_number": 1680,
+    "rule_id": "java.lang.security.audit.cookie-missing-httponly.cookie-missing-httponly",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/spoofcookie/SpoofCookieAssignment.java"
+  },
+  {
+    "alert_number": 1679,
+    "rule_id": "java.lang.security.httpservlet-path-traversal.httpservlet-path-traversal",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control",
+      "OWASP-A05:2017 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/pathtraversal/ProfileUploadRetrieval.java"
+  },
+  {
+    "alert_number": 1678,
+    "rule_id": "java.spring.security.audit.spring-unvalidated-redirect.spring-unvalidated-redirect",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/openredirect/OpenRedirectRealRedirect.java"
+  },
+  {
+    "alert_number": 1677,
+    "rule_id": "java.spring.security.injection.tainted-url-host.tainted-url-host",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A10:2021 - Server-Side Request Forgery (SSRF)"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/jwt/claimmisuse/JWTHeaderJKUEndpoint.java"
+  },
+  {
+    "alert_number": 1676,
+    "rule_id": "java.lang.security.audit.cookie-missing-secure-flag.cookie-missing-secure-flag",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/jwt/JWTVotesEndpoint.java"
+  },
+  {
+    "alert_number": 1675,
+    "rule_id": "java.lang.security.audit.cookie-missing-httponly.cookie-missing-httponly",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/jwt/JWTVotesEndpoint.java"
+  },
+  {
+    "alert_number": 1674,
+    "rule_id": "java.lang.security.audit.cookie-missing-secure-flag.cookie-missing-secure-flag",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/jwt/JWTVotesEndpoint.java"
+  },
+  {
+    "alert_number": 1673,
+    "rule_id": "java.lang.security.audit.cookie-missing-httponly.cookie-missing-httponly",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/jwt/JWTVotesEndpoint.java"
+  },
+  {
+    "alert_number": 1672,
+    "rule_id": "java.spring.security.unrestricted-request-mapping.unrestricted-request-mapping",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/jwt/JWTSecretKeyEndpoint.java"
+  },
+  {
+    "alert_number": 1671,
+    "rule_id": "java.lang.security.audit.crypto.weak-random.weak-random",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/jwt/JWTSecretKeyEndpoint.java"
+  },
+  {
+    "alert_number": 1670,
+    "rule_id": "java.lang.security.audit.crypto.weak-random.weak-random",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/hijacksession/cas/HijackSessionAuthenticationProvider.java"
+  },
+  {
+    "alert_number": 1669,
+    "rule_id": "java.lang.security.audit.cookie-missing-httponly.cookie-missing-httponly",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/hijacksession/HijackSessionAssignment.java"
+  },
+  {
+    "alert_number": 1668,
+    "rule_id": "java.lang.security.audit.object-deserialization.object-deserialization",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A08:2017 - Insecure Deserialization",
+      "OWASP-A08:2021 - Software and Data Integrity Failures"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/deserialization/SerializationHelper.java"
+  },
+  {
+    "alert_number": 1667,
+    "rule_id": "java.lang.security.audit.object-deserialization.object-deserialization",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A08:2017 - Insecure Deserialization",
+      "OWASP-A08:2021 - Software and Data Integrity Failures"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/deserialization/InsecureDeserializationTask.java"
+  },
+  {
+    "alert_number": 1666,
+    "rule_id": "java.spring.security.unrestricted-request-mapping.unrestricted-request-mapping",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/cryptography/SigningAssignment.java"
+  },
+  {
+    "alert_number": 1665,
+    "rule_id": "java.lang.security.audit.crypto.weak-random.weak-random",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/cryptography/HashingAssignment.java"
+  },
+  {
+    "alert_number": 1664,
+    "rule_id": "java.spring.security.unrestricted-request-mapping.unrestricted-request-mapping",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/cryptography/HashingAssignment.java"
+  },
+  {
+    "alert_number": 1663,
+    "rule_id": "java.lang.security.audit.crypto.use-of-md5.use-of-md5",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures",
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/cryptography/HashingAssignment.java"
+  },
+  {
+    "alert_number": 1662,
+    "rule_id": "java.lang.security.audit.crypto.weak-random.weak-random",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/cryptography/HashingAssignment.java"
+  },
+  {
+    "alert_number": 1661,
+    "rule_id": "java.spring.security.unrestricted-request-mapping.unrestricted-request-mapping",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/cryptography/HashingAssignment.java"
+  },
+  {
+    "alert_number": 1660,
+    "rule_id": "java.lang.security.audit.tainted-session-from-http-request.tainted-session-from-http-request",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A04:2021 - Insecure Design"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/cryptography/EncodingAssignment.java"
+  },
+  {
+    "alert_number": 1659,
+    "rule_id": "java.lang.security.audit.crypto.weak-random.weak-random",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/cryptography/EncodingAssignment.java"
+  },
+  {
+    "alert_number": 1658,
+    "rule_id": "java.lang.security.audit.formatted-sql-string.formatted-sql-string",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/challenges/challenge5/Assignment5.java"
+  },
+  {
+    "alert_number": 1657,
+    "rule_id": "java.spring.security.injection.tainted-sql-string.tainted-sql-string",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/challenges/challenge5/Assignment5.java"
+  },
+  {
+    "alert_number": 1656,
+    "rule_id": "java.lang.security.audit.crypto.weak-random.weak-random",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/lessons/challenges/challenge1/ImageServlet.java"
+  },
+  {
+    "alert_number": 1655,
+    "rule_id": "java.spring.security.unrestricted-request-mapping.unrestricted-request-mapping",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/container/service/SessionService.java"
+  },
+  {
+    "alert_number": 1654,
+    "rule_id": "java.spring.security.unrestricted-request-mapping.unrestricted-request-mapping",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/container/service/LessonMenuService.java"
+  },
+  {
+    "alert_number": 1653,
+    "rule_id": "java.spring.security.unrestricted-request-mapping.unrestricted-request-mapping",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/container/service/LabelDebugService.java"
+  },
+  {
+    "alert_number": 1652,
+    "rule_id": "java.spring.security.unrestricted-request-mapping.unrestricted-request-mapping",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/WebGoat/src/main/java/org/owasp/webgoat/container/service/LabelDebugService.java"
+  },
+  {
+    "alert_number": 1651,
+    "rule_id": "terraform.gcp.security.gcp-cloud-storage-logging.gcp-cloud-storage-logging",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A09:2021 - Security Logging and Monitoring Failures",
+      "OWASP-A10:2017 - Insufficient Logging & Monitoring"
+    ],
+    "file_path": "vulnerable_repos/TerraGoat/terraform/gcp/gcs.tf"
+  },
+  {
+    "alert_number": 1650,
+    "rule_id": "terraform.azure.security.storage.storage-use-secure-tls-policy.storage-use-secure-tls-policy",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures",
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "vulnerable_repos/TerraGoat/terraform/azure/storage.tf"
+  },
+  {
+    "alert_number": 1649,
+    "rule_id": "terraform.azure.security.azure-key-no-expiration-date.azure-key-no-expiration-date",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "vulnerable_repos/TerraGoat/terraform/azure/key_vault.tf"
+  },
+  {
+    "alert_number": 1648,
+    "rule_id": "terraform.aws.security.aws-provider-static-credentials.aws-provider-static-credentials",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A07:2021 - Identification and Authentication Failures"
+    ],
+    "file_path": "vulnerable_repos/TerraGoat/terraform/aws/providers.tf"
+  },
+  {
+    "alert_number": 1647,
+    "rule_id": "terraform.aws.security.aws-lambda-x-ray-tracing-not-active.aws-lambda-x-ray-tracing-not-active",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A09:2021 Security Logging and Monitoring Failures"
+    ],
+    "file_path": "vulnerable_repos/TerraGoat/terraform/aws/lambda.tf"
+  },
+  {
+    "alert_number": 1646,
+    "rule_id": "terraform.aws.security.aws-kms-no-rotation.aws-kms-no-rotation",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures",
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "vulnerable_repos/TerraGoat/terraform/aws/kms.tf"
+  },
+  {
+    "alert_number": 1645,
+    "rule_id": "terraform.aws.security.aws-subnet-has-public-ip-address.aws-subnet-has-public-ip-address",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/TerraGoat/terraform/aws/ec2.tf"
+  },
+  {
+    "alert_number": 1644,
+    "rule_id": "terraform.aws.security.aws-subnet-has-public-ip-address.aws-subnet-has-public-ip-address",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/TerraGoat/terraform/aws/ec2.tf"
+  },
+  {
+    "alert_number": 1643,
+    "rule_id": "terraform.aws.security.aws-ebs-volume-unencrypted.aws-ebs-volume-unencrypted",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2017 - Sensitive Data Exposure",
+      "OWASP-A04:2021 - Insecure Design"
+    ],
+    "file_path": "vulnerable_repos/TerraGoat/terraform/aws/ec2.tf"
+  },
+  {
+    "alert_number": 1642,
+    "rule_id": "terraform.lang.security.ec2-imdsv1-optional.ec2-imdsv1-optional",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A10:2021 - Server-Side Request Forgery (SSRF)"
+    ],
+    "file_path": "vulnerable_repos/TerraGoat/terraform/aws/ec2.tf"
+  },
+  {
+    "alert_number": 1641,
+    "rule_id": "terraform.lang.security.ec2-imdsv1-optional.ec2-imdsv1-optional",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A10:2021 - Server-Side Request Forgery (SSRF)"
+    ],
+    "file_path": "vulnerable_repos/TerraGoat/terraform/aws/db-app.tf"
+  },
+  {
+    "alert_number": 1640,
+    "rule_id": "terraform.aws.security.aws-rds-backup-no-retention.aws-rds-backup-no-retention",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "vulnerable_repos/TerraGoat/terraform/aws/db-app.tf"
+  },
+  {
+    "alert_number": 1639,
+    "rule_id": "terraform.aws.security.aws-db-instance-no-logging.aws-db-instance-no-logging",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2017 - Sensitive Data Exposure",
+      "OWASP-A04:2021 - Insecure Design"
+    ],
+    "file_path": "vulnerable_repos/TerraGoat/terraform/aws/db-app.tf"
+  },
+  {
+    "alert_number": 1638,
+    "rule_id": "python.django.security.audit.secure-cookies.django-secure-set-cookie",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1637,
+    "rule_id": "python.django.security.audit.secure-cookies.django-secure-set-cookie",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1636,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1635,
+    "rule_id": "python.django.security.audit.secure-cookies.django-secure-set-cookie",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1634,
+    "rule_id": "python.django.security.audit.secure-cookies.django-secure-set-cookie",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1633,
+    "rule_id": "python.django.security.audit.secure-cookies.django-secure-set-cookie",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1632,
+    "rule_id": "python.lang.security.audit.md5-used-as-password.md5-used-as-password",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures",
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1631,
+    "rule_id": "python.lang.security.audit.md5-used-as-password.md5-used-as-password",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures",
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1630,
+    "rule_id": "python.lang.security.insecure-hash-algorithms-md5.insecure-hash-algorithm-md5",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures",
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1629,
+    "rule_id": "python.django.security.injection.raw-html-format.raw-html-format",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection",
+      "OWASP-A07:2017 - Cross-Site Scripting (XSS)"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1628,
+    "rule_id": "python.django.security.injection.request-data-write.request-data-write",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1627,
+    "rule_id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A10:2021 - Server-Side Request Forgery (SSRF)"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1626,
+    "rule_id": "python.django.security.audit.raw-query.avoid-raw-sql",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1625,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1624,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1623,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1622,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1621,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1620,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1619,
+    "rule_id": "python.django.security.audit.avoid-insecure-deserialization.avoid-insecure-deserialization",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A08:2017 - Insecure Deserialization",
+      "OWASP-A08:2021 - Software and Data Integrity Failures"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1618,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1617,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1616,
+    "rule_id": "python.lang.security.audit.eval-detected.eval-detected",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1615,
+    "rule_id": "python.django.security.injection.code.user-eval.user-eval",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1614,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1613,
+    "rule_id": "python.lang.security.audit.subprocess-shell-true.subprocess-shell-true",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1612,
+    "rule_id": "python.lang.security.dangerous-subprocess-use.dangerous-subprocess-use",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1611,
+    "rule_id": "python.django.security.injection.command.subprocess-injection.subprocess-injection",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1610,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1609,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1608,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1607,
+    "rule_id": "python.django.security.audit.secure-cookies.django-secure-set-cookie",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1606,
+    "rule_id": "python.django.security.audit.secure-cookies.django-secure-set-cookie",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1605,
+    "rule_id": "python.django.security.audit.secure-cookies.django-secure-set-cookie",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1604,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1603,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1602,
+    "rule_id": "python.lang.security.deserialization.pickle.avoid-pickle",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A08:2017 - Insecure Deserialization",
+      "OWASP-A08:2021 - Software and Data Integrity Failures"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1601,
+    "rule_id": "python.django.security.audit.avoid-insecure-deserialization.avoid-insecure-deserialization",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A08:2017 - Insecure Deserialization",
+      "OWASP-A08:2021 - Software and Data Integrity Failures"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1600,
+    "rule_id": "python.django.security.audit.secure-cookies.django-secure-set-cookie",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1599,
+    "rule_id": "python.lang.security.deserialization.pickle.avoid-pickle",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A08:2017 - Insecure Deserialization",
+      "OWASP-A08:2021 - Software and Data Integrity Failures"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1598,
+    "rule_id": "python.django.security.audit.raw-query.avoid-raw-sql",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1597,
+    "rule_id": "python.lang.security.use-defused-xml.use-defused-xml",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A04:2017 - XML External Entities (XXE)",
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1596,
+    "rule_id": "python.lang.security.use-defused-xml.use-defused-xml",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A04:2017 - XML External Entities (XXE)",
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1595,
+    "rule_id": "python.lang.security.use-defused-xml.use-defused-xml",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A04:2017 - XML External Entities (XXE)",
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 1594,
+    "rule_id": "python.flask.security.xss.audit.template-unescaped-with-safe.template-unescaped-with-safe",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection",
+      "OWASP-A07:2017 - Cross-Site Scripting (XSS)"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/templates/Lab_2021/A8_software_and_data_integrity_failure/lab2.html"
+  },
+  {
+    "alert_number": 1593,
+    "rule_id": "generic.html-templates.security.unquoted-attribute-var.unquoted-attribute-var",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection",
+      "OWASP-A07:2017 - Cross-Site Scripting (XSS)"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/templates/Lab_2021/A3_Injection/ssti_lab.html"
+  },
+  {
+    "alert_number": 1592,
+    "rule_id": "python.flask.security.xss.audit.template-unescaped-with-safe.template-unescaped-with-safe",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection",
+      "OWASP-A07:2017 - Cross-Site Scripting (XSS)"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/templates/Lab/ssrf/ssrf_lab2.html"
+  },
+  {
+    "alert_number": 1591,
+    "rule_id": "python.flask.security.xss.audit.template-unescaped-with-safe.template-unescaped-with-safe",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection",
+      "OWASP-A07:2017 - Cross-Site Scripting (XSS)"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/templates/Lab/XSS/xss_lab_2.html"
+  },
+  {
+    "alert_number": 1590,
+    "rule_id": "python.flask.security.xss.audit.template-unescaped-with-safe.template-unescaped-with-safe",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection",
+      "OWASP-A07:2017 - Cross-Site Scripting (XSS)"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/templates/Lab/XSS/xss_lab.html"
+  },
+  {
+    "alert_number": 1589,
+    "rule_id": "generic.html-templates.security.var-in-script-tag.var-in-script-tag",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection",
+      "OWASP-A07:2017 - Cross-Site Scripting (XSS)"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/templates/Lab/A9/a9_lab2.html"
+  },
+  {
+    "alert_number": 1588,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/playground/A9/archive.py"
+  },
+  {
+    "alert_number": 1587,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/playground/A9/api.py"
+  },
+  {
+    "alert_number": 1586,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/mitre.py"
+  },
+  {
+    "alert_number": 1585,
+    "rule_id": "python.lang.security.audit.subprocess-shell-true.subprocess-shell-true",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/mitre.py"
+  },
+  {
+    "alert_number": 1584,
+    "rule_id": "python.lang.security.audit.eval-detected.eval-detected",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/mitre.py"
+  },
+  {
+    "alert_number": 1583,
+    "rule_id": "python.django.security.injection.code.user-eval.user-eval",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/mitre.py"
+  },
+  {
+    "alert_number": 1582,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/mitre.py"
+  },
+  {
+    "alert_number": 1581,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/mitre.py"
+  },
+  {
+    "alert_number": 1580,
+    "rule_id": "python.django.security.audit.secure-cookies.django-secure-set-cookie",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/mitre.py"
+  },
+  {
+    "alert_number": 1579,
+    "rule_id": "python.jwt.security.jwt-hardcode.jwt-python-hardcoded-secret",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2017 - Broken Authentication",
+      "OWASP-A04:2021 - Insecure Design"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/mitre.py"
+  },
+  {
+    "alert_number": 1578,
+    "rule_id": "python.lang.security.audit.md5-used-as-password.md5-used-as-password",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures",
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/mitre.py"
+  },
+  {
+    "alert_number": 1577,
+    "rule_id": "python.lang.security.insecure-hash-algorithms-md5.insecure-hash-algorithm-md5",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures",
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/mitre.py"
+  },
+  {
+    "alert_number": 1576,
+    "rule_id": "python.django.security.injection.request-data-write.request-data-write",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/apis.py"
+  },
+  {
+    "alert_number": 1575,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/apis.py"
+  },
+  {
+    "alert_number": 1574,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/apis.py"
+  },
+  {
+    "alert_number": 1573,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/apis.py"
+  },
+  {
+    "alert_number": 1572,
+    "rule_id": "python.django.security.injection.request-data-write.request-data-write",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/apis.py"
+  },
+  {
+    "alert_number": 1571,
+    "rule_id": "python.django.security.injection.request-data-write.request-data-write",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/apis.py"
+  },
+  {
+    "alert_number": 1570,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/apis.py"
+  },
+  {
+    "alert_number": 1569,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/introduction/apis.py"
+  },
+  {
+    "alert_number": 1568,
+    "rule_id": "python.flask.security.xss.audit.template-unescaped-with-safe.template-unescaped-with-safe",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection",
+      "OWASP-A07:2017 - Cross-Site Scripting (XSS)"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/dockerized_labs/sensitive_data_exposure/templates/login.html"
+  },
+  {
+    "alert_number": 1567,
+    "rule_id": "python.flask.security.xss.audit.template-unescaped-with-safe.template-unescaped-with-safe",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection",
+      "OWASP-A07:2017 - Cross-Site Scripting (XSS)"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/dockerized_labs/sensitive_data_exposure/templates/login.html"
+  },
+  {
+    "alert_number": 1566,
+    "rule_id": "dockerfile.security.missing-user.missing-user",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A04:2021 - Insecure Design"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/dockerized_labs/sensitive_data_exposure/Dockerfile"
+  },
+  {
+    "alert_number": 1565,
+    "rule_id": "dockerfile.security.missing-user-entrypoint.missing-user-entrypoint",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A04:2021 - Insecure Design"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/dockerized_labs/sensitive_data_exposure/Dockerfile"
+  },
+  {
+    "alert_number": 1564,
+    "rule_id": "python.flask.security.audit.app-run-param-config.avoid_app_run_with_bad_host",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/dockerized_labs/insec_des_lab/main.py"
+  },
+  {
+    "alert_number": 1563,
+    "rule_id": "python.lang.security.deserialization.pickle.avoid-pickle",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A08:2017 - Insecure Deserialization",
+      "OWASP-A08:2021 - Software and Data Integrity Failures"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/dockerized_labs/insec_des_lab/main.py"
+  },
+  {
+    "alert_number": 1562,
+    "rule_id": "python.flask.security.insecure-deserialization.insecure-deserialization",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A08:2017 - Insecure Deserialization",
+      "OWASP-A08:2021 - Software and Data Integrity Failures"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/dockerized_labs/insec_des_lab/main.py"
+  },
+  {
+    "alert_number": 1561,
+    "rule_id": "python.lang.security.deserialization.pickle.avoid-pickle",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A08:2017 - Insecure Deserialization",
+      "OWASP-A08:2021 - Software and Data Integrity Failures"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/dockerized_labs/insec_des_lab/main.py"
+  },
+  {
+    "alert_number": 1560,
+    "rule_id": "python.flask.security.insecure-deserialization.insecure-deserialization",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A08:2017 - Insecure Deserialization",
+      "OWASP-A08:2021 - Software and Data Integrity Failures"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/dockerized_labs/insec_des_lab/main.py"
+  },
+  {
+    "alert_number": 1559,
+    "rule_id": "dockerfile.security.missing-user.missing-user",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A04:2021 - Insecure Design"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/dockerized_labs/insec_des_lab/Dockerfile"
+  },
+  {
+    "alert_number": 1558,
+    "rule_id": "python.flask.security.audit.debug-enabled.debug-enabled",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A06:2017 - Security Misconfiguration"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/dockerized_labs/broken_auth_lab/app.py"
+  },
+  {
+    "alert_number": 1557,
+    "rule_id": "python.flask.security.audit.app-run-param-config.avoid_app_run_with_bad_host",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/dockerized_labs/broken_auth_lab/app.py"
+  },
+  {
+    "alert_number": 1556,
+    "rule_id": "python.lang.security.insecure-hash-algorithms-md5.insecure-hash-algorithm-md5",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures",
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/dockerized_labs/broken_auth_lab/app.py"
+  },
+  {
+    "alert_number": 1555,
+    "rule_id": "python.flask.security.audit.secure-set-cookie.secure-set-cookie",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/dockerized_labs/broken_auth_lab/app.py"
+  },
+  {
+    "alert_number": 1554,
+    "rule_id": "python.flask.security.audit.secure-set-cookie.secure-set-cookie",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/dockerized_labs/broken_auth_lab/app.py"
+  },
+  {
+    "alert_number": 1553,
+    "rule_id": "dockerfile.security.missing-user.missing-user",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A04:2021 - Insecure Design"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/dockerized_labs/broken_auth_lab/Dockerfile"
+  },
+  {
+    "alert_number": 1552,
+    "rule_id": "python.django.security.injection.command.subprocess-injection.subprocess-injection",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/challenge/views.py"
+  },
+  {
+    "alert_number": 1551,
+    "rule_id": "python.flask.security.xss.audit.template-unescaped-with-safe.template-unescaped-with-safe",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection",
+      "OWASP-A07:2017 - Cross-Site Scripting (XSS)"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/challenge/templates/challenge.html"
+  },
+  {
+    "alert_number": 1550,
+    "rule_id": "dockerfile.security.missing-user.missing-user",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A04:2021 - Insecure Design"
+    ],
+    "file_path": "vulnerable_repos/PyGoat/Dockerfile"
+  },
+  {
+    "alert_number": 1549,
+    "rule_id": "javascript.express.security.audit.express-cookie-settings.express-cookie-session-no-secure",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2017 - Broken Authentication",
+      "OWASP-A04:2021 - Insecure Design"
+    ],
+    "file_path": "vulnerable_repos/NodeGoat/server.js"
+  },
+  {
+    "alert_number": 1548,
+    "rule_id": "javascript.express.security.audit.express-cookie-settings.express-cookie-session-no-path",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2017 - Broken Authentication",
+      "OWASP-A04:2021 - Insecure Design"
+    ],
+    "file_path": "vulnerable_repos/NodeGoat/server.js"
+  },
+  {
+    "alert_number": 1547,
+    "rule_id": "javascript.express.security.audit.express-cookie-settings.express-cookie-session-no-httponly",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2017 - Broken Authentication",
+      "OWASP-A04:2021 - Insecure Design"
+    ],
+    "file_path": "vulnerable_repos/NodeGoat/server.js"
+  },
+  {
+    "alert_number": 1546,
+    "rule_id": "javascript.express.security.audit.express-cookie-settings.express-cookie-session-no-expires",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2017 - Broken Authentication",
+      "OWASP-A04:2021 - Insecure Design"
+    ],
+    "file_path": "vulnerable_repos/NodeGoat/server.js"
+  },
+  {
+    "alert_number": 1545,
+    "rule_id": "javascript.express.security.audit.express-cookie-settings.express-cookie-session-no-domain",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2017 - Broken Authentication",
+      "OWASP-A04:2021 - Insecure Design"
+    ],
+    "file_path": "vulnerable_repos/NodeGoat/server.js"
+  },
+  {
+    "alert_number": 1544,
+    "rule_id": "javascript.express.security.audit.express-cookie-settings.express-cookie-session-default-name",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2017 - Broken Authentication",
+      "OWASP-A04:2021 - Insecure Design"
+    ],
+    "file_path": "vulnerable_repos/NodeGoat/server.js"
+  },
+  {
+    "alert_number": 1543,
+    "rule_id": "html.security.plaintext-http-link.plaintext-http-link",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures",
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "vulnerable_repos/NodeGoat/app/views/tutorial/a5.html"
+  },
+  {
+    "alert_number": 1542,
+    "rule_id": "html.security.plaintext-http-link.plaintext-http-link",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures",
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "vulnerable_repos/NodeGoat/app/views/tutorial/a5.html"
+  },
+  {
+    "alert_number": 1541,
+    "rule_id": "html.security.plaintext-http-link.plaintext-http-link",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures",
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "vulnerable_repos/NodeGoat/app/views/tutorial/a2.html"
+  },
+  {
+    "alert_number": 1540,
+    "rule_id": "html.security.plaintext-http-link.plaintext-http-link",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures",
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "vulnerable_repos/NodeGoat/app/views/tutorial/a2.html"
+  },
+  {
+    "alert_number": 1539,
+    "rule_id": "html.security.plaintext-http-link.plaintext-http-link",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures",
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "vulnerable_repos/NodeGoat/app/views/tutorial/a2.html"
+  },
+  {
+    "alert_number": 1538,
+    "rule_id": "generic.html-templates.security.var-in-href.var-in-href",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection",
+      "OWASP-A07:2017 - Cross-Site Scripting (XSS)"
+    ],
+    "file_path": "vulnerable_repos/NodeGoat/app/views/profile.html"
+  },
+  {
+    "alert_number": 1537,
+    "rule_id": "javascript.express.security.audit.express-open-redirect.express-open-redirect",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "vulnerable_repos/NodeGoat/app/routes/index.js"
+  },
+  {
+    "alert_number": 1536,
+    "rule_id": "javascript.lang.security.audit.code-string-concat.code-string-concat",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "vulnerable_repos/NodeGoat/app/routes/contributions.js"
+  },
+  {
+    "alert_number": 1535,
+    "rule_id": "javascript.lang.security.audit.code-string-concat.code-string-concat",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "vulnerable_repos/NodeGoat/app/routes/contributions.js"
+  },
+  {
+    "alert_number": 1534,
+    "rule_id": "javascript.lang.security.audit.code-string-concat.code-string-concat",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "vulnerable_repos/NodeGoat/app/routes/contributions.js"
+  },
+  {
+    "alert_number": 925,
+    "rule_id": "javascript.node-crypto.security.gcm-no-tag-length.gcm-no-tag-length",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures"
+    ],
+    "file_path": "lesson-02/demo-01-crypto/encryption-demo2.js"
+  },
+  {
+    "alert_number": 911,
+    "rule_id": "javascript.browser.security.wildcard-postmessage-configuration.wildcard-postmessage-configuration",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A08:2021 - Software and Data Integrity Failures"
+    ],
+    "file_path": "WebGoat/src/main/resources/webgoat/static/js/libs/ace.js"
+  },
+  {
+    "alert_number": 910,
+    "rule_id": "terraform.lang.security.rds-insecure-password-storage-in-source-code.rds-insecure-password-storage-in-source-code",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2017 - Broken Authentication",
+      "OWASP-A04:2021 - Insecure Design"
+    ],
+    "file_path": "lesson-05/demo-01-iac-templates/vulnerable/ec2-vulnerable.tf"
+  },
+  {
+    "alert_number": 909,
+    "rule_id": "terraform.aws.security.aws-rds-backup-no-retention.aws-rds-backup-no-retention",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "lesson-05/demo-01-iac-templates/vulnerable/ec2-vulnerable.tf"
+  },
+  {
+    "alert_number": 908,
+    "rule_id": "terraform.aws.security.aws-db-instance-no-logging.aws-db-instance-no-logging",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2017 - Sensitive Data Exposure",
+      "OWASP-A04:2021 - Insecure Design"
+    ],
+    "file_path": "lesson-05/demo-01-iac-templates/vulnerable/ec2-vulnerable.tf"
+  },
+  {
+    "alert_number": 907,
+    "rule_id": "terraform.lang.security.ec2-imdsv1-optional.ec2-imdsv1-optional",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A10:2021 - Server-Side Request Forgery (SSRF)"
+    ],
+    "file_path": "lesson-05/demo-01-iac-templates/vulnerable/ec2-vulnerable.tf"
+  },
+  {
+    "alert_number": 906,
+    "rule_id": "terraform.aws.security.aws-ec2-has-public-ip.aws-ec2-has-public-ip",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control",
+      "OWASP-A05:2017 - Broken Access Control"
+    ],
+    "file_path": "lesson-05/demo-01-iac-templates/vulnerable/ec2-vulnerable.tf"
+  },
+  {
+    "alert_number": 905,
+    "rule_id": "javascript.node-crypto.security.gcm-no-tag-length.gcm-no-tag-length",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures"
+    ],
+    "file_path": "lesson-02/demo-01-crypto/encryption-demo.js"
+  },
+  {
+    "alert_number": 904,
+    "rule_id": "javascript.express.security.audit.express-path-join-resolve-traversal.express-path-join-resolve-traversal",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control",
+      "OWASP-A05:2017 - Broken Access Control"
+    ],
+    "file_path": "lesson-01/demo-01-configuration/vulnerable-pattern-test.js"
+  },
+  {
+    "alert_number": 903,
+    "rule_id": "javascript.lang.security.detect-child-process.detect-child-process",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "lesson-01/demo-01-configuration/vulnerable-pattern-test.js"
+  },
+  {
+    "alert_number": 902,
+    "rule_id": "html.security.plaintext-http-link.plaintext-http-link",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures",
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "WebGoat/src/main/resources/lessons/clientsidefiltering/html/ClientSideFiltering.html"
+  },
+  {
+    "alert_number": 901,
+    "rule_id": "java.spring.security.audit.spring-actuator-non-health-enabled.spring-actuator-dangerous-endpoints-enabled",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "WebGoat/src/main/resources/application-webgoat.properties"
+  },
+  {
+    "alert_number": 900,
+    "rule_id": "java.spring.security.injection.tainted-file-path.tainted-file-path",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/webwolf/FileServer.java"
+  },
+  {
+    "alert_number": 899,
+    "rule_id": "java.spring.security.unrestricted-request-mapping.unrestricted-request-mapping",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/webwolf/FileServer.java"
+  },
+  {
+    "alert_number": 898,
+    "rule_id": "java.spring.security.unrestricted-request-mapping.unrestricted-request-mapping",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/xxe/SimpleXXE.java"
+  },
+  {
+    "alert_number": 897,
+    "rule_id": "java.spring.security.injection.tainted-sql-string.tainted-sql-string",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/sqlinjection/mitigation/Servers.java"
+  },
+  {
+    "alert_number": 896,
+    "rule_id": "java.lang.security.audit.formatted-sql-string.formatted-sql-string",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/sqlinjection/introduction/SqlInjectionLesson9.java"
+  },
+  {
+    "alert_number": 895,
+    "rule_id": "java.lang.security.audit.formatted-sql-string.formatted-sql-string",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/sqlinjection/introduction/SqlInjectionLesson8.java"
+  },
+  {
+    "alert_number": 894,
+    "rule_id": "java.lang.security.audit.formatted-sql-string.formatted-sql-string",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/sqlinjection/introduction/SqlInjectionLesson8.java"
+  },
+  {
+    "alert_number": 893,
+    "rule_id": "java.lang.security.audit.formatted-sql-string.formatted-sql-string",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/sqlinjection/introduction/SqlInjectionLesson5b.java"
+  },
+  {
+    "alert_number": 892,
+    "rule_id": "java.lang.security.audit.formatted-sql-string.formatted-sql-string",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/sqlinjection/introduction/SqlInjectionLesson5a.java"
+  },
+  {
+    "alert_number": 891,
+    "rule_id": "java.lang.security.audit.formatted-sql-string.formatted-sql-string",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/sqlinjection/introduction/SqlInjectionLesson10.java"
+  },
+  {
+    "alert_number": 890,
+    "rule_id": "java.lang.security.audit.formatted-sql-string.formatted-sql-string",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/sqlinjection/advanced/SqlInjectionChallenge.java"
+  },
+  {
+    "alert_number": 889,
+    "rule_id": "java.spring.security.injection.tainted-sql-string.tainted-sql-string",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/sqlinjection/advanced/SqlInjectionChallenge.java"
+  },
+  {
+    "alert_number": 888,
+    "rule_id": "java.lang.security.audit.cookie-missing-httponly.cookie-missing-httponly",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/spoofcookie/SpoofCookieAssignment.java"
+  },
+  {
+    "alert_number": 887,
+    "rule_id": "java.lang.security.audit.cookie-missing-secure-flag.cookie-missing-secure-flag",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/spoofcookie/SpoofCookieAssignment.java"
+  },
+  {
+    "alert_number": 886,
+    "rule_id": "java.lang.security.audit.cookie-missing-httponly.cookie-missing-httponly",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/spoofcookie/SpoofCookieAssignment.java"
+  },
+  {
+    "alert_number": 885,
+    "rule_id": "java.lang.security.httpservlet-path-traversal.httpservlet-path-traversal",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control",
+      "OWASP-A05:2017 - Broken Access Control"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/pathtraversal/ProfileUploadRetrieval.java"
+  },
+  {
+    "alert_number": 884,
+    "rule_id": "java.spring.security.audit.spring-unvalidated-redirect.spring-unvalidated-redirect",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/openredirect/OpenRedirectRealRedirect.java"
+  },
+  {
+    "alert_number": 883,
+    "rule_id": "java.spring.security.injection.tainted-url-host.tainted-url-host",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A10:2021 - Server-Side Request Forgery (SSRF)"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/jwt/claimmisuse/JWTHeaderJKUEndpoint.java"
+  },
+  {
+    "alert_number": 882,
+    "rule_id": "java.lang.security.audit.cookie-missing-secure-flag.cookie-missing-secure-flag",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/jwt/JWTVotesEndpoint.java"
+  },
+  {
+    "alert_number": 881,
+    "rule_id": "java.lang.security.audit.cookie-missing-httponly.cookie-missing-httponly",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/jwt/JWTVotesEndpoint.java"
+  },
+  {
+    "alert_number": 880,
+    "rule_id": "java.lang.security.audit.cookie-missing-secure-flag.cookie-missing-secure-flag",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/jwt/JWTVotesEndpoint.java"
+  },
+  {
+    "alert_number": 879,
+    "rule_id": "java.lang.security.audit.cookie-missing-httponly.cookie-missing-httponly",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/jwt/JWTVotesEndpoint.java"
+  },
+  {
+    "alert_number": 878,
+    "rule_id": "java.spring.security.unrestricted-request-mapping.unrestricted-request-mapping",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/jwt/JWTSecretKeyEndpoint.java"
+  },
+  {
+    "alert_number": 877,
+    "rule_id": "java.lang.security.audit.crypto.weak-random.weak-random",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/jwt/JWTSecretKeyEndpoint.java"
+  },
+  {
+    "alert_number": 876,
+    "rule_id": "java.lang.security.audit.crypto.weak-random.weak-random",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/hijacksession/cas/HijackSessionAuthenticationProvider.java"
+  },
+  {
+    "alert_number": 875,
+    "rule_id": "java.lang.security.audit.cookie-missing-httponly.cookie-missing-httponly",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/hijacksession/HijackSessionAssignment.java"
+  },
+  {
+    "alert_number": 874,
+    "rule_id": "java.lang.security.audit.object-deserialization.object-deserialization",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A08:2017 - Insecure Deserialization",
+      "OWASP-A08:2021 - Software and Data Integrity Failures"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/deserialization/SerializationHelper.java"
+  },
+  {
+    "alert_number": 873,
+    "rule_id": "java.lang.security.audit.object-deserialization.object-deserialization",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A08:2017 - Insecure Deserialization",
+      "OWASP-A08:2021 - Software and Data Integrity Failures"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/deserialization/InsecureDeserializationTask.java"
+  },
+  {
+    "alert_number": 872,
+    "rule_id": "java.spring.security.unrestricted-request-mapping.unrestricted-request-mapping",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/cryptography/SigningAssignment.java"
+  },
+  {
+    "alert_number": 871,
+    "rule_id": "java.lang.security.audit.crypto.weak-random.weak-random",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/cryptography/HashingAssignment.java"
+  },
+  {
+    "alert_number": 870,
+    "rule_id": "java.spring.security.unrestricted-request-mapping.unrestricted-request-mapping",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/cryptography/HashingAssignment.java"
+  },
+  {
+    "alert_number": 869,
+    "rule_id": "java.lang.security.audit.crypto.use-of-md5.use-of-md5",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures",
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/cryptography/HashingAssignment.java"
+  },
+  {
+    "alert_number": 868,
+    "rule_id": "java.lang.security.audit.crypto.weak-random.weak-random",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/cryptography/HashingAssignment.java"
+  },
+  {
+    "alert_number": 867,
+    "rule_id": "java.spring.security.unrestricted-request-mapping.unrestricted-request-mapping",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/cryptography/HashingAssignment.java"
+  },
+  {
+    "alert_number": 866,
+    "rule_id": "java.lang.security.audit.tainted-session-from-http-request.tainted-session-from-http-request",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A04:2021 - Insecure Design"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/cryptography/EncodingAssignment.java"
+  },
+  {
+    "alert_number": 865,
+    "rule_id": "java.lang.security.audit.crypto.weak-random.weak-random",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/cryptography/EncodingAssignment.java"
+  },
+  {
+    "alert_number": 864,
+    "rule_id": "java.lang.security.audit.formatted-sql-string.formatted-sql-string",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/challenges/challenge5/Assignment5.java"
+  },
+  {
+    "alert_number": 863,
+    "rule_id": "java.spring.security.injection.tainted-sql-string.tainted-sql-string",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/challenges/challenge5/Assignment5.java"
+  },
+  {
+    "alert_number": 862,
+    "rule_id": "java.lang.security.audit.crypto.weak-random.weak-random",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/lessons/challenges/challenge1/ImageServlet.java"
+  },
+  {
+    "alert_number": 861,
+    "rule_id": "java.spring.security.unrestricted-request-mapping.unrestricted-request-mapping",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/container/service/SessionService.java"
+  },
+  {
+    "alert_number": 860,
+    "rule_id": "java.spring.security.unrestricted-request-mapping.unrestricted-request-mapping",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/container/service/LessonMenuService.java"
+  },
+  {
+    "alert_number": 859,
+    "rule_id": "java.spring.security.unrestricted-request-mapping.unrestricted-request-mapping",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/container/service/LabelDebugService.java"
+  },
+  {
+    "alert_number": 858,
+    "rule_id": "java.spring.security.unrestricted-request-mapping.unrestricted-request-mapping",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "WebGoat/src/main/java/org/owasp/webgoat/container/service/LabelDebugService.java"
+  },
+  {
+    "alert_number": 857,
+    "rule_id": "terraform.gcp.security.gcp-cloud-storage-logging.gcp-cloud-storage-logging",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A09:2021 - Security Logging and Monitoring Failures",
+      "OWASP-A10:2017 - Insufficient Logging & Monitoring"
+    ],
+    "file_path": "TerraGoat/terraform/gcp/gcs.tf"
+  },
+  {
+    "alert_number": 856,
+    "rule_id": "terraform.azure.security.storage.storage-use-secure-tls-policy.storage-use-secure-tls-policy",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures",
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "TerraGoat/terraform/azure/storage.tf"
+  },
+  {
+    "alert_number": 855,
+    "rule_id": "terraform.azure.security.azure-key-no-expiration-date.azure-key-no-expiration-date",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "TerraGoat/terraform/azure/key_vault.tf"
+  },
+  {
+    "alert_number": 854,
+    "rule_id": "terraform.aws.security.aws-provider-static-credentials.aws-provider-static-credentials",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A07:2021 - Identification and Authentication Failures"
+    ],
+    "file_path": "TerraGoat/terraform/aws/providers.tf"
+  },
+  {
+    "alert_number": 853,
+    "rule_id": "terraform.aws.security.aws-lambda-x-ray-tracing-not-active.aws-lambda-x-ray-tracing-not-active",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A09:2021 Security Logging and Monitoring Failures"
+    ],
+    "file_path": "TerraGoat/terraform/aws/lambda.tf"
+  },
+  {
+    "alert_number": 852,
+    "rule_id": "terraform.aws.security.aws-kms-no-rotation.aws-kms-no-rotation",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures",
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "TerraGoat/terraform/aws/kms.tf"
+  },
+  {
+    "alert_number": 851,
+    "rule_id": "terraform.aws.security.aws-subnet-has-public-ip-address.aws-subnet-has-public-ip-address",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "TerraGoat/terraform/aws/ec2.tf"
+  },
+  {
+    "alert_number": 850,
+    "rule_id": "terraform.aws.security.aws-subnet-has-public-ip-address.aws-subnet-has-public-ip-address",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "TerraGoat/terraform/aws/ec2.tf"
+  },
+  {
+    "alert_number": 849,
+    "rule_id": "terraform.aws.security.aws-ebs-volume-unencrypted.aws-ebs-volume-unencrypted",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2017 - Sensitive Data Exposure",
+      "OWASP-A04:2021 - Insecure Design"
+    ],
+    "file_path": "TerraGoat/terraform/aws/ec2.tf"
+  },
+  {
+    "alert_number": 848,
+    "rule_id": "terraform.lang.security.ec2-imdsv1-optional.ec2-imdsv1-optional",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A10:2021 - Server-Side Request Forgery (SSRF)"
+    ],
+    "file_path": "TerraGoat/terraform/aws/ec2.tf"
+  },
+  {
+    "alert_number": 847,
+    "rule_id": "terraform.lang.security.ec2-imdsv1-optional.ec2-imdsv1-optional",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A10:2021 - Server-Side Request Forgery (SSRF)"
+    ],
+    "file_path": "TerraGoat/terraform/aws/db-app.tf"
+  },
+  {
+    "alert_number": 846,
+    "rule_id": "terraform.aws.security.aws-rds-backup-no-retention.aws-rds-backup-no-retention",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "TerraGoat/terraform/aws/db-app.tf"
+  },
+  {
+    "alert_number": 845,
+    "rule_id": "terraform.aws.security.aws-db-instance-no-logging.aws-db-instance-no-logging",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2017 - Sensitive Data Exposure",
+      "OWASP-A04:2021 - Insecure Design"
+    ],
+    "file_path": "TerraGoat/terraform/aws/db-app.tf"
+  },
+  {
+    "alert_number": 844,
+    "rule_id": "python.django.security.audit.secure-cookies.django-secure-set-cookie",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 843,
+    "rule_id": "python.django.security.audit.secure-cookies.django-secure-set-cookie",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 842,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 841,
+    "rule_id": "python.django.security.audit.secure-cookies.django-secure-set-cookie",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 840,
+    "rule_id": "python.django.security.audit.secure-cookies.django-secure-set-cookie",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 839,
+    "rule_id": "python.django.security.audit.secure-cookies.django-secure-set-cookie",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 838,
+    "rule_id": "python.lang.security.audit.md5-used-as-password.md5-used-as-password",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures",
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 837,
+    "rule_id": "python.lang.security.audit.md5-used-as-password.md5-used-as-password",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures",
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 836,
+    "rule_id": "python.lang.security.insecure-hash-algorithms-md5.insecure-hash-algorithm-md5",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures",
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 835,
+    "rule_id": "python.django.security.injection.raw-html-format.raw-html-format",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection",
+      "OWASP-A07:2017 - Cross-Site Scripting (XSS)"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 834,
+    "rule_id": "python.django.security.injection.request-data-write.request-data-write",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 833,
+    "rule_id": "python.django.security.injection.ssrf.ssrf-injection-requests.ssrf-injection-requests",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A10:2021 - Server-Side Request Forgery (SSRF)"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 832,
+    "rule_id": "python.django.security.audit.raw-query.avoid-raw-sql",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 831,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 830,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 829,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 828,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 827,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 826,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 825,
+    "rule_id": "python.django.security.audit.avoid-insecure-deserialization.avoid-insecure-deserialization",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A08:2017 - Insecure Deserialization",
+      "OWASP-A08:2021 - Software and Data Integrity Failures"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 824,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 823,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 822,
+    "rule_id": "python.lang.security.audit.eval-detected.eval-detected",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 821,
+    "rule_id": "python.django.security.injection.code.user-eval.user-eval",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 820,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 819,
+    "rule_id": "python.lang.security.audit.subprocess-shell-true.subprocess-shell-true",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 818,
+    "rule_id": "python.lang.security.dangerous-subprocess-use.dangerous-subprocess-use",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 817,
+    "rule_id": "python.django.security.injection.command.subprocess-injection.subprocess-injection",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 816,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 815,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 814,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 813,
+    "rule_id": "python.django.security.audit.secure-cookies.django-secure-set-cookie",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 812,
+    "rule_id": "python.django.security.audit.secure-cookies.django-secure-set-cookie",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 811,
+    "rule_id": "python.django.security.audit.secure-cookies.django-secure-set-cookie",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 810,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 809,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 808,
+    "rule_id": "python.lang.security.deserialization.pickle.avoid-pickle",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A08:2017 - Insecure Deserialization",
+      "OWASP-A08:2021 - Software and Data Integrity Failures"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 807,
+    "rule_id": "python.django.security.audit.avoid-insecure-deserialization.avoid-insecure-deserialization",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A08:2017 - Insecure Deserialization",
+      "OWASP-A08:2021 - Software and Data Integrity Failures"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 806,
+    "rule_id": "python.django.security.audit.secure-cookies.django-secure-set-cookie",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 805,
+    "rule_id": "python.lang.security.deserialization.pickle.avoid-pickle",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A08:2017 - Insecure Deserialization",
+      "OWASP-A08:2021 - Software and Data Integrity Failures"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 804,
+    "rule_id": "python.django.security.audit.raw-query.avoid-raw-sql",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 803,
+    "rule_id": "python.lang.security.use-defused-xml.use-defused-xml",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A04:2017 - XML External Entities (XXE)",
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 802,
+    "rule_id": "python.lang.security.use-defused-xml.use-defused-xml",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A04:2017 - XML External Entities (XXE)",
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 801,
+    "rule_id": "python.lang.security.use-defused-xml.use-defused-xml",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A04:2017 - XML External Entities (XXE)",
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "PyGoat/introduction/views.py"
+  },
+  {
+    "alert_number": 800,
+    "rule_id": "python.flask.security.xss.audit.template-unescaped-with-safe.template-unescaped-with-safe",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection",
+      "OWASP-A07:2017 - Cross-Site Scripting (XSS)"
+    ],
+    "file_path": "PyGoat/introduction/templates/Lab_2021/A8_software_and_data_integrity_failure/lab2.html"
+  },
+  {
+    "alert_number": 799,
+    "rule_id": "generic.html-templates.security.unquoted-attribute-var.unquoted-attribute-var",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection",
+      "OWASP-A07:2017 - Cross-Site Scripting (XSS)"
+    ],
+    "file_path": "PyGoat/introduction/templates/Lab_2021/A3_Injection/ssti_lab.html"
+  },
+  {
+    "alert_number": 798,
+    "rule_id": "python.flask.security.xss.audit.template-unescaped-with-safe.template-unescaped-with-safe",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection",
+      "OWASP-A07:2017 - Cross-Site Scripting (XSS)"
+    ],
+    "file_path": "PyGoat/introduction/templates/Lab/ssrf/ssrf_lab2.html"
+  },
+  {
+    "alert_number": 797,
+    "rule_id": "python.flask.security.xss.audit.template-unescaped-with-safe.template-unescaped-with-safe",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection",
+      "OWASP-A07:2017 - Cross-Site Scripting (XSS)"
+    ],
+    "file_path": "PyGoat/introduction/templates/Lab/XSS/xss_lab_2.html"
+  },
+  {
+    "alert_number": 796,
+    "rule_id": "python.flask.security.xss.audit.template-unescaped-with-safe.template-unescaped-with-safe",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection",
+      "OWASP-A07:2017 - Cross-Site Scripting (XSS)"
+    ],
+    "file_path": "PyGoat/introduction/templates/Lab/XSS/xss_lab.html"
+  },
+  {
+    "alert_number": 795,
+    "rule_id": "generic.html-templates.security.var-in-script-tag.var-in-script-tag",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection",
+      "OWASP-A07:2017 - Cross-Site Scripting (XSS)"
+    ],
+    "file_path": "PyGoat/introduction/templates/Lab/A9/a9_lab2.html"
+  },
+  {
+    "alert_number": 794,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "PyGoat/introduction/playground/A9/archive.py"
+  },
+  {
+    "alert_number": 793,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "PyGoat/introduction/playground/A9/api.py"
+  },
+  {
+    "alert_number": 792,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "PyGoat/introduction/mitre.py"
+  },
+  {
+    "alert_number": 791,
+    "rule_id": "python.lang.security.audit.subprocess-shell-true.subprocess-shell-true",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "PyGoat/introduction/mitre.py"
+  },
+  {
+    "alert_number": 790,
+    "rule_id": "python.lang.security.audit.eval-detected.eval-detected",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "PyGoat/introduction/mitre.py"
+  },
+  {
+    "alert_number": 789,
+    "rule_id": "python.django.security.injection.code.user-eval.user-eval",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "PyGoat/introduction/mitre.py"
+  },
+  {
+    "alert_number": 788,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "PyGoat/introduction/mitre.py"
+  },
+  {
+    "alert_number": 787,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "PyGoat/introduction/mitre.py"
+  },
+  {
+    "alert_number": 786,
+    "rule_id": "python.django.security.audit.secure-cookies.django-secure-set-cookie",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "PyGoat/introduction/mitre.py"
+  },
+  {
+    "alert_number": 785,
+    "rule_id": "python.jwt.security.jwt-hardcode.jwt-python-hardcoded-secret",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2017 - Broken Authentication",
+      "OWASP-A04:2021 - Insecure Design"
+    ],
+    "file_path": "PyGoat/introduction/mitre.py"
+  },
+  {
+    "alert_number": 784,
+    "rule_id": "python.lang.security.audit.md5-used-as-password.md5-used-as-password",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures",
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "PyGoat/introduction/mitre.py"
+  },
+  {
+    "alert_number": 783,
+    "rule_id": "python.lang.security.insecure-hash-algorithms-md5.insecure-hash-algorithm-md5",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures",
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "PyGoat/introduction/mitre.py"
+  },
+  {
+    "alert_number": 782,
+    "rule_id": "python.django.security.injection.request-data-write.request-data-write",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "PyGoat/introduction/apis.py"
+  },
+  {
+    "alert_number": 781,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "PyGoat/introduction/apis.py"
+  },
+  {
+    "alert_number": 780,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "PyGoat/introduction/apis.py"
+  },
+  {
+    "alert_number": 779,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "PyGoat/introduction/apis.py"
+  },
+  {
+    "alert_number": 778,
+    "rule_id": "python.django.security.injection.request-data-write.request-data-write",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "PyGoat/introduction/apis.py"
+  },
+  {
+    "alert_number": 777,
+    "rule_id": "python.django.security.injection.request-data-write.request-data-write",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "PyGoat/introduction/apis.py"
+  },
+  {
+    "alert_number": 776,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "PyGoat/introduction/apis.py"
+  },
+  {
+    "alert_number": 775,
+    "rule_id": "python.django.security.audit.csrf-exempt.no-csrf-exempt",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "PyGoat/introduction/apis.py"
+  },
+  {
+    "alert_number": 774,
+    "rule_id": "python.flask.security.xss.audit.template-unescaped-with-safe.template-unescaped-with-safe",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection",
+      "OWASP-A07:2017 - Cross-Site Scripting (XSS)"
+    ],
+    "file_path": "PyGoat/dockerized_labs/sensitive_data_exposure/templates/login.html"
+  },
+  {
+    "alert_number": 773,
+    "rule_id": "python.flask.security.xss.audit.template-unescaped-with-safe.template-unescaped-with-safe",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection",
+      "OWASP-A07:2017 - Cross-Site Scripting (XSS)"
+    ],
+    "file_path": "PyGoat/dockerized_labs/sensitive_data_exposure/templates/login.html"
+  },
+  {
+    "alert_number": 772,
+    "rule_id": "dockerfile.security.missing-user.missing-user",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A04:2021 - Insecure Design"
+    ],
+    "file_path": "PyGoat/dockerized_labs/sensitive_data_exposure/Dockerfile"
+  },
+  {
+    "alert_number": 771,
+    "rule_id": "dockerfile.security.missing-user-entrypoint.missing-user-entrypoint",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A04:2021 - Insecure Design"
+    ],
+    "file_path": "PyGoat/dockerized_labs/sensitive_data_exposure/Dockerfile"
+  },
+  {
+    "alert_number": 770,
+    "rule_id": "python.flask.security.audit.app-run-param-config.avoid_app_run_with_bad_host",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "PyGoat/dockerized_labs/insec_des_lab/main.py"
+  },
+  {
+    "alert_number": 769,
+    "rule_id": "python.lang.security.deserialization.pickle.avoid-pickle",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A08:2017 - Insecure Deserialization",
+      "OWASP-A08:2021 - Software and Data Integrity Failures"
+    ],
+    "file_path": "PyGoat/dockerized_labs/insec_des_lab/main.py"
+  },
+  {
+    "alert_number": 768,
+    "rule_id": "python.flask.security.insecure-deserialization.insecure-deserialization",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A08:2017 - Insecure Deserialization",
+      "OWASP-A08:2021 - Software and Data Integrity Failures"
+    ],
+    "file_path": "PyGoat/dockerized_labs/insec_des_lab/main.py"
+  },
+  {
+    "alert_number": 767,
+    "rule_id": "python.lang.security.deserialization.pickle.avoid-pickle",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A08:2017 - Insecure Deserialization",
+      "OWASP-A08:2021 - Software and Data Integrity Failures"
+    ],
+    "file_path": "PyGoat/dockerized_labs/insec_des_lab/main.py"
+  },
+  {
+    "alert_number": 766,
+    "rule_id": "python.flask.security.insecure-deserialization.insecure-deserialization",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A08:2017 - Insecure Deserialization",
+      "OWASP-A08:2021 - Software and Data Integrity Failures"
+    ],
+    "file_path": "PyGoat/dockerized_labs/insec_des_lab/main.py"
+  },
+  {
+    "alert_number": 765,
+    "rule_id": "dockerfile.security.missing-user.missing-user",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A04:2021 - Insecure Design"
+    ],
+    "file_path": "PyGoat/dockerized_labs/insec_des_lab/Dockerfile"
+  },
+  {
+    "alert_number": 764,
+    "rule_id": "python.flask.security.audit.debug-enabled.debug-enabled",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A06:2017 - Security Misconfiguration"
+    ],
+    "file_path": "PyGoat/dockerized_labs/broken_auth_lab/app.py"
+  },
+  {
+    "alert_number": 763,
+    "rule_id": "python.flask.security.audit.app-run-param-config.avoid_app_run_with_bad_host",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "PyGoat/dockerized_labs/broken_auth_lab/app.py"
+  },
+  {
+    "alert_number": 762,
+    "rule_id": "python.lang.security.insecure-hash-algorithms-md5.insecure-hash-algorithm-md5",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures",
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "PyGoat/dockerized_labs/broken_auth_lab/app.py"
+  },
+  {
+    "alert_number": 761,
+    "rule_id": "python.flask.security.audit.secure-set-cookie.secure-set-cookie",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "PyGoat/dockerized_labs/broken_auth_lab/app.py"
+  },
+  {
+    "alert_number": 760,
+    "rule_id": "python.flask.security.audit.secure-set-cookie.secure-set-cookie",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A05:2021 - Security Misconfiguration"
+    ],
+    "file_path": "PyGoat/dockerized_labs/broken_auth_lab/app.py"
+  },
+  {
+    "alert_number": 759,
+    "rule_id": "dockerfile.security.missing-user.missing-user",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A04:2021 - Insecure Design"
+    ],
+    "file_path": "PyGoat/dockerized_labs/broken_auth_lab/Dockerfile"
+  },
+  {
+    "alert_number": 758,
+    "rule_id": "python.django.security.injection.command.subprocess-injection.subprocess-injection",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2017 - Injection",
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "PyGoat/challenge/views.py"
+  },
+  {
+    "alert_number": 757,
+    "rule_id": "python.flask.security.xss.audit.template-unescaped-with-safe.template-unescaped-with-safe",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection",
+      "OWASP-A07:2017 - Cross-Site Scripting (XSS)"
+    ],
+    "file_path": "PyGoat/challenge/templates/challenge.html"
+  },
+  {
+    "alert_number": 756,
+    "rule_id": "dockerfile.security.missing-user.missing-user",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A04:2021 - Insecure Design"
+    ],
+    "file_path": "PyGoat/Dockerfile"
+  },
+  {
+    "alert_number": 755,
+    "rule_id": "javascript.express.security.audit.express-cookie-settings.express-cookie-session-no-secure",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2017 - Broken Authentication",
+      "OWASP-A04:2021 - Insecure Design"
+    ],
+    "file_path": "NodeGoat/server.js"
+  },
+  {
+    "alert_number": 754,
+    "rule_id": "javascript.express.security.audit.express-cookie-settings.express-cookie-session-no-path",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2017 - Broken Authentication",
+      "OWASP-A04:2021 - Insecure Design"
+    ],
+    "file_path": "NodeGoat/server.js"
+  },
+  {
+    "alert_number": 753,
+    "rule_id": "javascript.express.security.audit.express-cookie-settings.express-cookie-session-no-httponly",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2017 - Broken Authentication",
+      "OWASP-A04:2021 - Insecure Design"
+    ],
+    "file_path": "NodeGoat/server.js"
+  },
+  {
+    "alert_number": 752,
+    "rule_id": "javascript.express.security.audit.express-cookie-settings.express-cookie-session-no-expires",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2017 - Broken Authentication",
+      "OWASP-A04:2021 - Insecure Design"
+    ],
+    "file_path": "NodeGoat/server.js"
+  },
+  {
+    "alert_number": 751,
+    "rule_id": "javascript.express.security.audit.express-cookie-settings.express-cookie-session-no-domain",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2017 - Broken Authentication",
+      "OWASP-A04:2021 - Insecure Design"
+    ],
+    "file_path": "NodeGoat/server.js"
+  },
+  {
+    "alert_number": 750,
+    "rule_id": "javascript.express.security.audit.express-cookie-settings.express-cookie-session-default-name",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2017 - Broken Authentication",
+      "OWASP-A04:2021 - Insecure Design"
+    ],
+    "file_path": "NodeGoat/server.js"
+  },
+  {
+    "alert_number": 749,
+    "rule_id": "html.security.plaintext-http-link.plaintext-http-link",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures",
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "NodeGoat/app/views/tutorial/a5.html"
+  },
+  {
+    "alert_number": 748,
+    "rule_id": "html.security.plaintext-http-link.plaintext-http-link",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures",
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "NodeGoat/app/views/tutorial/a5.html"
+  },
+  {
+    "alert_number": 747,
+    "rule_id": "html.security.plaintext-http-link.plaintext-http-link",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures",
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "NodeGoat/app/views/tutorial/a2.html"
+  },
+  {
+    "alert_number": 746,
+    "rule_id": "html.security.plaintext-http-link.plaintext-http-link",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures",
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "NodeGoat/app/views/tutorial/a2.html"
+  },
+  {
+    "alert_number": 745,
+    "rule_id": "html.security.plaintext-http-link.plaintext-http-link",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A02:2021 - Cryptographic Failures",
+      "OWASP-A03:2017 - Sensitive Data Exposure"
+    ],
+    "file_path": "NodeGoat/app/views/tutorial/a2.html"
+  },
+  {
+    "alert_number": 744,
+    "rule_id": "generic.html-templates.security.var-in-href.var-in-href",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection",
+      "OWASP-A07:2017 - Cross-Site Scripting (XSS)"
+    ],
+    "file_path": "NodeGoat/app/views/profile.html"
+  },
+  {
+    "alert_number": 743,
+    "rule_id": "javascript.express.security.audit.express-open-redirect.express-open-redirect",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A01:2021 - Broken Access Control"
+    ],
+    "file_path": "NodeGoat/app/routes/index.js"
+  },
+  {
+    "alert_number": 742,
+    "rule_id": "javascript.lang.security.audit.code-string-concat.code-string-concat",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "NodeGoat/app/routes/contributions.js"
+  },
+  {
+    "alert_number": 741,
+    "rule_id": "javascript.lang.security.audit.code-string-concat.code-string-concat",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "NodeGoat/app/routes/contributions.js"
+  },
+  {
+    "alert_number": 740,
+    "rule_id": "javascript.lang.security.audit.code-string-concat.code-string-concat",
+    "security_severity": null,
+    "owasp_tags": [
+      "OWASP-A03:2021 - Injection"
+    ],
+    "file_path": "NodeGoat/app/routes/contributions.js"
+  }
+]
