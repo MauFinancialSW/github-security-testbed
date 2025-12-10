@@ -35,7 +35,6 @@ jobs:
           mkdir -p reports
           checkov -d lesson-05 \
             --framework bicep \
-            --file-extension .bicep \
             --output sarif \
             --output-file-path reports/checkov-bicep.sarif
 
